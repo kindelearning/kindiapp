@@ -12,13 +12,27 @@ import PopularActivity from "./Home/PopularActivity";
 // Global Imports
 import Header from "./Global/Header";
 import NewsLetter from "./Global/NewsLetter";
+import Footer from "./Global/Footer";
 import BottomNavigation from "./Global/BottomNavigation";
+
+// OurMission Imports
+import MissionHero from "./OurMission/Hero";
+import OurStory from "./OurMission/OurStory";
+import TheTeam from "./OurMission/TheTeam";
+import ParentWithKindi from "./OurMission/ParentWithKindi";
 
 export {
   // Global Export
   Header,
   NewsLetter,
+  Footer,
   BottomNavigation,
+
+  // OurMission Exports
+  MissionHero,
+  TheTeam,
+  ParentWithKindi,
+  OurStory,
 
   //Home Folder Export
   Hero,

@@ -1,6 +1,7 @@
 import {
   BottomNavigation,
   DefaultReviews,
+  Footer,
   Header,
   Hero,
   HowItWorks,
@@ -31,6 +32,7 @@ export default function Home() {
         </div>
         <NewsLetter />
         <BottomNavigation />
+        <Footer />
       </section>
     </>
   );

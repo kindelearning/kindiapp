@@ -1,8 +1,8 @@
 import { blogData } from "@/app/constant/blog";
 import { BlogCard } from "@/app/Widgets";
+import Link from "next/link";
 
 export default function Community() {
-
   return (
     <>
       <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -38,7 +38,7 @@ export default function Community() {
             {/* Render filtered blogs */}
             {blogData.map((blog) => (
               <div key={blog.id}>
-                <div>
+                <Link href="/p/community/slug">
                   <article className="bg-white rounded-lg">
                     <BlogCard
                       title={blog.title}
@@ -46,7 +46,7 @@ export default function Community() {
                       image={blog.image}
                     />
                   </article>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

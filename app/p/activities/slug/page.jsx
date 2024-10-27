@@ -1,12 +1,10 @@
-"use client";
-
+import { Accordion, ActivityAttribute, ProductImages } from "@/app/Sections";
 import { Button } from "@/components/ui/button";
 import { Confidence } from "@/public/Icons";
 import {
   ActivityBlack,
   ActivityImage,
   CompletedMark,
-  Kid,
   KidBlack,
   KindiHeart,
   Print,
@@ -16,47 +14,7 @@ import {
 } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
 
-const ProductImages = ({ images }) => {
-  const [mainImage, setMainImage] = useState(images[0]);
-
-  return (
-    <div className="flex claracontainer w-full flex-col items-start">
-      {/* Featured Image */}
-      <div className="w-full rounded-[16px] h-full max-h-[400px] md:h-full lg:max-h-[400px] bg-clip-content flex items-center justify-center">
-        <Image
-          src={mainImage}
-          className="rounded-[0px] object-contain  h-full max-h-[400px] md:h-full lg:max-h-[400px] w-full md:rounded-[16px]"
-          alt="Product Image"
-        />
-      </div>
-      <div className="flex max-w-[600px] px-2 scrollbar-hidden w-full overflow-x-auto py-4">
-        <div className="flex flex-nowrap scrollbar-hidden">
-          {images.map((image, index) => (
-            <div
-              key={index}
-              className={`w-[100px] flex h-[80px] cursor-pointer object-cover border-2 border-transparent hover:scale-105 duration-150 mr-4 ${
-                mainImage === image ? "border-red" : ""
-              }`}
-              onClick={() => setMainImage(image)}
-            >
-              <Image
-                src={image}
-                width={100}
-                height={80}
-                className="object-cover w-full h-full rounded-[12px]"
-                alt="Product Image"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// const icons = [KindiHeart, Confidence, , ];
 const icons = [
   {
     icon: Confidence,
@@ -86,35 +44,6 @@ const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
   );
 };
 
-const Accordion = ({ title, description }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="w-full bg-[white] px-4 rounded-[12px] claracontainer">
-      <div
-        className="flex bg-[white] py-1 justify-between w-full items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <h2 className="text-[#3f3a64] text-[16px] py-2 md:py-[10px] font-[550] font-fredoka">
-          {title}
-        </h2>
-        <span
-          className={`text-lg text-red ${
-            isOpen ? "rotate-90" : ""
-          } transition-transform duration-300`}
-        >
-          <ChevronRight />
-        </span>
-      </div>
-      {isOpen && (
-        <div className="pb-4">
-          <p className="text-base font-medium text-[#0A1932]">{description}</p>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const sections = [
   { title: "Learning Objective", description: "" },
   { title: "What you need?", description: "" },
@@ -135,30 +64,7 @@ const generateDescription = () => {
   return descriptions[Math.floor(Math.random() * descriptions.length)];
 };
 
-const ActivityAttribute = ({
-  title = " Event Timeline",
-  features = " 18th September 2023",
-  image,
-}) => {
-  return (
-    <div className="w-full justify-between items-center inline-flex">
-      <div className="justify-start w-full items-center gap-2 flex">
-        <Image
-          alt="Kindi"
-          src={image || Themes}
-          className="text-[#0a1932] w-4 h-4"
-        />
-        <div className=" text-[#0a1932] w-full text-[16px] font-normal font-fredoka leading-none">
-          {title}
-        </div>
-      </div>
-      <div className="text-[#0a1932] text-[16px] w-full justify-start items-center font-semibold font-fredoka leading-none">
-        {features}
-      </div>
-    </div>
-  );
-};
-const page = () => {
+export default function DetailActivityPage() {
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
@@ -299,13 +205,13 @@ const page = () => {
           {/* Row 3(C1) */}
 
           {/* Row 4(C1) */}
-          <div className="flex md:hidden shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
+          <div className="flex z-20 lg:hidden shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
             <Button className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image alt="Kindi"  src={Print} />
+              <Image alt="Kindi" src={Print} />
               Print
             </Button>
             <Button className="flex bg-red gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              <Image alt="Kindi"  src={CompletedMark} />
+              <Image alt="Kindi" src={CompletedMark} />
               Mark as Complete
             </Button>
           </div>
@@ -313,6 +219,4 @@ const page = () => {
       </section>
     </>
   );
-};
-
-export default page;
+}

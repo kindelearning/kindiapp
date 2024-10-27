@@ -28,6 +28,11 @@ import KindiSkillsCategories from "./HowItWorks/KindiSkillsCategories";
 import AreasOfLearning from "./HowItWorks/AreasOfLearning";
 import AgeRanges from "./HowItWorks/AgeRanges";
 
+// Activity Import
+import ActivityAttribute from "./Activity/ActivityAttribute";
+import ProductImages from "./Activity/ProductImages";
+import Accordion from "./Activity/Accordion";
+
 export {
   // Global Export
   Header,
@@ -35,6 +40,11 @@ export {
   Footer,
   BottomNavigation,
   PullToRefresh,
+
+  // Activity Exports
+  ProductImages,
+  ActivityAttribute,
+  Accordion,
 
   // HowItWorks Exports
   PlayForLife,

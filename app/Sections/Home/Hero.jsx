@@ -10,42 +10,42 @@ import {
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const HeroImageGif = [
-  { id: 1, src: HomeHeroOne },
-  { id: 2, src: HomeHeroTwo },
-  { id: 3, src: HomeHeroThree },
-  { id: 4, src: HomeHeroFour },
-  { id: 5, src: HomeHero },
-];
+// const HeroImageGif = [
+//   { id: 1, src: HomeHeroOne },
+//   { id: 2, src: HomeHeroTwo },
+//   { id: 3, src: HomeHeroThree },
+//   { id: 4, src: HomeHeroFour },
+//   { id: 5, src: HomeHero },
+// ];
 
-const ImageSlider = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// const ImageSlider = () => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === HeroImageGif.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 3000);
+//   useEffect(() => {
+//     const intervalId = setInterval(() => {
+//       setCurrentIndex((prevIndex) =>
+//         prevIndex === HeroImageGif.length - 1 ? 0 : prevIndex + 1
+//       );
+//     }, 3000);
 
-    return () => clearInterval(intervalId);
-  }, [HeroImageGif.length]);
+//     return () => clearInterval(intervalId);
+//   }, [HeroImageGif.length]);
 
-  return (
-    <div className="w-full md:min-w-[300px] block md:w-[300px] lg:w-full justify-center items-center h-auto animate-fade-in relative">
-      {HeroImageGif.map((image, index) => (
-        <Image
-          key={image.id}
-          alt="Kindi"
-          src={image.src}
-          className={`absolute w-[full h-[400px] items-center top-0 left-0 md:min-w-[300px] md:w-[400px] lg:w-full object-contain ${
-            index === currentIndex ? "opacity-100" : "opacity-0"
-          } transition-opacity duration-500`}
-        />
-      ))}
-    </div>
-  );
-};
+//   return (
+//     <div className="w-full md:min-w-[300px] block md:w-[300px] lg:w-full justify-center items-center h-auto animate-fade-in relative">
+//       {HeroImageGif.map((image, index) => (
+//         <Image
+//           key={image.id}
+//           alt="Kindi"
+//           src={image.src}
+//           className={`absolute w-[full h-[400px] items-center top-0 left-0 md:min-w-[300px] md:w-[400px] lg:w-full object-contain ${
+//             index === currentIndex ? "opacity-100" : "opacity-0"
+//           } transition-opacity duration-500`}
+//         />
+//       ))}
+//     </div>
+//   );
+// };
 
 export default function Hero() {
   return (
@@ -86,7 +86,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="w-full flex md:min-w-[300px] items-start justify-center h-fit min-h-[400px] md:w-[300px] lg:w-full ">
-          <ImageSlider />
+          <Image src={HomeHero} alt="Kindi" />
         </div>
       </div>
     </section>

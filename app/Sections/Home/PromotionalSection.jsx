@@ -18,14 +18,14 @@ export default function PromotionalSection() {
                 </span>
                 <div className="w-auto h-auto text-white clarabodyTwo  animate-fade-in">
                   The foundation for a lifetime of success and happiness is laid
-                  in the first five years of a child's life. During this
+                  in the first five years of a child&apos;s life. During this
                   critical period, fundamental life skills are established as
                   the brain rapidly grows to 90% of its adult size, creating new
                   synaptic pathways that shape behaviour and habits permanently.
                   Consistent, quality adult interactions are key to channelling
                   nurtured learning into lifelong positive behaviours. For many
-                  parents, supporting their children's development at home can
-                  feel uncertain and filled with guesswork. However, that's
+                  parents, supporting their children&apos;s development at home can
+                  feel uncertain and filled with guesswork. However, that&apos;s
                   where Kindi comes in.
                 </div>
               </div>

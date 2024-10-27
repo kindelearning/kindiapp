@@ -1,21 +1,11 @@
-"use client"; // Error components must be Client Components
-
+"use client";
 import { NotFoundImg } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-// import { BottomNavigation, Footer, Header } from "./Sections";
 
-export default function Error({ error, reset }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
-
+export default function Error() {
   return (
     <>
-      {/* <Header className="sticky" /> */}
-
       <section className="w-full h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 my-8 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row overflow-hidden gap-8">
           <Image alt="Kindi" src={NotFoundImg} />
@@ -33,8 +23,8 @@ export default function Error({ error, reset }) {
             </div>
             <div className="w-full ">
               <span className="text-[#696969] text-lg font-semibold font-fredoka leading-[21px]">
-                This page isn&apos;t quite ready to play right now. While you&apos;re
-                here:
+                This page isn&apos;t quite ready to play right now. While
+                you&apos;re here:
                 <br />
               </span>
               <span className="text-[#696969] text-lg font-normal font-fredoka leading-[21px]">
@@ -94,8 +84,6 @@ export default function Error({ error, reset }) {
           </div>
         </div>
       </section>
-      {/* <BottomNavigation />
-      <Footer /> */}
     </>
   );
 }

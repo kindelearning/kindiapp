@@ -21,12 +21,24 @@ import OurStory from "./OurMission/OurStory";
 import TheTeam from "./OurMission/TheTeam";
 import ParentWithKindi from "./OurMission/ParentWithKindi";
 
+// HowItWorks Import
+import PlayForLife from "./HowItWorks/PlayForLife";
+import KindiSkillsCategories from "./HowItWorks/KindiSkillsCategories";
+import AreasOfLearning from "./HowItWorks/AreasOfLearning";
+import AgeRanges from "./HowItWorks/AgeRanges";
+
 export {
   // Global Export
   Header,
   NewsLetter,
   Footer,
   BottomNavigation,
+
+  // HowItWorks Exports
+  PlayForLife,
+  AreasOfLearning,
+  AgeRanges,
+  KindiSkillsCategories,
 
   // OurMission Exports
   MissionHero,

@@ -33,6 +33,14 @@ import ActivityAttribute from "./Activity/ActivityAttribute";
 import ProductImages from "./Activity/ProductImages";
 import Accordion from "./Activity/Accordion";
 
+// Shop Imports
+import CardGroup from "./Shop/CardGroup";
+import Banner from "./Shop/Banner";
+import MobileProductCard from "./Shop/MobileProductCard";
+import QuantityControl from "./Shop/QuantityControl";
+import ProductGrid from "./Shop/ProductGrid";
+import ReviewGrid from "./Shop/ReviewGrid";
+
 export {
   // Global Export
   Header,
@@ -40,6 +48,14 @@ export {
   Footer,
   BottomNavigation,
   PullToRefresh,
+
+  // Shop Exports
+  Banner,
+  ProductGrid,
+  ReviewGrid,
+  CardGroup,
+  MobileProductCard,
+  QuantityControl,
 
   // Activity Exports
   ProductImages,

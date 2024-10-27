@@ -1,7 +1,4 @@
-import NotFound from "@/app/not-found";
-import Activity from "@/app/Widgets/Card/Activity";
-import { getAllActivities, getHomeData } from "@/lib/hygraph";
-import { Confidence } from "@/public/Icons";
+import { activities } from "@/app/constant/menu";
 import {
   DiscoveringOurWorldActivity,
   ExperimentsMathActivity,
@@ -11,19 +8,8 @@ import {
 } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
-const PopularActivity = async () => {
-  const homeData = await getHomeData();
-  const activities = await getAllActivities();
-  if (!activities || activities.length === 0) {
-    return <div>No activities found!</div>;
-  }
-
-  // console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.popularLearningActivities) {
-    return <NotFound />;
-  }
+export default function PopularActivity() {
   return (
     <section className="w-full h-auto bg-[#eaeaf5] pt-12 pb-20 items-center justify-center flex flex-col gap-[20px]">
       {/* Top Heading Section */}
@@ -40,7 +26,7 @@ const PopularActivity = async () => {
             <span className="claraheading text-red">Activities</span>
           </div>
           <p className="clarabodyTwo text-start md:text-center text-purple">
-            {homeData[0].popularLearningActivities}
+            Discover the Joy of Learning with Kindi!
           </p>
         </div>
       </div>
@@ -49,7 +35,7 @@ const PopularActivity = async () => {
         {activities.map((activity) => (
           <div key={activity.id}>
             <article className="rounded-lg ">
-              <Link target="_blank" href={`/p/activities/${activity.id}`}>
+              <Link target="_blank" href="#">
                 <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                   <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                     <div className="w-full max-w-[240px]  lg:max-w-full h-auto  ">
@@ -59,7 +45,7 @@ const PopularActivity = async () => {
                           height={250}
                           alt={activity.title}
                           className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl "
-                          src={activity.thumbnail.url}
+                          src={activity.thumbnail}
                         />
                       </div>
                       <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
@@ -69,14 +55,12 @@ const PopularActivity = async () => {
                           </div>
                           <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
                             <div className="text-[#0a1932] min-w-[max-content] p-0 lg:pl-2 md:text-[18px] md:leading-[22px] font-[500] font-fredoka text-[10px] lg:text-[16px] leading-none">
-                              {activity.setUpTime}
+                              {activity.time}
                             </div>
                             <ul className="text-[#0a1932] justify-between items-center gap-6 flex px-4 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                              {activity.skills
-                                .slice(0, 2)
-                                .map((skill, index) => (
-                                  <li key={index}>{skill.slice(0, 8)}</li>
-                                ))}
+                              {activity.tags.map((skill, index) => (
+                                <li key={index}>{skill.slice(0, 8)}</li>
+                              ))}
                             </ul>
                           </div>
                         </div>
@@ -120,6 +104,4 @@ const PopularActivity = async () => {
       </div>
     </section>
   );
-};
-
-export default PopularActivity;
+}

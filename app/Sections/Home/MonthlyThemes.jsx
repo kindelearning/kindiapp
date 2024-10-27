@@ -1,14 +1,6 @@
-import NotFound from "@/app/not-found";
-import ThemeCard from "@/app/Widgets/Card/ThemeCard";
-import { getHomeData } from "@/lib/hygraph";
+import { ThemeCard } from "@/app/Widgets";
 
-const MonthlyThemes = async () => {
-  const homeData = await getHomeData();
-  // console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.monthlyTheme) {
-    return <NotFound />;
-  }
-
+export default function MonthlyThemes() {
   return (
     <>
       <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
@@ -27,7 +19,10 @@ const MonthlyThemes = async () => {
               </span>
             </div>
             <div className="w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo">
-              <p>{homeData[0].monthlyTheme}</p>
+              Providing themes for each activity is a powerful way to keep
+              children engaged in learning; we use it to both maintain
+              involvement and reinforce the previous day&apos;s learnings.
+              That&apos;s why we release new themes every month.
             </div>
           </div>
 
@@ -41,6 +36,4 @@ const MonthlyThemes = async () => {
       </section>
     </>
   );
-};
-
-export default MonthlyThemes;
+}

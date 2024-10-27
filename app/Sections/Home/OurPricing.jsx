@@ -1,6 +1,5 @@
 "use client";
 
-import NotFound from "@/app/not-found";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -8,14 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getHomeData } from "@/lib/hygraph";
 import {
   FamilyPlusThumb,
   PricingThumb,
   ProfessionalThumb,
 } from "@/public/Images";
 import { Check, ChevronDown, ChevronUp, CircleHelp, Minus } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -70,7 +67,6 @@ const PricingCard = ({
   paymentLink,
   isActive = [false, true, false],
 }) => {
-  const { data: session, status } = useSession();
   const [isAccordionOpen, setIsAccordionOpen] = useState(isOpen);
 
   return (
@@ -109,10 +105,10 @@ const PricingCard = ({
             </div>
           )}
           <Button
-            className="bg-[#f05c5c00] hover:bg-[#f05c5c00] rounded-[32px] flex py-2 px-0 "
+            className="bg-[#f05c5c00] hover:bg-[#f05c5c00] rounded-[32px] shadow-none flex py-2 px-0 "
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
           >
-            <div className="w-[max-content] text-[#3f3a64] text-sm font-bold font-fredoka uppercase leading-10">
+            <div className="w-[max-content] text-[#3f3a64] shadow-none text-sm font-bold font-fredoka uppercase leading-10">
               Discover {isAccordionOpen ? "Less" : "More"}
             </div>
             {isAccordionOpen ? (
@@ -123,20 +119,11 @@ const PricingCard = ({
           </Button>
         </div>
         <div className="flex w-full flex-row justify-between gap-4 items-center px-4">
-          {session ? (
-            <Link target="_blank" href={paymentLink}>
-              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
-                Upgrade
-              </Button>
-            </Link>
-          ) : (
-            <Link target="_blank" href="/auth/sign-up">
-              <Button className="bg-red py-2 px-6 rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed clarabutton">
-                Get Started
-              </Button>
-            </Link>
-          )}
-
+          <Link target="_blank" href="/auth/sign-up">
+            <div className="bg-red py-2 px-6 min-w-[max-content] clarabutton rounded-[12px] text-white hover:border-hoverRed hover:bg-hoverRed">
+              Get Started
+            </div>
+          </Link>
           <p className="text-4xl flex flex-col justify-end items-end font-semibold font-fredoka text-end text-red">
             {price}
             <span className="text-center text-[#3f3a64] text-[13px] font-normal font-montserrat leading-tight">
@@ -149,16 +136,12 @@ const PricingCard = ({
   );
 };
 
-const OurPricing = async () => {
+export default function OurPricing() {
   const [selectedTab, setSelectedTab] = useState("Monthly");
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
-  const homeData = await getHomeData();
-  // console.log("Home Page Data (in component):", homeData);
-  if (!homeData || !homeData[0]?.ourPricing) {
-    return <NotFound />;
-  }
+
   return (
     <>
       <section
@@ -201,7 +184,9 @@ const OurPricing = async () => {
                 animationFillMode: "forwards",
               }}
             >
-              <p>{homeData[0].ourPricing}</p>
+              Sign up for Kindi today and benefit your child with expertly
+              crafted activities that foster growth and development, ensuring
+              all children reach their full potential.
             </div>
           </div>
         </div>
@@ -356,6 +341,4 @@ const OurPricing = async () => {
       </section>
     </>
   );
-};
-
-export default OurPricing;
+}

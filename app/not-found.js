@@ -1,10 +1,12 @@
 import { NotFoundImg } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+import { BottomNavigation, Header } from "./Sections";
 
 export default function NotFound() {
   return (
     <>
+      <Header className="sticky" />
       <section className="w-full h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col lg:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row py-24 overflow-hidden gap-8">
           <Image alt="Kindi" src={NotFoundImg} />
@@ -22,8 +24,8 @@ export default function NotFound() {
             </div>
             <div className="w-full lg:w-[460px] h-full lg:h-[203px]">
               <span className="text-[#696969] text-lg font-semibold font-fredoka leading-[21px]">
-                This page isn&apos;t quite ready to play right now. While you&apos;s
-                here:
+                This page isn&apos;t quite ready to play right now. While
+                you&apos;s here:
                 <br />
               </span>
               <span className="text-[#696969] text-lg font-normal font-fredoka leading-[21px]">
@@ -82,6 +84,7 @@ export default function NotFound() {
             </div>
           </div>
         </div>
+        <BottomNavigation />
       </section>
     </>
   );

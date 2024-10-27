@@ -13,6 +13,7 @@ import PopularActivity from "./Home/PopularActivity";
 import Header from "./Global/Header";
 import NewsLetter from "./Global/NewsLetter";
 import Footer from "./Global/Footer";
+import PullToRefresh from "./Global/PullToRefresh";
 import BottomNavigation from "./Global/BottomNavigation";
 
 // OurMission Imports
@@ -33,6 +34,7 @@ export {
   NewsLetter,
   Footer,
   BottomNavigation,
+  PullToRefresh,
 
   // HowItWorks Exports
   PlayForLife,

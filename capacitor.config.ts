@@ -5,6 +5,10 @@ const config: CapacitorConfig = {
   appName: "kindi Learning",
   webDir: "out",
   bundledWebRuntime: false,
+  server: {
+    url: "http://192.168.1.72:3000",
+    cleartext: true,
+  },
 };
 
 export default config;

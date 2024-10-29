@@ -9,6 +9,9 @@ const config: CapacitorConfig = {
     url: "http://192.168.1.72:3000",
     cleartext: true,
   },
+  // server: {
+  //   androidScheme: "https", // Enables JavaScript and allows `next/link` routing to work smoothly
+  // },
 };
 
 export default config;

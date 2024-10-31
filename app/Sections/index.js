@@ -10,10 +10,10 @@ import OurPricing from "./Home/OurPricing";
 import PopularActivity from "./Home/PopularActivity";
 
 // Global Imports
+import ShareButton from "./Global/ShareButton";
 import Header from "./Global/Header";
 import NewsLetter from "./Global/NewsLetter";
 import Footer from "./Global/Footer";
-import PullToRefresh from "./Global/PullToRefresh";
 import BottomNavigation from "./Global/BottomNavigation";
 
 // OurMission Imports
@@ -45,9 +45,9 @@ export {
   // Global Export
   Header,
   NewsLetter,
+  ShareButton,
   Footer,
   BottomNavigation,
-  PullToRefresh,
 
   // Shop Exports
   Banner,

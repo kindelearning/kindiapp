@@ -1,11 +1,12 @@
 "use client";
 
 import { blogData } from "@/app/constant/blog";
+import Error from "@/app/error";
 import NotFound from "@/app/not-found";
 import { BlogCard } from "@/app/Widgets";
 import { Input } from "@/components/ui/input";
 import { getPublishedPosts } from "@/lib/hygraph";
-import { BlogThumbTwo } from "@/public/Images";
+import { BlogThumb, BlogThumbTwo } from "@/public/Images";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -70,7 +71,7 @@ export default function Community() {
   if (!blogs || blogs.length === 0) {
     return (
       <div>
-        <NotFound />
+        <Error />
       </div>
     );
   }
@@ -98,7 +99,7 @@ export default function Community() {
           </div>
 
           {/* Search Input */}
-          <div className="w-full px-0 md:px-2 lg:px-0">
+          <div className="w-full px-0">
             <SearchInput
               value={searchTerm}
               onChange={handleSearchChange}
@@ -108,8 +109,8 @@ export default function Community() {
 
           <div className="claracontainer w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">
             {/* Render filtered blogs */}
-            {blogs.length > 0 ? (
-              blogs.map((blog) => (
+            {filteredBlogs.length > 0 ? (
+              filteredBlogs.map((blog) => (
                 <div key={blog.id}>
                   <Link
                     target="_blank"
@@ -132,7 +133,7 @@ export default function Community() {
                   No matching blogs found.
                 </div>
                 <div className="claracontainer w-full grid grid-cols-1 overflow-hidden gap-4">
-                  {blogs.map((blog) => (
+                  {filteredBlogs.map((blog) => (
                     <div key={blog.id}>
                       <Link
                         target="_blank"
@@ -145,7 +146,7 @@ export default function Community() {
                           <BlogCard
                             title={blog.blogTitle}
                             metsDesc={blog.metaDescription}
-                            image={blog.thumbnail.url}
+                            image={blog.thumbnail.url || BlogThumb}
                           />
                         </article>
                       </Link>

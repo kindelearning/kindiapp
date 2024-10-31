@@ -5,6 +5,7 @@ const nextConfig = {
   // unoptimized: true,
   images: {
     domains: ["ap-south-1.graphassets.com"],
+    unoptimized: true
   },
 };
 

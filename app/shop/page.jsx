@@ -360,10 +360,10 @@ export default async function ShopPage() {
                           Sort
                         </Button>
                       </DrawerTrigger>
-                      <DrawerContent className=" w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
+                      <DrawerContent className="w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
                         <DrawerHeader className="w-full h-full md:h-fit">
-                          <DrawerDescription className="flex h-fit flex-col py-6 overflow-y-scroll justify-start items-start w-full gap-2">
-                            <div className="text-red sticky underline  text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
+                          <DrawerDescription className="flex h-fit flex-col pt-2 pb-6 overflow-y-scroll justify-start items-start w-full gap-2">
+                            <div className="text-red sticky underline text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
                               Sort By
                             </div>
                             <div className="flex flex-col gap-4 justify-start items-start">

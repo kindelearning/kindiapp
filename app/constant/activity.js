@@ -3,6 +3,7 @@ import { ActivityImage, PromotionalImage, ThemeThumb } from "@/public/Images";
 export const activityData = [
   {
     id: 1,
+    image: ThemeThumb,
     title: "The Importance of Black Play",
     content: "<DummyContent />",
     ProductImages: [

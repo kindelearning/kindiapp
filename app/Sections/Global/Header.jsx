@@ -15,6 +15,7 @@ import { ChevronRight, Menu, ShoppingBag } from "lucide-react";
 import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
 import { NavMenu } from "@/app/constant/menu";
+import { GoogleTranslate } from "../GoogleTranslate";
 // import { GoogleTranslate } from "./GoogleTranslate";
 
 const LocalNavitem = ({
@@ -151,7 +152,7 @@ export default function Header() {
                   </div>
                   <div className="flex w-full flex-col gap-2">
                     <div className="flex w-full">
-                      {/* <GoogleTranslate /> */}
+                      <GoogleTranslate />
                     </div>
                     <div className="flex w-full flex-col gap-1 justify-start items-start">
                       <Link

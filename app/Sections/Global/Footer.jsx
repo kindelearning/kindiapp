@@ -4,20 +4,10 @@ import {
   Facebook,
   Instagram,
   KindiVector,
-  Language,
   Telegram,
   WhatsApp,
 } from "@/public/Images";
 import Image from "next/image";
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import Link from "next/link";
 import { footerSections } from "@/app/constant/menu";
 // import { GoogleTranslate } from "../GoogleTranslate";
@@ -26,7 +16,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
     <>
-      <section className="w-full h-auto bg-[#000000] pt-12 pb-2 items-center justify-center flex flex-col gap-[20px]">
+      <section className="w-full h-auto bg-[#000000] pt-12 pb-24 items-center justify-center flex flex-col gap-[20px]">
         <div className="claracontainer w-full flex flex-col gap-1 md:flex-col lg:flex-row md:gap-12 lg:gap-2">
           <div className="w-full grid grid-cols-2 md:grid-cols-3 justify-between items-start gap-8 px-4">
             {footerSections.map((section, index) => (
@@ -71,10 +61,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="claracontainer px-2 w-full py-4 flex flex-col justify-between items-center gap-1 md:flex-row">
-          <div className="text-white/90  w-full text-[18px] md:text-[22px] font-semibold font-fredoka">
+          <div className="text-white/90  min-w-[max-content] w-full clarabodyTwo font-semibold font-fredoka">
             {currentYear} KINDI Learning, INC. All rights reserved.
           </div>
-          <Link href="#" className="flex w-full justify-end items-end gap-2">
+          <Link href="#" className="flex w-fit justify-end items-end gap-2">
             <Image
               alt="Kindi"
               src={Facebook}

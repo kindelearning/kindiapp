@@ -8,7 +8,7 @@ export default function BottomNavigation() {
   const [active, setActive] = useState("home");
 
   return (
-    <nav className="fixed max-w-[100vw] z-20 shadow-upper bottom-0 w-full rounded-t-[28px] justify-center items-center flex  lg:hidden xl:hidden left-0 right-0 bg-[#ffffff] text-white transition-all duration-300 ease-in-out">
+    <nav className="fixed max-w-[100vw]  bottom-0 left-0 right-0 bg-[white] shadow-md z-50 shadow-upper w-full rounded-t-[28px] justify-center items-center flex  lg:hidden xl:hidden  text-white transition-all duration-300 ease-in-out">
       <nav className="flex w-full py-4 gap-2 px-4 items-center justify-between">
         {navItems.map((item) => (
           <Link

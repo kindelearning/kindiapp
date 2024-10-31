@@ -16,7 +16,7 @@ export default function PlayForLife() {
                 autoPlay
                 loop
                 muted
-                className="object-cover max-h-[260px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
+                className="object-cover max-h-[260px] md:min-h-[440px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
                 <source src="preloader.mp4" type="video/mp4" /> Your browser
                 does not support the video tag.

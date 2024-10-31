@@ -216,7 +216,7 @@ export default function KindiSkillsCategories() {
           </div>
         </div>
 
-        <div className="claracontainer px-4 md:pl-0 flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
+        <div className="claracontainer px-4 lg:pl-0 flex flex-row overflow-x-scroll scrollbar-hidden md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 gap-4 justify-between">
           {cardData.map((card, index) => (
             <ToggleCard
               key={index}

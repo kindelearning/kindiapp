@@ -1,3 +1,4 @@
+import { getHomeData } from "@/lib/hygraph";
 import {
   BottomNavigation,
   DefaultReviews,
@@ -14,13 +15,18 @@ import {
   Slider,
 } from "./Sections";
 
-export default function Home() {
+export default async function Home() {
+  const homeData = await getHomeData();
+
+  if (!homeData || homeData.length === 0) {
+    return <div>Not Found</div>; // Handle the not found case
+  }
   return (
     <>
       <section className="w-full flex flex-col gap-0 justify-center items-center">
         <Header className="sticky" />
         <div className="w-full flex flex-col overflow-hidden gap-0">
-          <Hero />
+          <Hero homeData={homeData} />
           <Slider />
           <PromotionalSection />
           <PromotionalSectionTwo />

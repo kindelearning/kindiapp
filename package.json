@@ -9,6 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/browser": "^6.0.3",
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/haptics": "^6.0.1",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/status-bar": "^6.0.1",
     "@hygraph/management-sdk": "^1.2.5",
     "@mailchimp/mailchimp_transactional": "^1.0.59",
     "@radix-ui/react-accordion": "^1.2.0",

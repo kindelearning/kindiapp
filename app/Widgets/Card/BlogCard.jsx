@@ -33,9 +33,11 @@ const BlogCard = ({
         </div>
         <div className="p-4">
           <h2 className="text-[24px] font-bold text-[#3F3A64] font-fredoka">
-            {title.slice(0, 24)}...
+            {title.slice(0, 20)}...
           </h2>
-          <p className="text-[#757575] clarabodyTwo ">{metsDesc}</p>
+          <p className="text-[#757575] clarabodyTwo ">
+            {metsDesc.length > 100 ? metsDesc.slice(0, 100) + "..." : metsDesc}
+          </p>
         </div>
         <div className="p-4 border-t flex justify-between items-center end-0">
           <div className="flex py-1 gap-4 items-center">
@@ -43,7 +45,9 @@ const BlogCard = ({
               <button className="text-red bg-[#FBCECE] rounded-full p-2 hover:text-[#da4848]">
                 <Image src={LikeIcon} alt="Kindi" />
               </button>
-              <span className="ml-1 font-semibold font-fredoka">{randomLikes}+</span>
+              <span className="ml-1 font-semibold font-fredoka">
+                {randomLikes}+
+              </span>
             </div>
             <div className="flex items-center">
               <button className="text-[#0a1932] bg-[#f8f8f8] font-fredoka rounded-full p-2 hover:text-[#0a1932]">

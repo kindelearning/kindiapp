@@ -27,11 +27,6 @@ export default function Community() {
 
           {/* Search Input */}
           <div className="w-full px-0 md:px-2 lg:px-0">
-            {/* <SearchInput
-              value={searchTerm}
-              onChange={handleSearchChange}
-              // className="w-full p-2 border rounded"
-            /> */}
           </div>
 
           <div className="claracontainer w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 overflow-hidden gap-4">

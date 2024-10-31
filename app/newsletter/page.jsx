@@ -6,37 +6,6 @@ import { BottomNavigation, Footer, Header } from "../Sections";
 import { NewsletterImg } from "@/public/Images";
 
 export default function NewsLetter() {
-  // const [email, setEmail] = useState("");
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [phone, setPhone] = useState("");
-  // const [status, setStatus] = useState("");
-
-  // const subscribe = async (e) => {
-  //   e.preventDefault();
-
-  //   setStatus("loading");
-
-  //   const res = await fetch("/api/subscribe", {
-  //     method: "POST",
-  //     body: JSON.stringify({ email, firstName, lastName, phone }),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-
-  //   const { error } = await res.json();
-  //   if (error) {
-  //     setStatus("error");
-  //     return;
-  //   }
-
-  //   setStatus("success");
-  //   setEmail("");
-  //   setFirstName("");
-  //   setLastName("");
-  //   setPhone("");
-  // };
   return (
     <>
       <Head>
@@ -102,19 +71,8 @@ export default function NewsLetter() {
               />
 
               <Button className="px-12 md:w-[500px] text-center rounded-full text-white hover:border-2 uppercase font-bold text-[16px] hover:border-[#ffffff8a] border-[#ffffff] hover:bg-[#3f3a64] border-2 bg-red w-full">
-                {/* {status === "loading" ? "Subscribing..." : "Subscribe"} */}
                 Subscribe
               </Button>
-              {/* {status === "success" && (
-                <p className="text-white clarabodyTwo">
-                  Thank you for subscribing!
-                </p>
-              )}
-              {status === "error" && (
-                <p className="text-white clarabodyTwo">
-                  Something went wrong. Please try again.
-                </p>
-              )} */}
             </div>
           </div>
         </div>

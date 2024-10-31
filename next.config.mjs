@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  // output: "export",
   // basePath: "",
-  unoptimized: true,
+  // unoptimized: true,
 };
 
 export default nextConfig;

@@ -4,9 +4,24 @@ import Link from "next/link";
 import { BottomNavigation, Header } from "./Sections";
 
 export default function NotFound() {
+  let header, bottomNav;
+
+  try {
+    header = <Header className="sticky" />;
+  } catch (error) {
+    console.error("Header Error:", error);
+    header = <div>Error loading header</div>;
+  }
+
+  try {
+    bottomNav = <BottomNavigation />;
+  } catch (error) {
+    console.error("Bottom Navigation Error:", error);
+    bottomNav = <div>Error loading bottom navigation</div>;
+  }
   return (
     <>
-      <Header className="sticky" />
+      {header}
       <section className="w-full min-h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col lg:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row py-24 overflow-hidden gap-8">
           <Image alt="Kindi" src={NotFoundImg} />
@@ -84,7 +99,8 @@ export default function NotFound() {
             </div>
           </div>
         </div>
-        <BottomNavigation />
+        {/* <BottomNavigation /> */}
+        {bottomNav}
       </section>
     </>
   );

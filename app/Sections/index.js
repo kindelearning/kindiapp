@@ -36,6 +36,7 @@ import Accordion from "./Activity/Accordion";
 // Shop Imports
 import CardGroup from "./Shop/CardGroup";
 import Banner from "./Shop/Banner";
+import ProductDetailClient from "./Shop/ProductDetailClient";
 import MobileProductCard from "./Shop/MobileProductCard";
 import QuantityControl from "./Shop/QuantityControl";
 import ProductGrid from "./Shop/ProductGrid";
@@ -53,7 +54,7 @@ export {
   Banner,
   ProductGrid,
   ReviewGrid,
-  CardGroup,
+  CardGroup,ProductDetailClient,
   MobileProductCard,
   QuantityControl,
 

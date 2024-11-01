@@ -613,13 +613,13 @@ export default function ShopPage() {
                 </div>
                 <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
                   {/* {sortedProducts.map((product) => ( */}
-                  {sortedProducts.map((product) => (
+                  {products.map((product) => (
                     <div key={product.id} className="border">
                       <Link href={`/shop/${product.id}`}>
                         <MobileProductCard
-                          image={product.image || ProductImage}
+                          image={product.thumbnail.url || ProductImage}
                           title={product.title}
-                          price={product.price}
+                          price={product.salePrice}
                         />
                       </Link>
                     </div>

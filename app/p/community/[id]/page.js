@@ -1,18 +1,29 @@
-
 import { getAllBlogIds, getBlogById } from "@/lib/hygraph";
-
 import BlogDetailClient from "./BlogDetailClient";
 
-export async function getStaticPaths() {
-  const ids = await getAllBlogIds(); // Fetch your dynamic IDs here
+// Use generateStaticParams in the App Router
+export async function generateStaticParams() {
+  const ids = await getAllBlogIds(); // Fetch dynamic IDs
 
-  return {
-    paths: ids.map((id) => ({
-      params: { id: id.toString() }, // Ensure ID is a string
-    })),
-    fallback: false, // Change to true or 'blocking' if you want to support dynamic paths
-  };
+  return ids.map((id) => ({
+    id: id.toString(), // Ensure ID is a string
+  }));
 }
+
+export default async function BlogDetailPage({ params }) {
+  const { id } = params;
+
+  // Fetch blog data on the server side
+  const blog = await getBlogById(id);
+
+  if (!blog) {
+    return <div>Blog not found!</div>;
+  }
+
+  return <BlogDetailClient blog={blog} />;
+}
+
+
 // export default  function BlogDetailPage({ params }) {
 //   const { id } = params;
 //   const [blog, setBlog] = useState(null);
@@ -184,16 +195,3 @@ export async function getStaticPaths() {
 //     </>
 //   );
 // }
-
-export default async function BlogDetailPage({ params }) {
-  const { id } = params;
-
-  // Fetch blog data on the server side
-  const blog = await getBlogById(id);
-
-  if (!blog) {
-    return <div>Blog not found!</div>;
-  }
-
-  return <BlogDetailClient blog={blog} />;
-}

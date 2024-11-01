@@ -278,8 +278,8 @@ export default function ActivitiesPage() {
                             <input
                               type="Checkbox"
                               id={`day-${day}`}
-                              // checked={selectedDays.includes(day)}
-                              // onChange={() => handleDayChange(day)}
+                              checked={selectedDays.includes(day)}
+                              onChange={() => handleDayChange(day)}
                               className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
                             />
                             <label
@@ -328,10 +328,10 @@ export default function ActivitiesPage() {
                           </div>
                           <select
                             id="feature-select"
-                            // value={selectedFeatures}
-                            // onChange={(e) =>
-                            //   handleFeatureChange(e.target.value)
-                            // }
+                            value={selectedFeatures}
+                            onChange={(e) =>
+                              handleFeatureChange(e.target.value)
+                            }
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
@@ -350,8 +350,8 @@ export default function ActivitiesPage() {
                           </div>
                           <select
                             id="feature-select"
-                            // value={selectedSkilCategory}
-                            // onChange={(e) => handleSkillChange(e.target.value)}
+                            value={selectedSkilCategory}
+                            onChange={(e) => handleSkillChange(e.target.value)}
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
@@ -370,8 +370,8 @@ export default function ActivitiesPage() {
                           </div>
                           <select
                             id="feature-select"
-                            // value={selectedTheme}
-                            // onChange={(e) => handleThemeChange(e.target.value)}
+                            value={selectedTheme}
+                            onChange={(e) => handleThemeChange(e.target.value)}
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
@@ -390,10 +390,10 @@ export default function ActivitiesPage() {
                           </div>
                           <select
                             id="feature-select"
-                            // value={selectedAgeFocus}
-                            // onChange={(e) =>
-                            //   handleAgeFocusChange(e.target.value)
-                            // }
+                            value={selectedAgeFocus}
+                            onChange={(e) =>
+                              handleAgeFocusChange(e.target.value)
+                            }
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
@@ -412,10 +412,10 @@ export default function ActivitiesPage() {
                           </div>
                           <select
                             id="feature-select"
-                            // value={selectedPrepTime}
-                            // onChange={(e) =>
-                            //   handlePrepTimeChange(e.target.value)
-                            // }
+                            value={selectedPrepTime}
+                            onChange={(e) =>
+                              handlePrepTimeChange(e.target.value)
+                            }
                             className="border-2 w-full pr-2 rounded-full border-[#3f3a64] text-[#3f3a64] bg-white text-base font-fredoka leading-[13px] font-medium p-2"
                           >
                             <option value="" disabled>
@@ -453,9 +453,12 @@ export default function ActivitiesPage() {
               <div className="flex w-full flex-col gap-2">
                 <div className="grid grid-cols-2 w-full gap-2 md:gap-4 justify-between items-start">
                   {/* Render filtered activities first */}
-                  {/* selectedFeatures && selectedAgeFocus && selectedPrepTime &&
-                  selectedTheme && selectedSkilCategory && */}
-                  {activities.length > 0 ? (
+                  {selectedFeatures &&
+                  selectedAgeFocus &&
+                  selectedPrepTime &&
+                  selectedTheme &&
+                  selectedSkilCategory &&
+                  activities.length > 0 ? (
                     activities.map((activity) => (
                       <div
                         key={activity.id}

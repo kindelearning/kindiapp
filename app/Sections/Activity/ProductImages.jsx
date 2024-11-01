@@ -1,27 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function ProductImages({ images }) {
-  const [mainImage, setMainImage] = useState(images[0]);
+const ProductImages = ({ images = [] }) => {
+  const [mainImage, setMainImage] = useState(
+    images && images.length > 0 ? images[0] : ""
+  );
 
   return (
-    <div className="flex claracontainer w-full flex-col items-start">
+    <div className="flex claracontainer w-full gap-2 flex-col items-start">
       {/* Featured Image */}
-      <div className="w-full rounded-[16px] h-full max-h-[400px] md:h-full lg:max-h-[400px] bg-clip-content flex items-center justify-center">
-        <Image
-          src={mainImage}
-          className="rounded-[0px] object-contain  h-full max-h-[400px] md:h-full lg:max-h-[400px] w-full md:rounded-[16px]"
-          alt="Product Image"
-        />
+      <div className="w-full rounded-[16px] overflow-clip max-h-[400px] md:max-h-[500px]">
+        <div className="flex w-full h-fit overflow-clip">
+          <Image
+            width={100}
+            height={100}
+            src={mainImage}
+            className="lg:rounded-[16px] rounded-none lg:min-w-[600px] md:min-h-[400px] md:h-full lg:full lg:h-[500px] object-cover lg:max-h-[500px] max-h-[320px] h-[300px] min-h-[300px] w-full"
+            alt="Product Image"
+          />
+        </div>
       </div>
-      <div className="flex max-w-[600px] px-2 scrollbar-hidden w-full overflow-x-auto py-4">
-        <div className="flex flex-nowrap scrollbar-hidden">
+      <div className="flex max-w-[600px] w-full scrollbar-hidden overflow-y-hidden overflow-x-auto pt-4">
+        <div className="flex flex-nowrap">
           {images.map((image, index) => (
             <div
               key={index}
-              className={`w-[100px] flex h-[80px] cursor-pointer object-cover border-2 border-transparent hover:scale-105 duration-150 mr-4 ${
+              className={`w-[100px] h-[80px] cursor-pointer border-2 border-transparent hover:scale-105 duration-150 mr-4 ${
                 mainImage === image ? "border-red" : ""
               }`}
               onClick={() => setMainImage(image)}
@@ -39,4 +45,6 @@ export default function ProductImages({ images }) {
       </div>
     </div>
   );
-}
+};
+
+export default ProductImages;

@@ -1,142 +1,134 @@
-// app/p/community/[id]/BlogDetailClient.js
 "use client"; // This is now a client component
 
-
-
 const scrollToCommentSection = () => {
-    const commentSection = document.getElementById("comment_Section");
-    if (commentSection) {
-      commentSection.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  
-  const getRandomPastDate = () => {
-    // Set the range for the random date
-    const now = new Date();
-    const oneYearAgo = new Date(now);
-    oneYearAgo.setFullYear(now.getFullYear() - 1);
-  
-    // Generate a random timestamp between one year ago and now
-    const randomTimestamp =
-      oneYearAgo.getTime() +
-      Math.random() * (now.getTime() - oneYearAgo.getTime());
-  
-    return new Date(randomTimestamp);
-  };
-  
-  const formatDate = (date) => {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-  
-  const getRandomLikes = (min = 0, max = 100) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-  
-  const ProfilePictureComponent = () => {
-    const [profilePictures, setProfilePictures] = useState([]);
-    const [randomPicture, setRandomPicture] = useState(null);
-  
-    useEffect(() => {
-      const loadProfilePictures = async () => {
-        const pictures = await fetchProfilePictures();
-        setProfilePictures(pictures);
-        // Set a random picture
-        if (pictures.length > 0) {
-          const randomIndex = Math.floor(Math.random() * pictures.length);
-          setRandomPicture(pictures[randomIndex]);
-        }
-      };
-  
-      loadProfilePictures();
-    }, []);
-  
-    return (
-      <div className="profile-picture">
-        {randomPicture ? (
-          <Image
-            src={randomPicture.url}
-            alt="Profile Picture"
-            className="rounded-full w-8 h-8"
-          />
-        ) : (
-          <Image
-            src={ProfilePlaceHolderOne}
-            alt="Profile Picture"
-            className="rounded-full w-8 h-8"
-          />
-        )}
-      </div>
-    );
-  };
-  
-  const LikeButton = () => {
-    const [isLiked, setIsLiked] = useState(false);
-    const [animate, setAnimate] = useState(false);
-    const randomLikes = Math.floor(Math.random() * 100); // Example for random likes count
-  
-    // Load the like state from local storage on component mount
-    useEffect(() => {
-      const liked = localStorage.getItem("isLiked");
-      if (liked === "true") {
-        setIsLiked(true);
+  const commentSection = document.getElementById("comment_Section");
+  if (commentSection) {
+    commentSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
+const getRandomPastDate = () => {
+  // Set the range for the random date
+  const now = new Date();
+  const oneYearAgo = new Date(now);
+  oneYearAgo.setFullYear(now.getFullYear() - 1);
+
+  // Generate a random timestamp between one year ago and now
+  const randomTimestamp =
+    oneYearAgo.getTime() +
+    Math.random() * (now.getTime() - oneYearAgo.getTime());
+
+  return new Date(randomTimestamp);
+};
+
+const formatDate = (date) => {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+const getRandomLikes = (min = 0, max = 100) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const ProfilePictureComponent = () => {
+  const [profilePictures, setProfilePictures] = useState([]);
+  const [randomPicture, setRandomPicture] = useState(null);
+
+  useEffect(() => {
+    const loadProfilePictures = async () => {
+      const pictures = await fetchProfilePictures();
+      setProfilePictures(pictures);
+      // Set a random picture
+      if (pictures.length > 0) {
+        const randomIndex = Math.floor(Math.random() * pictures.length);
+        setRandomPicture(pictures[randomIndex]);
       }
-    }, []);
-  
-    const handleLikeClick = () => {
-      setIsLiked(true); // Change to true when clicked
-      setAnimate(true); // Start the animation
-  
-      // Save the like state to local storage
-      localStorage.setItem("isLiked", "true");
-  
-      // Stop the animation after 1.5 seconds
-      setTimeout(() => {
-        setAnimate(false);
-      }, 1500);
     };
-  
-    return (
-      <div className="w-full cursor-pointer items-center flex flex-row justify-start gap-2">
-        <div
-          className={`text-[#f05c5c] text-[10px] font-semibold font-fredoka leading-none 
-                      ${animate ? "animate-bounce" : ""}`} // Add bounce animation on like
-          onClick={handleLikeClick}
-        >
-          {isLiked ? "Liked" : "Like"}
-        </div>
-        {!isLiked && (
-          <div className="text-[#0a1932] text-[10px] font-semibold font-fredoka leading-none">
-            {randomLikes}+
-          </div>
-        )}
-  
+
+    loadProfilePictures();
+  }, []);
+
+  return (
+    <div className="profile-picture">
+      {randomPicture ? (
         <Image
-          src={LikeIcon}
-          alt="CommentLikeIcon"
-          className="w-3 h-3 cursor-pointer" // Add cursor-pointer for better UX
-          onClick={handleLikeClick} // Make icon clickable too
+          src={randomPicture.url}
+          alt="Profile Picture"
+          className="rounded-full w-8 h-8"
         />
-      </div>
-    );
-  };
-  
-  // Helper function to generate random numbers within a range
-  const getRandomNumber = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+      ) : (
+        <Image
+          src={ProfilePlaceHolderOne}
+          alt="Profile Picture"
+          className="rounded-full w-8 h-8"
+        />
+      )}
+    </div>
+  );
+};
+
+const LikeButton = () => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [animate, setAnimate] = useState(false);
+  const randomLikes = Math.floor(Math.random() * 100); // Example for random likes count
+
+  // Load the like state from local storage on component mount
+  useEffect(() => {
+    const liked = localStorage.getItem("isLiked");
+    if (liked === "true") {
+      setIsLiked(true);
+    }
+  }, []);
+
+  const handleLikeClick = () => {
+    setIsLiked(true); // Change to true when clicked
+    setAnimate(true); // Start the animation
+
+    // Save the like state to local storage
+    localStorage.setItem("isLiked", "true");
+
+    // Stop the animation after 1.5 seconds
+    setTimeout(() => {
+      setAnimate(false);
+    }, 1500);
   };
 
-  
+  return (
+    <div className="w-full cursor-pointer items-center flex flex-row justify-start gap-2">
+      <div
+        className={`text-[#f05c5c] text-[10px] font-semibold font-fredoka leading-none 
+                      ${animate ? "animate-bounce" : ""}`} // Add bounce animation on like
+        onClick={handleLikeClick}
+      >
+        {isLiked ? "Liked" : "Like"}
+      </div>
+      {!isLiked && (
+        <div className="text-[#0a1932] text-[10px] font-semibold font-fredoka leading-none">
+          {randomLikes}+
+        </div>
+      )}
+
+      <Image
+        src={LikeIcon}
+        alt="CommentLikeIcon"
+        className="w-3 h-3 cursor-pointer" // Add cursor-pointer for better UX
+        onClick={handleLikeClick} // Make icon clickable too
+      />
+    </div>
+  );
+};
+
+// Helper function to generate random numbers within a range
+const getRandomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-// import ShareButton from "./ShareButton"; // Adjust the import based on your structure
-// import LikeButton from "./LikeButton"; // Adjust the import based on your structure
-// import { likeBlogPost } from "your-fetch-logic"; // Adjust the import based on your actual fetching logic
 import { ShareButton } from "@/app/Sections";
 import { likeBlogPost } from "@/lib/hygraph";
 import { CommentIcon, LikeIcon } from "@/public/Images";
@@ -198,8 +190,7 @@ export default function BlogDetailClient({ blog }) {
                       }`}
                       onClick={handleLikeClick}
                     >
-                      <Image alt="Kindi" src={LikeIcon} />{" "}
-                      {/* Update path */}
+                      <Image alt="Kindi" src={LikeIcon} /> {/* Update path */}
                     </button>
                     <span className="ml-2 text-[#0a1932] font-fredoka font-medium">
                       {likeCount}
@@ -210,7 +201,7 @@ export default function BlogDetailClient({ blog }) {
                       onClick={scrollToCommentSection} // Ensure you have this function defined
                       className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
                     >
-                      <Image alt="Kindi" src={CommentIcon}/>{" "}
+                      <Image alt="Kindi" src={CommentIcon} />{" "}
                       {/* Update path */}
                     </button>
                     {blog.comments.length}+

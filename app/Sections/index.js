@@ -12,6 +12,8 @@ import PopularActivity from "./Home/PopularActivity";
 // Global Imports
 import ShareButton from "./Global/ShareButton";
 import Header from "./Global/Header";
+import DynamicCard from "./Global/DynamicCard";
+import DynamicCardMobile from "./Global/DynamicCardMobile";
 import NewsLetter from "./Global/NewsLetter";
 import Footer from "./Global/Footer";
 import BottomNavigation from "./Global/BottomNavigation";
@@ -47,6 +49,8 @@ export {
   Header,
   NewsLetter,
   ShareButton,
+  DynamicCardMobile,
+  DynamicCard,
   Footer,
   BottomNavigation,
 
@@ -54,7 +58,8 @@ export {
   Banner,
   ProductGrid,
   ReviewGrid,
-  CardGroup,ProductDetailClient,
+  CardGroup,
+  ProductDetailClient,
   MobileProductCard,
   QuantityControl,
 

@@ -161,7 +161,7 @@ export default function Header() {
                         rel="noopener noreferrer"
                         className="w-full"
                       >
-                        <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                        <div className="bg-[#ffffff] py-2 w-full text-[12px] items-center justify-center text-center font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
                           Log in
                         </div>
                       </Link>
@@ -171,15 +171,15 @@ export default function Header() {
                         rel="noopener noreferrer"
                         className="w-full"
                       >
-                        <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                        <div className="bg-red hover:bg-hoverRed text-[12px] items-center justify-center text-center font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
                           Get Started
                         </div>
                       </Link>
                     </div>
                   </div>
                 </section>
-                <SheetDescription>#KindiLearning</SheetDescription>
               </SheetHeader>
+              <SheetDescription>#KindiLearning</SheetDescription>
             </SheetContent>
           </Sheet>
         </div>

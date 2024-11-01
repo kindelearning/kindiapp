@@ -134,7 +134,7 @@ const Gallery = () => {
   );
 };
 
-export default function ParentWithKindi() {
+export default function ParentWithKindi({ fetchedData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#523373] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -152,7 +152,7 @@ export default function ParentWithKindi() {
               </div>
               <div className="flex w-full container justify-start px-0 items-center flex-col">
                 <div className="w-full px-0 text-start clarabodyTwo text-[white] font-medium font-fredoka">
-                  Parenthood is a whirlwind of responsibilities, and we get it.
+                  {/* Parenthood is a whirlwind of responsibilities, and we get it.
                   That&apos;s why we&apos;ve created Kindi, a haven for busy
                   parents like you. No more endless scrolling for play ideas.
                   With Kindi, every moment counts.
@@ -175,8 +175,8 @@ export default function ParentWithKindi() {
                   Parents trust Kindi because it comes from a place of love,
                   passion and real-life experience. Join the Kindi community and
                   together, let&apos;s create lasting memories and build a
-                  brighter future for our children.
-                  {/* <p>{stories[0].parentWithKindi}</p> */}
+                  brighter future for our children. */}
+                  <p>{fetchedData[0].parentWithKindi}</p>
                 </div>
               </div>
             </div>

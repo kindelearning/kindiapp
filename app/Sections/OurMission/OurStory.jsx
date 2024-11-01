@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export default function OurStory() {
+export default function OurStory({ fetchedData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#EEBA00] items-center justify-center py-4 flex flex-col gap-[20px] md:flex-row">
@@ -36,14 +36,15 @@ export default function OurStory() {
                 </div>
                 {/* <div className="w-auto h-auto text-white animate-fadeIn animate-delay-150 font-montserrat"> */}
                 <div className="w-auto h-auto text-white clarabodyTwo animate-fadeIn animate-delay-150 ">
-                  We weren&apos;t always child development experts. We remember
+                  {/* We weren&apos;t always child development experts. We remember
                   the struggle of wanting the best for our kids during these
                   precious years but feeling lost, like we were failing at
                   parenting. Now, with over 20 years of combined experience
                   working directly with Early Years children and top ratings
                   from OFSTED, we&apos;re committed to ensuring no parent ever
                   feels overwhelmed and every child thrives through our guided
-                  activities for brain stimulation and development.
+                  activities for brain stimulation and development. */}
+                  <p>{fetchedData[0].ourStory}</p>
                 </div>
               </div>
             </div>

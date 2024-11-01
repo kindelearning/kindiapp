@@ -47,7 +47,7 @@ import { useState, useEffect } from "react";
 //   );
 // };
 
-export default function Hero({homeData}) {
+export default function Hero({ homeData }) {
   return (
     <section className="w-full min-h-screen h-screen md:min-h-[600px] md:h-full lg:h-auto bg-purple py-12 md:py-24 lg:py-28 items-center justify-center flex flex-col md:flex-row gap-[20px]">
       <div className="claracontainer w-full flex flex-col-reverse justify-between md:items-center lg:flex-row px-0 md:px-2 lg:px-0 xl:px-0 bg-purple xl:flex-row gap-8 md:gap-0 lg:gap-4 ">
@@ -74,7 +74,7 @@ export default function Hero({homeData}) {
                   {/* Unlock a brighter future for your child with our play-based,
                   screen-free early learning methods—removing the guesswork and
                   ensuring optimal development during those crucial early years. */}
-                <p>{homeData[0].hero}</p>
+                  <p>{homeData[0].hero}</p>
                 </div>
               </div>
             </div>

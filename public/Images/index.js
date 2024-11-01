@@ -36,6 +36,7 @@ import Apple from "./Apple.png";
 import AppStore from "./AppStore.png";
 import Language from "./Language.svg";
 import Thomas from "./Thomas.png";
+import JANINE from "./JANINE.webp";
 import BlogThumb from "./BlogThumb.png";
 import BlogThumbTwo from "./BlogThumbTwo.png";
 import BlogThumbThree from "./BlogThumbThree.png";
@@ -351,6 +352,7 @@ export {
   Apple,
   PartnerBulb,
   Thomas,
+  JANINE,
   ProfileDP,
   AppStore,
   KindiVector,

@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import { HeroBGOurStoryTwo } from "@/public/Images";
 import Image from "next/image";
 
-export default function Hero() {
+export default function Hero({ fetchedData }) {
   return (
     <section className="max-w-[1500px] flex justify-center bg-[#ffffff] w-full items-center">
-      <div className="w-full h-screen lg:h-[814px]  object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
+      <div className="w-full h-screen md:max-h-screen md:h-fit md:gap-6 lg:h-[814px]  object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
         <div className="w-full h-full flex flex-col lg:hidden p-0 justify-start items-start animate-slideInUp">
           <Image
             alt="Kindi"
@@ -26,13 +26,14 @@ export default function Hero() {
               </div>
               <div className="w-full text-start justify-start items-start px-0 animate-fadeIn animate-delay-2500">
                 <div className="w-full text-start text-[#696969] text-[16px] leading-[20px] md:text-[18px] md:leading-[22px] lg:text-[22px] lg:leading-[24px] xl:text-[22px] xl:leading-[24px] font-medium font-fredoka animate-slideInLeft animate-delay-3000">
-                  Happiness is seeing your children grow into wonderful, kind,
+                  {/* Happiness is seeing your children grow into wonderful, kind,
                   successful people. At Kindi, our main mission is to ensure
                   everyone gets to achieve this feeling. Our general mission is
                   to help little ones fulfil their full potential. While our
                   goal is serious, our approach is fun. Improving the health and
                   success of future generations starts today—with little minds
-                  and big ambitions.
+                  and big ambitions. */}
+                  <p>{fetchedData[0].theKindiMission}</p>
                   <br />
                   <span className="italic">
                     “The first five years have so much to do with how the next

@@ -44,7 +44,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
   );
 };
 
-export default function AgeRanges() {
+export default function AgeRanges({ fetchedData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
@@ -61,7 +61,7 @@ export default function AgeRanges() {
             </div>
             <div className="flex w-full justify-start items-start flex-col">
               <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] clarbodyTwo">
-                We understand that managing multiple learning activities for
+                {/* We understand that managing multiple learning activities for
                 children of different ages can be challenging. That&apos;s why we&apos;ve
                 developed a mixed-age approach to educational play. This
                 approach delivers age-appropriate outcomes using the same proven
@@ -70,7 +70,8 @@ export default function AgeRanges() {
                 Our platform provides guidance for adults on delivering
                 different learning outcomes for each age group. While every
                 activity is focused on a broad age range, there&apos;s always
-                something to learn for every young child taking part!
+                something to learn for every young child taking part! */}
+                <p>{fetchedData[0].ageRanges}</p>
               </div>
             </div>
           </div>

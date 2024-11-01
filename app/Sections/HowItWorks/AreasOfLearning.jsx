@@ -4,7 +4,7 @@ import { cardData } from "@/app/constant/menu";
 import { ToggleCard } from "@/app/Widgets";
 import React, { useState } from "react";
 
-export default function AreasOfLearning() {
+export default function AreasOfLearning({ fetchedData }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -18,10 +18,12 @@ export default function AreasOfLearning() {
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#3f3a64] font-fredoka text-[18px] font-medium leading-[22px]">
-              Unlocking your child&apos;s full potential. Kindi is here to equip
+              {/* Unlocking your child&apos;s full potential. Kindi is here to equip
               you with the tools to make it happen! Discover our early years
               education activities across eight distinctive categories, all
-              aligned with UK education curriculums.
+              aligned with UK education curriculums. */}
+                  <p>{fetchedData[0].areasOfLearning}</p>
+
             </div>
           </div>
         </div>

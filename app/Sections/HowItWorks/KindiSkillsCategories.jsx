@@ -190,7 +190,7 @@ const cardData = [
     backgroundColor: "BF69CB",
   },
 ];
-export default function KindiSkillsCategories() {
+export default function KindiSkillsCategories({ fetchedData }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -207,11 +207,11 @@ export default function KindiSkillsCategories() {
           </div>
           <div className="flex w-full justify-start items-start flex-col">
             <div className="w-full px-0 md:px-12 lg:px-32 text-start md:text-center text-[#ffffff] font-fredoka text-[18px] font-medium leading-[22px]">
-              Encouraging children to tackle open-ended problems nurtures their
+              {/* Encouraging children to tackle open-ended problems nurtures their
               creative thinking and equips them with skills for a successful
               life. Kindi supports this journey by providing tailored learning
-              exercises designed to nurture these skills through play.
-              {/* <p>{stories[0].skillsCategories}</p> */}
+              exercises designed to nurture these skills through play. */}
+              <p>{fetchedData[0].skillsCategories}</p>
             </div>
           </div>
         </div>

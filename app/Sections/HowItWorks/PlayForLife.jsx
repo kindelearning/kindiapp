@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export default function PlayForLife() {
+export default function PlayForLife({ fetchedData }) {
   return (
     <>
       {/* New COmponent */}
@@ -38,7 +38,7 @@ export default function PlayForLife() {
                   </span>
                 </div>
                 <div className="w-auto h-auto text-white  clarabodyTwo">
-                  We created Kindi to empower both parents and professionals
+                  {/* We created Kindi to empower both parents and professionals
                   with essential developmental tools to unlock young
                   children&apos;s full potential. Our ultimate goal is to
                   enhance the life prospects, prosperity, and well-being of
@@ -51,8 +51,8 @@ export default function PlayForLife() {
                   of our increasingly busy and fast-paced world. With our early
                   years learning app packed with resources, you have everything
                   you need to customize a unique learning path for your child
-                  amidst your other commitments.
-                  {/* <p>{stories[0].playForLife}</p> */}
+                  amidst your other commitments. */}
+                  <p>{fetchedData[0].playForLife}</p>
                 </div>
               </div>
             </div>

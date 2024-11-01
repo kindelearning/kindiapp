@@ -33,7 +33,6 @@ export default function Hero({ fetchedData }) {
                   goal is serious, our approach is fun. Improving the health and
                   success of future generations starts today—with little minds
                   and big ambitions. */}
-                  <p>{fetchedData[0].theKindiMission}</p>
                   <br />
                   <span className="italic">
                     “The first five years have so much to do with how the next

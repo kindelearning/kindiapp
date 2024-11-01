@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default function PopularActivity() {
+export default function PopularActivity({ homeData }) {
   return (
     <section className="w-full h-auto bg-[#eaeaf5] pt-12 pb-20 items-center justify-center flex flex-col gap-[20px]">
       {/* Top Heading Section */}
@@ -26,7 +26,8 @@ export default function PopularActivity() {
             <span className="claraheading text-red">Activities</span>
           </div>
           <p className="clarabodyTwo text-start md:text-center text-purple">
-            Discover the Joy of Learning with Kindi!
+            {/* Discover the Joy of Learning with Kindi! */}
+            <p>{homeData[0].popularLearningActivities}</p>
           </p>
         </div>
       </div>

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PromotionalImage } from "@/public/Images";
 import Image from "next/image";
 
-export default function PromotionalSection() {
+export default function PromotionalSection({ homeData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#029871] items-center justify-center py-8 flex flex-col md:flex-row gap-[20px] transition-all duration-300 animate-fade-in">
@@ -17,7 +17,7 @@ export default function PromotionalSection() {
                   Child Development Unlocked
                 </span>
                 <div className="w-auto h-auto text-white clarabodyTwo  animate-fade-in">
-                  The foundation for a lifetime of success and happiness is laid
+                  {/* The foundation for a lifetime of success and happiness is laid
                   in the first five years of a child&apos;s life. During this
                   critical period, fundamental life skills are established as
                   the brain rapidly grows to 90% of its adult size, creating new
@@ -26,7 +26,8 @@ export default function PromotionalSection() {
                   nurtured learning into lifelong positive behaviours. For many
                   parents, supporting their children&apos;s development at home can
                   feel uncertain and filled with guesswork. However, that&apos;s
-                  where Kindi comes in.
+                  where Kindi comes in. */}
+                  <p>{homeData[0].childDevelopmentUnlocked}</p>
                 </div>
               </div>
             </div>

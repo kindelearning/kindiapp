@@ -1,6 +1,6 @@
 import { ThemeCard } from "@/app/Widgets";
 
-export default function MonthlyThemes() {
+export default function MonthlyThemes({ homeData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
@@ -19,10 +19,11 @@ export default function MonthlyThemes() {
               </span>
             </div>
             <div className="w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo">
-              Providing themes for each activity is a powerful way to keep
+              {/* Providing themes for each activity is a powerful way to keep
               children engaged in learning; we use it to both maintain
               involvement and reinforce the previous day&apos;s learnings.
-              That&apos;s why we release new themes every month.
+              That&apos;s why we release new themes every month. */}
+              <p>{homeData[0].monthlyTheme}</p>
             </div>
           </div>
 

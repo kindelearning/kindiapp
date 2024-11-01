@@ -84,8 +84,8 @@ export const filters = [
 
 export const NavMenu = [
   {
-    title: "Home",
-    link: "/",
+    title: "Home P",
+    link: "/p",
     icon: HomeIcon,
     activeIcon: HomeActiveIcon,
   },

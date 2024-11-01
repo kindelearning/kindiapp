@@ -51,7 +51,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">
+        {/* <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">
           <div className="text-white text-3xl md:text-4xl font-bold font-fredoka">
             Download Our App
           </div>
@@ -59,7 +59,7 @@ export default function Footer() {
             <Image alt="Kindi" src={Apple} />
             <Image alt="Kindi" src={AppStore} />
           </div>
-        </div>
+        </div> */}
         <div className="claracontainer px-2 w-full py-4 flex flex-col justify-between items-center gap-1 md:flex-row">
           <div className="text-white/90  min-w-[max-content] w-full clarabodyTwo font-semibold font-fredoka">
             {currentYear} KINDI Learning, INC. All rights reserved.

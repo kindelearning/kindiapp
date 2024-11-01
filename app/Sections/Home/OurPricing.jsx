@@ -23,8 +23,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-
-
 const AccordianList = ({
   text = "I am the List item",
   help = "This is the help text",
@@ -156,7 +154,7 @@ const PricingCard = ({
   );
 };
 
-const OurPricing = () => {
+const OurPricing = ({ homeData }) => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState("Monthly"); // Default to Monthly
 
@@ -213,9 +211,11 @@ const OurPricing = () => {
                 animationFillMode: "forwards",
               }}
             >
-              Sign up for Kindi today and benefit your child with expertly
+              {/* Sign up for Kindi today and benefit your child with expertly
               crafted activities that foster growth and development, ensuring
-              all children reach their full potential.
+              all children reach their full potential. */}
+                <p>{homeData[0].ourPricing}</p>
+
             </div>
           </div>
         </div>

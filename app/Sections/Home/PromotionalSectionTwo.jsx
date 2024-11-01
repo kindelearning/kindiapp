@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-export default function PromotionalSectionTwo() {
+export default function PromotionalSectionTwo({ homeData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-4 flex flex-col md:flex-row gap-4 transition-all duration-300 animate-fade-in">
@@ -31,14 +31,17 @@ export default function PromotionalSectionTwo() {
                   <span className="text-purple claraheading"> Experts</span>
                 </div>
                 <div className="w-full h-auto text-[#696969] clarabodyTwo animate-fade-in">
-                  “Scientists have recently determined that it takes
+                  {/* “Scientists have recently determined that it takes
                   approximately 400 repetitions to create a new synapse in the
                   brain- unless it is done with play, in which case, it takes
-                  between 10-20 repetitions.” - Dr. Karyn Purvis Institute of
+                  between 10-20 repetitions.” */}
+                  <p>{homeData[0].earlyLearningExperts}</p>
+
+                  {/* - Dr. Karyn Purvis Institute of
                   Child Development.Play matters! It&apos;s the vital
                   developmental process that shapes the adults we&apos;re
                   destined to become. And we are in a rush, as essential life
-                  skills become more challenging to master as children age....
+                  skills become more challenging to master as children age.... */}
                 </div>
               </div>
             </div>

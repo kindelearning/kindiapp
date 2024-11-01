@@ -3,7 +3,7 @@ import { Curve, CurveTwo, HIWOne, HIWThree, HIWTwo } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function HowItWorks() {
+export default function HowItWorks({ homeData }) {
   return (
     <>
       <section className="w-full h-auto bg-[#4e2f71] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px] duration-300 animate-fade-in">
@@ -18,9 +18,10 @@ export default function HowItWorks() {
               </span>
             </div>
             <div className="w-full md:w-[500px] xl:w-[800px] text-start md:text-center animate-fade-in text-white clarabodyTwo">
-              Regardless of parenting approaches or the development stage of
+              {/* Regardless of parenting approaches or the development stage of
               children, Kindi delivers a wholesome, engaging and beautiful early
-              childhood learning experience.
+              childhood learning experience. */}
+              <p>{homeData[0].howItWorks}</p>
             </div>
           </div>
 
@@ -42,13 +43,14 @@ export default function HowItWorks() {
                       </span>
                     </div>
                     <div className="w-full text-white animate-fade-in clarabodyTwo">
-                      Kindi adds a suggested learning activity to your
+                      {/* Kindi adds a suggested learning activity to your
                       personalised calendar every day, but you can swap or move
                       them around to suit your schedule. Develop your
                       child&apos;s personal, social, emotional and intellectual
                       traits by choosing from a range of specialised daily
                       activities. Empowering children to fulfil their potential
-                      is now as fun as it is convenient.
+                      is now as fun as it is convenient. */}
+                      <p>{homeData[0].howItWorksOne}</p>
                     </div>
                   </div>
                   <Link
@@ -68,7 +70,7 @@ export default function HowItWorks() {
                   alt="Kindi"
                   width={100}
                   height={100}
-                  src={HIWOne}
+                  src={homeData[0]?.hiwOne?.url}
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -84,7 +86,7 @@ export default function HowItWorks() {
               <div className="w-full h-[460px] md:max-w-[500px] flex items-end justify-end">
                 <Image
                   alt="Kindi"
-                  src={HIWTwo}
+                  src={homeData[0]?.hiwTwo?.url}
                   width={100}
                   height={100}
                   className="w-full h-full animate-fade-in object-contain"
@@ -105,14 +107,15 @@ export default function HowItWorks() {
                       </span>
                     </div>
                     <div className="w-full text-white animate-fade-in clarabodyTwo">
-                      With Kindi, all our activities deliver mixed-age outcomes
+                      {/* With Kindi, all our activities deliver mixed-age outcomes
                       without the need for multiple sessions. As you and your
                       child play, you&apos;ll receive tips and instructions
                       about extended learning. Just like a recipe, each early
                       years activity in this educational teaching and parenting
                       app includes an ingredients list — featuring everyday
                       household items. Simply follow the instructions and enjoy
-                      the fun!
+                      the fun! */}
+                      <p>{homeData[0].howItWorksTwo}</p>
                     </div>
                   </div>
                   <Link
@@ -152,13 +155,14 @@ export default function HowItWorks() {
                       </span>
                     </div>
                     <div className="w-full text-white clarabodyTwo animate-fade-in">
-                      Our guided learning activities are both fun and
+                      {/* Our guided learning activities are both fun and
                       educational. So whether you&apos;re working one-on-one
                       with your child or taking an entire nursery group through
                       Kindi&apos;s learning activities, playtime fun is always
                       part of the process. Our early years development guide
                       strikes the perfect balance between play and education, so
-                      fun is never too far away!
+                      fun is never too far away! */}
+                      <p>{homeData[0].howItWorksThree}</p>
                     </div>
                   </div>
                   <Link
@@ -178,7 +182,7 @@ export default function HowItWorks() {
                   alt="Kindi"
                   width={100}
                   height={100}
-                  src={HIWThree}
+                  src={homeData[0]?.hiwThree?.url}
                   className="w-full -mt-[50px] h-[400px] object-contain"
                 />
               </div>

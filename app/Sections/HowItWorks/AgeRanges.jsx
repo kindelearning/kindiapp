@@ -30,7 +30,7 @@ const AgeCard = ({ bgImage, image, title, body, link }) => {
           <h2 className="text-[#0a1932] w-full text-[18px] font-semibold font-fredoka text-start leading-[20px] mt-4">
             {title || "title"}
           </h2>
-          <p className="text-[#0a1932] w-full text-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
+          <p className="text-[#0a1932] w-full text-[16px] md:leading-[16px] font-medium font-fredoka leading-[20px] text-start mt-2">
             {body || "Description"}
           </p>
         </div>

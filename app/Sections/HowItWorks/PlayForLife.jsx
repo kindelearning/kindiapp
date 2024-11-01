@@ -10,13 +10,13 @@ export default function PlayForLife({ fetchedData }) {
       >
         <div className="claracontainer px-4 md:px-2 lg:px-4 items-start justify-start-4 w-full flex flex-col md:flex-col lg:flex-row xl:flex-row overflow-hidden gap-8">
           <div className="w-full flex justify-center items-center h-auto">
-            <div className="w-full lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
+            <div className="w-full min-h-[240px] lg:w-[400px] h-full lg:h-[340px] xl:w-[500px] animate-fadeIn animate-delay-500 duration-300">
               <video
                 controls
                 autoPlay
                 loop
                 muted
-                className="object-cover max-h-[260px] md:min-h-[440px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
+                className="object-cover min-h-[240px] max-h-[300px] md:min-h-[440px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
                 <source src="preloader.mp4" type="video/mp4" /> Your browser
                 does not support the video tag.

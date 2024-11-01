@@ -37,7 +37,7 @@ export default function ActivitiesPage() {
   const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected SkillCategory
   // const [loading, setLoading] = useState(true);
 
-  // Fetch blogs on component mount
+  // Fetch activities on component mount
   useEffect(() => {
     const fetchActivities = async () => {
       const data = await getAllActivities();

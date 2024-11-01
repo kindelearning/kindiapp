@@ -1,5 +1,6 @@
 "use client"; // This is now a client component
 
+import NotFound from "@/app/not-found";
 import { ProductImages } from "@/app/Sections";
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";

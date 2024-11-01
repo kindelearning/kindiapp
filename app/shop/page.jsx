@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { ProductImage } from "@/public/Images";
 import {
@@ -20,6 +21,9 @@ import {
 } from "../Sections";
 import { dummyProducts } from "../constant/shop";
 import Link from "next/link";
+import { getProducts } from "@/lib/hygraph";
+import { useEffect, useRef, useState } from "react";
+import NotFound from "../not-found";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -41,7 +45,7 @@ function SearchInput({ value, onChange }) {
         </svg>
       </span>
       <Input
-        type="email"
+        type="text"
         placeholder="Search for products..."
         value={value}
         onChange={onChange}
@@ -51,31 +55,32 @@ function SearchInput({ value, onChange }) {
   );
 }
 
-export default async function ShopPage() {
-  // const [products, setProducts] = useState([]);
-  // const [sortOption, setSortOption] = useState("priceLowToHigh");
-  // const [sortedProducts, setSortedProducts] = useState([]);
-  // const [filteredProducts, setFilteredProducts] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState("");
-  // const [selectedCategory, setSelectedCategory] = useState("");
-  // const [selectedMaterial, setSelectedMaterial] = useState("");
-  // const [selectedFeature, setSelectedFeature] = useState("");
-  // const [selectedDiscount, setSelectedDiscount] = useState("");
-  // const [selectedToyType, setSelectedToyType] = useState("");
-  // const searchInputRef = useRef(null);
+export default function ShopPage() {
+  const [products, setProducts] = useState([]);
+  const [sortOption, setSortOption] = useState("priceLowToHigh");
+  const [sortedProducts, setSortedProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedMaterial, setSelectedMaterial] = useState("");
+  const [selectedFeature, setSelectedFeature] = useState("");
+  const [selectedDiscount, setSelectedDiscount] = useState("");
+  const [selectedToyType, setSelectedToyType] = useState("");
+  const searchInputRef = useRef(null);
 
-  // // Hook to fetch All products from Hygraph CMS
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const fetchedProducts = await getProducts();
-  //     setProducts(fetchedProducts);
-  //     setFilteredProducts(fetchedProducts);
-  //   };
+  // Hook to fetch All products from Hygraph CMS
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+      setFilteredProducts(data);
+    };
+    console.log("FetchActivities", fetchProducts);
 
-  //   fetchProducts();
-  // }, []);
+    fetchProducts();
+  }, []);
 
-  // // Sorting Options We provide
+  // Sorting Options We provide
   const sortingOptions = [
     {
       id: "priceLowToHigh",
@@ -99,52 +104,52 @@ export default async function ShopPage() {
     },
   ];
 
-  // // Sort products based on the selected option
-  // const sortProducts = (option) => {
-  //   let sorted = [...products];
-  //   switch (option) {
-  //     case "priceLowToHigh":
-  //       sorted.sort((a, b) => a.salePrice - b.salePrice);
-  //       break;
-  //     case "priceHighToLow":
-  //       sorted.sort((a, b) => b.salePrice - a.salePrice);
-  //       break;
-  //     case "ratingHighToLow":
-  //       // Assuming products have a 'rating' field; if not, remove this case or add it.
-  //       sorted.sort((a, b) => b.rating - a.rating);
-  //       break;
-  //     case "ratingLowToHigh":
-  //       sorted.sort((a, b) => a.rating - b.rating);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setSortedProducts(sorted);
-  // };
+  // Sort products based on the selected option
+  const sortProducts = (option) => {
+    let sorted = [...products];
+    switch (option) {
+      case "priceLowToHigh":
+        sorted.sort((a, b) => a.salePrice - b.salePrice);
+        break;
+      case "priceHighToLow":
+        sorted.sort((a, b) => b.salePrice - a.salePrice);
+        break;
+      case "ratingHighToLow":
+        // Assuming products have a 'rating' field; if not, remove this case or add it.
+        sorted.sort((a, b) => b.rating - a.rating);
+        break;
+      case "ratingLowToHigh":
+        sorted.sort((a, b) => a.rating - b.rating);
+        break;
+      default:
+        break;
+    }
+    setSortedProducts(sorted);
+  };
 
-  // // Handle sort change
-  // const handleSortChange = (value) => {
-  //   setSortOption(value);
-  //   sortProducts(value);
-  // };
+  // Handle sort change
+  const handleSortChange = (value) => {
+    setSortOption(value);
+    sortProducts(value);
+  };
 
-  // // Function to handle Search Operation
-  // const handleSearchChange = (event) => {
-  //   const term = event.target.value.toLowerCase();
-  //   setSearchTerm(term);
+  // Function to handle Search Operation
+  const handleSearchChange = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
 
-  //   const filtered = products.filter((product) =>
-  //     product.title.toLowerCase().includes(term)
-  //   );
+    const filtered = products.filter((product) =>
+      product.title.toLowerCase().includes(term)
+    );
 
-  //   // Log the search term and filtered results
-  //   console.log("Search Term:", term);
-  //   console.log("Filtered Products:", filtered);
+    // Log the search term and filtered results
+    console.log("Search Term:", term);
+    console.log("Filtered Products:", filtered);
 
-  //   setFilteredProducts(filtered);
-  // };
+    setFilteredProducts(filtered);
+  };
 
-  // // List of Skills Options Based Filters options
+  // List of Skills Options Based Filters options
   const skillCategoryOptions = [
     "Sensory Development",
     "Mastering Feelings",
@@ -160,64 +165,64 @@ export default async function ShopPage() {
     "Rainy Day Play",
   ];
 
-  // // Effect to filter based on selected Skill category Option
-  // useEffect(() => {
-  //   if (selectedCategory.length > 0) {
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.some((keyword) => selectedCategory.includes(keyword))
-  //     );
-  //     setFilteredProducts(filtered);
-  //   } else {
-  //     setFilteredProducts([]); // Reset if no features are selected
-  //   }
-  // }, [selectedCategory, products]);
+  // Effect to filter based on selected Skill category Option
+  useEffect(() => {
+    if (selectedCategory.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedCategory.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedCategory, products]);
 
-  // // Handle Skill Option filter change
-  // const handleCategoryChange = (category) => {
-  //   setSelectedCategory(category);
-  //   if (category === "") {
-  //     // Show all products if no category is selected
-  //     setFilteredProducts(products);
-  //   } else {
-  //     // Filter products based on the selected category
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.includes(category)
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }
-  // };
+  // Handle Skill Option filter change
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    if (category === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(category)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
-  // // List of Material Options Based Filters options
+  // List of Material Options Based Filters options
   const materialOptions = ["Wood", "Plastic", "Fabric", "Metal", "Mixed"];
 
-  // // Effect to filter based on selected Material Option
-  // useEffect(() => {
-  //   if (selectedMaterial.length > 0) {
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.some((keyword) => selectedMaterial.includes(keyword))
-  //     );
-  //     setFilteredProducts(filtered);
-  //   } else {
-  //     setFilteredProducts([]); // Reset if no features are selected
-  //   }
-  // }, [selectedMaterial, products]);
+  // Effect to filter based on selected Material Option
+  useEffect(() => {
+    if (selectedMaterial.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedMaterial.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedMaterial, products]);
 
-  // // Handle SelectedMaterial Option filter change
-  // const handleMaterialChange = (material) => {
-  //   setSelectedMaterial(material);
-  //   if (material === "") {
-  //     // Show all products if no category is selected
-  //     setFilteredProducts(products);
-  //   } else {
-  //     // Filter products based on the selected category
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.includes(material)
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }
-  // };
+  // Handle SelectedMaterial Option filter change
+  const handleMaterialChange = (material) => {
+    setSelectedMaterial(material);
+    if (material === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(material)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
-  // // List of ToyType Options Based Filters options
+  // List of ToyType Options Based Filters options
   const typeOfToyOptions = [
     "Educational",
     "Musical",
@@ -226,32 +231,32 @@ export default async function ShopPage() {
     "Soft Toy",
   ];
 
-  // // Effect to filter based on selected ToyType Option
-  // useEffect(() => {
-  //   if (selectedToyType.length > 0) {
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.some((keyword) => selectedToyType.includes(keyword))
-  //     );
-  //     setFilteredProducts(filtered);
-  //   } else {
-  //     setFilteredProducts([]); // Reset if no features are selected
-  //   }
-  // }, [selectedToyType, products]);
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedToyType.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedToyType.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedToyType, products]);
 
-  // // Handle SelectedToyType Option filter change
-  // const handleToyTypeChange = (toy) => {
-  //   setSelectedToyType(toy);
-  //   if (toy === "") {
-  //     // Show all products if no category is selected
-  //     setFilteredProducts(products);
-  //   } else {
-  //     // Filter products based on the selected category
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.includes(toy)
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }
-  // };
+  // Handle SelectedToyType Option filter change
+  const handleToyTypeChange = (toy) => {
+    setSelectedToyType(toy);
+    if (toy === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(toy)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
   // // List of featuresOptions  Based Filters options
   const featuresOptions = [
@@ -265,72 +270,72 @@ export default async function ShopPage() {
     "Experiments & Math",
   ];
 
-  // // Effect to filter based on selected ToyType Option
-  // useEffect(() => {
-  //   if (selectedFeature.length > 0) {
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.some((keyword) => selectedFeature.includes(keyword))
-  //     );
-  //     setFilteredProducts(filtered);
-  //   } else {
-  //     setFilteredProducts([]); // Reset if no features are selected
-  //   }
-  // }, [selectedFeature, products]);
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedFeature.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedFeature.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedFeature, products]);
 
-  // // Handle SelectedToyType Option filter change
-  // const handlefeatureChange = (feature) => {
-  //   setSelectedFeature(feature);
-  //   if (feature === "") {
-  //     // Show all products if no category is selected
-  //     setFilteredProducts(products);
-  //   } else {
-  //     // Filter products based on the selected category
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.includes(feature)
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }
-  // };
+  // Handle SelectedToyType Option filter change
+  const handlefeatureChange = (feature) => {
+    setSelectedFeature(feature);
+    if (feature === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(feature)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
-  // // List of Discount  Based Filters options
+  // List of Discount  Based Filters options
   const disscountOptions = ["On Sale", "Clearance", "Bundle Offers"];
 
-  // // Effect to filter based on selected ToyType Option
-  // useEffect(() => {
-  //   if (selectedDiscount.length > 0) {
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.some((keyword) => selectedDiscount.includes(keyword))
-  //     );
-  //     setFilteredProducts(filtered);
-  //   } else {
-  //     setFilteredProducts([]); // Reset if no features are selected
-  //   }
-  // }, [selectedDiscount, products]);
+  // Effect to filter based on selected ToyType Option
+  useEffect(() => {
+    if (selectedDiscount.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) => selectedDiscount.includes(keyword))
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedDiscount, products]);
 
-  // // Handle SelectedToyType Option filter change
-  // const handlediscountChange = (discount) => {
-  //   setSelectedDiscount(discount);
-  //   if (discount === "") {
-  //     // Show all products if no category is selected
-  //     setFilteredProducts(products);
-  //   } else {
-  //     // Filter products based on the selected category
-  //     const filtered = products.filter((product) =>
-  //       product.keywords.includes(discount)
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }
-  // };
+  // Handle SelectedToyType Option filter change
+  const handlediscountChange = (discount) => {
+    setSelectedDiscount(discount);
+    if (discount === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(discount)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
 
-  // const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
+  const shouldShowAllProducts = !searchTerm || searchTerm.trim() === "";
 
-  // if (!products || products.length === 0) {
-  //   return (
-  //     <div>
-  //       <NotFound />
-  //     </div>
-  //   );
-  // }
+  if (!products || products.length === 0) {
+    return (
+      <div>
+        <NotFound />
+      </div>
+    );
+  }
   return (
     <>
       <Header className="sticky" />
@@ -343,13 +348,13 @@ export default async function ShopPage() {
             <div className="flex w-full flex-col justift-start items-start gap-[20px] md:gap-[28px]">
               <div className="flex flex-col w-full gap-2">
                 {/* Search Input Row */}
-                {/* <div className="flex w-full px-4 lg:px-0">
+                <div className="flex w-full px-4 md:px-2">
                   <SearchInput
                     ref={searchInputRef}
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
-                </div> */}
+                </div>
                 {/* Mobile Filters Button Row */}
                 <div className="claracontainer px-4 md:px-2 lg:px-4 w-full flex flex-col lg:hidden overflow-hidden gap-2">
                   <div className="flex w-full justify-between items-center gap-1">
@@ -376,15 +381,15 @@ export default async function ShopPage() {
                                     id={option.id}
                                     type="radio"
                                     name="sortOption"
-                                    // className={`${
-                                    //   sortOption === option.value
-                                    //     ? "border-red text-red"
-                                    //     : "border-purple text-purple"
-                                    // }`}
-                                    // checked={sortOption === option.value}
-                                    // onChange={() =>
-                                    //   handleSortChange(option.value)
-                                    // }
+                                    className={`${
+                                      sortOption === option.value
+                                        ? "border-red text-red"
+                                        : "border-purple text-purple"
+                                    }`}
+                                    checked={sortOption === option.value}
+                                    onChange={() =>
+                                      handleSortChange(option.value)
+                                    }
                                   />
                                   <label
                                     htmlFor={option.id}
@@ -437,11 +442,11 @@ export default async function ShopPage() {
                                     <input
                                       type="radio"
                                       name="skillCategory"
-                                      // value={category}
-                                      // checked={selectedCategory === category}
-                                      // onChange={() =>
-                                      //   handleCategoryChange(category)
-                                      // }
+                                      value={category}
+                                      checked={selectedCategory === category}
+                                      onChange={() =>
+                                        handleCategoryChange(category)
+                                      }
                                       className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
                                     />
                                     {category}
@@ -461,11 +466,11 @@ export default async function ShopPage() {
                                     <input
                                       type="radio"
                                       name="skillCategory"
-                                      // value={material}
-                                      // checked={selectedMaterial === material}
-                                      // onChange={() =>
-                                      //   handleMaterialChange(material)
-                                      // }
+                                      value={material}
+                                      checked={selectedMaterial === material}
+                                      onChange={() =>
+                                        handleMaterialChange(material)
+                                      }
                                       className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
                                     />
                                     {material}
@@ -485,9 +490,9 @@ export default async function ShopPage() {
                                     <input
                                       type="radio"
                                       name="skillCategory"
-                                      // value={toy}
-                                      // checked={selectedToyType === toy}
-                                      // onChange={() => handleToyTypeChange(toy)}
+                                      value={toy}
+                                      checked={selectedToyType === toy}
+                                      onChange={() => handleToyTypeChange(toy)}
                                       className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
                                     />
                                     {toy}
@@ -507,11 +512,11 @@ export default async function ShopPage() {
                                     <input
                                       type="radio"
                                       name="skillCategory"
-                                      // value={feature}
-                                      // checked={selectedFeature === feature}
-                                      // onChange={() =>
-                                      //   handlefeatureChange(feature)
-                                      // }
+                                      value={feature}
+                                      checked={selectedFeature === feature}
+                                      onChange={() =>
+                                        handlefeatureChange(feature)
+                                      }
                                       className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
                                     />
                                     {feature}
@@ -531,11 +536,11 @@ export default async function ShopPage() {
                                     <input
                                       type="radio"
                                       name="skillCategory"
-                                      // value={discount}
-                                      // checked={selectedDiscount === discount}
-                                      // onChange={() =>
-                                      //   handlediscountChange(discount)
-                                      // }
+                                      value={discount}
+                                      checked={selectedDiscount === discount}
+                                      onChange={() =>
+                                        handlediscountChange(discount)
+                                      }
                                       className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
                                     />
                                     {discount}
@@ -562,7 +567,7 @@ export default async function ShopPage() {
               </div>
               {/* Display Filtered Products First */}
 
-              {/* {(selectedCategory &&
+              {(selectedCategory &&
                 selectedMaterial &&
                 selectedFeature &&
                 selectedDiscount &&
@@ -575,11 +580,11 @@ export default async function ShopPage() {
                         Search Results
                       </span>
                     </div>
-                    <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                    <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
                       {filteredProducts.map((product) => (
                         <div key={product.id} className="border">
                           <Link href={`/shop/${product.id}`}>
-                            <ProductCard
+                            <MobileProductCard
                               image={product.thumbnail.url}
                               title={product.title}
                               price={product.salePrice}
@@ -589,15 +594,15 @@ export default async function ShopPage() {
                       ))}
                     </div>
                   </>
-                ))} */}
+                ))}
 
               {/* Message if no matching products found */}
-              {/* {searchTerm && filteredProducts.length === 0 && (
+              {searchTerm && filteredProducts.length === 0 && (
                 <div className="text-center clarabodyTwo text-red-500 ">
                   No matching products found. Here are some products you may
                   like:
                 </div>
-              )} */}
+              )}
               {/* Display All Products Below */}
 
               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
@@ -608,9 +613,9 @@ export default async function ShopPage() {
                 </div>
                 <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
                   {/* {sortedProducts.map((product) => ( */}
-                  {dummyProducts.map((product) => (
+                  {sortedProducts.map((product) => (
                     <div key={product.id} className="border">
-                      <Link href={`/shop/slug`}>
+                      <Link href={`/shop/${product.id}`}>
                         <MobileProductCard
                           image={product.image || ProductImage}
                           title={product.title}

@@ -35,7 +35,7 @@ export default function ActivitiesPage() {
   const [selectedPrepTime, setSelectedPrepTime] = useState([]); // State for selected PrepTime
   const [selectedTheme, setSelectedTheme] = useState([]); // State for selected Theme
   const [selectedSkilCategory, setSelectedSkilCategory] = useState([]); // State for selected SkillCategory
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // Fetch activities on component mount
   useEffect(() => {
@@ -425,6 +425,32 @@ export default function ActivitiesPage() {
                               </option>
                             ))}
                           </select>
+                          {/* <div className="grid grid-cols-2 justify-between gap-2 items-center w-full">
+                            {featuresOptions.map((feature) => (
+                              <>
+                                <div
+                                  key={feature}
+                                  className="flex items-center space-x-2"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    id={`feature-${feature}`}
+                                    checked={selectedFeatures.includes(feature)}
+                                    onChange={() =>
+                                      handleFeatureChange(feature)
+                                    }
+                                    className="text-red border-2 bg-[white] border-red w-[24px] h-[24px]"
+                                  />
+                                  <label
+                                    htmlFor={`feature-${feature}`}
+                                    className="w-full text-[#3f3a64] text-base font-fredoka leading-[13px] font-medium peer-disabled:cursor-not-allowed text-start peer-disabled:opacity-70"
+                                  >
+                                    {feature}
+                                  </label>
+                                </div>
+                              </>
+                            ))}
+                          </div> */}
                         </div>
                         <div className="flex flex-col justify-start items-start gap-2 w-full">
                           <div className="text-purple clarabodyTwo">
@@ -540,8 +566,8 @@ export default function ActivitiesPage() {
                   selectedPrepTime &&
                   selectedTheme &&
                   selectedSkilCategory &&
-                  activities.length > 0 ? (
-                    activities.map((activity) => (
+                  filteredActivities.length > 0 ? (
+                    filteredActivities.map((activity) => (
                       <div
                         key={activity.id}
                         className="w-full flex flex-col gap-4 "
@@ -630,7 +656,7 @@ export default function ActivitiesPage() {
                           <br />
                           Try Exploring other Options
                         </p>
-                        <div className="flex flex-row lg:grid lg:grid-cols-1 overflow-x-scroll scrollbar-hidden w-full gap-2 md:gap-4 justify-between items-start">
+                        <div className="flex flex-row md:grid md:grid-cols-1 overflow-x-scroll scrollbar-hidden w-full gap-2 md:gap-4 justify-between items-start">
                           {activities.map((activity) => (
                             <div key={activity.id}>
                               <article className="rounded-lg ">

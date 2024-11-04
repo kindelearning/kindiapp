@@ -18,8 +18,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { loadStripe } from "@stripe/stripe-js";
 import { ProductGrid, ProductImages, QuantityControl, ReviewGrid } from "..";
+import { useCart } from "@/app/context/CartContext";
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const ReviewForm = () => {
   const [name, setName] = useState("");
@@ -176,26 +177,26 @@ const ReviewForm = () => {
 
 export default function ProductDetailClient({ product }) {
   const [loading, setLoading] = useState(false);
-  // const { addToCart } = useCart();
+  const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
-  // const handleAddToCart = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-  //   await new Promise((resolve) => setTimeout(resolve, 500));
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
-  //   addToCart({
-  //     id: product.id,
-  //     title: product.title,
-  //     description: product.description,
-  //     price: product.salePrice,
-  //     image: product.productImages[0]?.url,
-  //     quantity,
-  //   });
-  //   setLoading(false);
-  //   router.push("/shop/cart");
-  // };
+    addToCart({
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      price: product.salePrice,
+      image: product.productImages[0]?.url,
+      quantity,
+    });
+    setLoading(false);
+    router.push("/shop/cart");
+  };
 
   return (
     <>
@@ -268,7 +269,7 @@ export default function ProductDetailClient({ product }) {
                     <div className="flex w-full items-center justify-between gap-2">
                       <Button
                         type="button"
-                        // onClick={handleAddToCart}
+                        onClick={handleAddToCart}
                         disabled={loading}
                         className="bg-red hover:bg-hoverRed w-full  rounded-[16px] border-2 border-[white]"
                       >
@@ -340,7 +341,7 @@ export default function ProductDetailClient({ product }) {
           />{" "}
           <Button
             type="button"
-            // onClick={handleAddToCart}
+            onClick={handleAddToCart}
             disabled={loading} // Disable button when loading
             className="bg-red w-full rounded-[16px] border-2 border-[white]"
           >

@@ -1,17 +1,18 @@
-
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedCart = localStorage.getItem("cart");
-      return savedCart ? JSON.parse(savedCart) : [];
-    }
-    return [];
-  });
+  // const [cart, setCart] = useState(() => {
+  //   if (typeof window !== "undefined") {
+  //     const savedCart = localStorage.getItem("cart");
+  //     return savedCart ? JSON.parse(savedCart) : [];
+  //   }
+  //   return [];
+  // });
+
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     console.log("Cart updated:", cart);
@@ -36,47 +37,17 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
-  // const handleCheckout = async () => {
-  //   try {
-  //     const response = await fetch("/api/checkout-session", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         items: cart.map((item) => ({
-  //           name: item.name,
-  //           description: item.description,
-  //           image: item.image,
-  //           price: item.price,
-  //           quantity: item.quantity,
-  //         })),
-  //       }),
-  //     });
-
-  //     const data = await response.json();
-
-  //     if (data?.url) {
-  //       window.location.href = data.url; // Redirect to Stripe checkout
-  //     } else {
-  //       console.error("Failed to create checkout session");
-  //     }
-  //   } catch (error) {
-  //     console.error("Checkout error:", error);
-  //   }
-  // };
-
   const handleCheckout = async () => {
     try {
-      const response = await fetch('/api/checkout-session', {
-        method: 'POST',
+      const response = await fetch("/api/checkout-session", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
-  
+
       const session = await response.json();
-  
+
       // Instead of using stripe.redirectToCheckout, redirect directly using the URL
       if (session.url) {
         window.location.href = session.url;

@@ -1,3 +1,5 @@
+import { CartProvider } from "./context/CartContext";
+import { UserProvider } from "./context/UserContext";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +26,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased")}>
-        {children}
+        <UserProvider>
+          <CartProvider>{children}</CartProvider>
+        </UserProvider>
       </body>
     </html>
   );

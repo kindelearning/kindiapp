@@ -57,6 +57,7 @@ import MobileProductCard from "./Shop/MobileProductCard";
 import QuantityControl from "./Shop/QuantityControl";
 import ProductGrid from "./Shop/ProductGrid";
 import ReviewGrid from "./Shop/ReviewGrid";
+import ShopHeader from "./Shop/ShopHeader";
 
 export {
   // Global Export
@@ -84,7 +85,7 @@ export {
 
   // Shop Exports
   Banner,
-  ProductGrid,
+  ProductGrid,ShopHeader,
   ReviewGrid,
   CardGroup,
   ProductDetailClient,

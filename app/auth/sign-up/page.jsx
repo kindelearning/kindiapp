@@ -11,6 +11,7 @@ import { hygraphClient } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signUpWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 // queries/createUser.js
 export const CREATE_USER_MUTATION = `
@@ -26,6 +27,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // New state for loading
   const router = useRouter();
@@ -58,35 +60,6 @@ export default function Signup() {
       setLoading(false); // Set loading to true when submitting starts
     }
   };
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false); // New state for loading
-
-  // const router = useRouter();
-
-  // const handleSignup = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true); // Set loading to true when submitting starts
-
-  //   try {
-  //     const variables = { email, password };
-  //     const { createAccount } = await hygraphClient.request(
-  //       CREATE_USER_MUTATION,
-  //       variables
-  //     );
-
-  //     if (createAccount) {
-  //       // If signup is successful, redirect to login page or homepage
-  //       router.push("/auth/sign-in"); // Redirect to signin after signup
-  //     }
-  //   } catch (error) {
-  //     setLoading(false); // Set loading to false if there's an error
-
-  //     console.error("GraphQL error:", error.response?.errors || error.message);
-  //     setError("Signup failed. Try again.");
-  //   }
-  // };
 
   return (
     <>
@@ -110,13 +83,23 @@ export default function Signup() {
                 required
               />
 
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              />
+              <div className="relative w-full">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  className="pr-10" // Space for the toggle icon
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
               <Button
                 disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
@@ -178,13 +161,30 @@ export default function Signup() {
               placeholder="Email"
               required
             />
-            <Input
+            {/* <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
-            />
+            /> */}
+            <div className="relative w-full">
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="pr-10" // Space for the toggle icon
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
             <Button
               disabled={loading}
               className="clarabutton hover:bg-hoverRed w-full bg-red"

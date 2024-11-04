@@ -11,10 +11,12 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Signin() {
   const [loading, setLoading] = useState(false); // New state for loading
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -77,32 +79,6 @@ export default function Signin() {
     }
   };
 
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [error, setError] = useState("");
-  // const router = useRouter();
-
-  // const handleSignin = async (e) => {
-  //   e.preventDefault();
-  //   setLoading(true); // Set loading to true when submitting starts
-
-  //   const res = await signIn("credentials", {
-  //     email,
-  //     password,
-  //     redirect: false,
-  //   });
-
-  //   console.log("Sign In Response:", res);
-  //   if (res?.ok) {
-  //     setLoading(false); // Set loading to false if there's an error
-  //     router.push("/p/activities");
-  //   } else {
-  //     setError("Invalid email or password.");
-  //     setLoading(false); // Set loading to false if there's an error
-  //     console.log("Signin failed", res);
-  //   }
-  // };
-
   return (
     <>
       {/* Larger Screens */}
@@ -124,13 +100,23 @@ export default function Signin() {
                 placeholder="Email"
                 required
               />
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              />
+              <div className="relative w-full">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  className="pr-10" // Space for the toggle icon
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                >
+                  {showPassword ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
               <Button
                 disabled={loading}
                 className="clarabutton hover:bg-hoverRed w-full bg-red"
@@ -189,13 +175,30 @@ export default function Signin() {
               placeholder="Email"
               required
             />
-            <Input
+            {/* <Input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               required
-            />
+            /> */}
+            <div className="relative w-full">
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="pr-10" // Space for the toggle icon
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
             <Button
               disabled={loading}
               className="clarabutton hover:bg-hoverRed w-full bg-red"

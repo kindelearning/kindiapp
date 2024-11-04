@@ -2,6 +2,7 @@ import Link from "next/link";
 import { dummyProducts } from "@/app/constant/shop";
 import { MobileProductCard } from "..";
 import { getProducts } from "@/lib/hygraph";
+import NotFound from "@/app/not-found";
 
 export default async function ProductGrid() {
   const products = await getProducts();

@@ -71,7 +71,7 @@ const activityIcons = [
   { key: "experimentsMath", icon: ExperimentsMathActivity },
 ];
 
-export default async function ActivityDetailClient({ activity }) {
+export default function ActivityDetailClient({ activity }) {
   // const { id } = params;
   // const activity = await getActivityById(id);
 

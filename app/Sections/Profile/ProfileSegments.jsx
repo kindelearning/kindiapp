@@ -8,6 +8,7 @@ import {
   Achievement,
   Bag,
   ConnectPartner,
+  Email,
   Kid,
   Milestone,
   Partner,
@@ -29,7 +30,10 @@ import React, { useEffect, useState } from "react";
 import {
   BadgeSection,
   ContactForm,
+  MyLevel,
   MyProfileRoutes,
+  PartnerList,
+  PaymentMethodsList,
   PopupFooter,
   ProductCard,
   ReferralForm,
@@ -47,6 +51,7 @@ import {
 } from "@/components/ui/dialog";
 import { data } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
+import ConnectAccountForm from "./ConnectAccountForm";
 
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
@@ -163,7 +168,7 @@ export default function ProfileSegments() {
                   target="_blank"
                 >
                   <Badge
-                    className="text-[10px] md:text-[16px] cursor-pointer"
+                    className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
                     variant="outline"
                   >
                     Edit
@@ -174,7 +179,10 @@ export default function ProfileSegments() {
                 <div className="flex flex-row w-full justify-start items-center gap-2">
                   {/* Trigger for the Level Popup */}
                   {user && hygraphUser ? (
-                    <>{/* <MyLevel userID={hygraphUser.id} /> */}</>
+                    <>
+                      {" "}
+                      <MyLevel userID={hygraphUser.id} />{" "}
+                    </>
                   ) : null}
                   <Link
                     href="/profile/update"
@@ -182,7 +190,7 @@ export default function ProfileSegments() {
                     target="_blank"
                   >
                     <Badge
-                      className="text-[10px] md:text-[16px] cursor-pointer"
+                      className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
                       variant="outline"
                     >
                       Edit
@@ -246,11 +254,11 @@ export default function ProfileSegments() {
                   </div>
                 </DialogHeader>
                 <DialogDescription className="flex w-full min-h-[300px] pb-24 px-4 claracontainer gap-4 flex-col justify-center items-start">
-                  {/* {user && hygraphUser ? (
+                  {user && hygraphUser ? (
                     <PartnerList userId={hygraphUser.id} />
                   ) : (
-                    <></>
-                  )} */}
+                    <> No Partners Associated with this account</>
+                  )}
                 </DialogDescription>
                 <DialogFooter className="sticky rounded-t-[16px] bottom-0 m-0 w-full ">
                   <DialogClose className="w-full">
@@ -344,11 +352,11 @@ export default function ProfileSegments() {
                         Every time someone books and visits a new dentist
                         through your link, you both get $20.
                       </div>
-                      {/* {user && hygraphUser ? (
+                      {user && hygraphUser ? (
                         <ConnectAccountForm userId={hygraphUser.id} />
                       ) : (
                         <>id Not found</>
-                      )} */}
+                      )}
                     </div>
                   </div>
                 </DialogDescription>
@@ -380,11 +388,11 @@ export default function ProfileSegments() {
                 </DialogHeader>
                 <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-2 md:px-4 lg:px-6 py-6 w-full claracontainer gap-4">
-                    {/* {user && hygraphUser ? (
+                    {user && hygraphUser ? (
                       <PaymentMethodsList userId={hygraphUser.id} />
                     ) : (
                       <p>id not found</p>
-                    )} */}
+                    )}
                   </div>
 
                   <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
@@ -452,7 +460,7 @@ export default function ProfileSegments() {
                     <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
                       <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
                         {/* Profile Edit */}
-                        {/* {user && hygraphUser ? (
+                        {user && hygraphUser ? (
                           <>
                             <Link href="/profile/edit">
                               <SettingCard
@@ -481,7 +489,7 @@ export default function ProfileSegments() {
                             image={User}
                             title="Full Name"
                           />
-                        )} */}
+                        )}
                       </div>
                     </div>
                   </section>

@@ -27,6 +27,10 @@ import ProductCard from "./Profile/ProductCard";
 import ContactForm from "./Profile/ContactForm";
 import SettingCard from "./Profile/SettingCard";
 import ReferralForm from "./Profile/ReferralCard";
+import DebitCard from "./Profile/DebitCard";
+import PartnerList from "./Profile/PartnerList";
+import PaymentMethodsList from "./Profile/PaymentMethodsList";
+import MyLevel from "./Profile/MyLevel";
 
 // OurMission Imports
 import MissionHero from "./OurMission/Hero";
@@ -67,8 +71,12 @@ export {
 
   // profile Exports
   ProfileSegments,
+  DebitCard,
   BadgeSection,
+  PaymentMethodsList,
+  PartnerList,
   ProductCard,
+  MyLevel,
   ContactForm,
   MyProfileRoutes,
   ReferralForm,

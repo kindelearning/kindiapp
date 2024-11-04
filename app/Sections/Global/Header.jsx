@@ -16,6 +16,11 @@ import { HomeLight } from "@/public/Icons";
 import { useEffect, useState } from "react";
 import { NavMenu } from "@/app/constant/menu";
 import { GoogleTranslate } from "../GoogleTranslate";
+import { useAuth } from "@/lib/useAuth";
+import { useRouter } from "next/navigation";
+import { getUserDataByEmail } from "@/lib/hygraph";
+import { signOut } from "firebase/auth";
+import Loading from "@/app/loading";
 // import { GoogleTranslate } from "./GoogleTranslate";
 
 const LocalNavitem = ({
@@ -99,7 +104,30 @@ const usePathname = () => {
 
 export default function Header() {
   const pathname = usePathname();
-  // const [profileData, setProfileData] = useState(null);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  const handleSignOut = () => {
+    signOut({
+      callbackUrl: "/", // Optional: Redirect users to this URL after sign out
+    });
+  };
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <header className="sticky rounded-b-[12px] top-0 z-50 w-full px-4 bg-white dark:bg-dark-blue-100 shadow-md flex justify-center items-center py-4 md:py-4">
@@ -119,7 +147,7 @@ export default function Header() {
             <SheetTrigger>
               <Menu />
             </SheetTrigger>
-            <SheetContent className="bg-[#F5F5F5] px-2 h-full">
+            <SheetContent className="bg-[#F5F5F5] pb-6 px-2 h-full">
               <SheetHeader className="h-full">
                 {/* Custom Sidebar Item */}
                 <section className="lg:hidden h-full flex flex-col w-full gap-2 items-start justify-between space-y-2 mt-4">
@@ -154,7 +182,52 @@ export default function Header() {
                     <div className="flex w-full">
                       <GoogleTranslate />
                     </div>
-                    <div className="flex w-full flex-col gap-1 justify-start items-start">
+                    {hygraphUser ? (
+                      <div className="flex w-full gap-2 justify-start items-center">
+                        <div className="flex">
+                          <Link
+                            target="_blank"
+                            className="flex flex-col justify-end items-end"
+                            href="/shop/cart"
+                          >
+                            <p className="bg-[eaeaf5] border -mb-[8px] border-red text-red flex justify-center items-center text-[12px] z-12 w-[16px] h-[16px] font-fredoka rounded-full">
+                              {/* {cart.length} */}
+                            </p>
+                            <ShoppingBag className="text-red w-[28px] h-[28px]" />
+                          </Link>
+                        </div>
+                        <Button
+                          onClick={handleSignOut}
+                          className="bg-red hover:bg-hoverRed text-white clarabutton w-full"
+                        >
+                          Sign Out
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex w-full flex-col gap-1 justify-start items-start">
+                        <Link
+                          href="/auth/sign-in"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full"
+                        >
+                          <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
+                            Log in
+                          </div>
+                        </Link>
+                        <Link
+                          href="/auth/sign-up"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full"
+                        >
+                          <div className="bg-red hover:bg-hoverRed text-[12px] font-fredoka text-white w-full py-2 px-[40px]  hover:text-white border-2 border-red rounded-[10px] transition duration-300 ease-in-out">
+                            Get Started
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                    {/* <div className="flex w-full flex-col gap-1 justify-start items-start">
                       <Link
                         href="/auth/sign-in"
                         target="_blank"
@@ -175,12 +248,12 @@ export default function Header() {
                           Get Started
                         </div>
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </section>
               </SheetHeader>
-              <SheetDescription>#KindiLearning</SheetDescription>
-            </SheetContent>
+              <SheetDescription >#KindiLearning</SheetDescription>
+            </SheetContent >
           </Sheet>
         </div>
         {/* Navigation Links - Hidden on small screens */}

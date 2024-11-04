@@ -67,7 +67,7 @@ export default function Signin() {
     try {
       const response = await loginWithEmail(emailTrimmed, passwordTrimmed);
       if (response.success) {
-        router.push("/p"); // Redirect to activity page or any desired page
+        router.push("/profile"); // Redirect to activity page or any desired page
       } else {
         setError(response.message); // Display error message to user
       }

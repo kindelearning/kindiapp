@@ -705,7 +705,7 @@ export default function ShopPage() {
                   ))
                 ) : (
                   <>
-                    <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                    <div className="w-full md:grid md:grid-cols-1 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                       {/* <div className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
                         No matching Product Found{" "}
                       </div> */}

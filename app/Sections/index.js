@@ -18,6 +18,10 @@ import NewsLetter from "./Global/NewsLetter";
 import Footer from "./Global/Footer";
 import BottomNavigation from "./Global/BottomNavigation";
 
+//Profile Imports
+import ProfileSegments from "./Profile/ProfileSegments";
+import BadgeSection from "./Profile/BadgeSection";
+
 // OurMission Imports
 import MissionHero from "./OurMission/Hero";
 import OurStory from "./OurMission/OurStory";
@@ -53,6 +57,10 @@ export {
   DynamicCard,
   Footer,
   BottomNavigation,
+
+  // profile Exports
+  ProfileSegments,
+  BadgeSection,
 
   // Shop Exports
   Banner,

@@ -16,11 +16,17 @@ import DynamicCard from "./Global/DynamicCard";
 import DynamicCardMobile from "./Global/DynamicCardMobile";
 import NewsLetter from "./Global/NewsLetter";
 import Footer from "./Global/Footer";
+import PopupFooter from "./Global/PopupFooter";
 import BottomNavigation from "./Global/BottomNavigation";
 
 //Profile Imports
 import ProfileSegments from "./Profile/ProfileSegments";
 import BadgeSection from "./Profile/BadgeSection";
+import MyProfileRoutes from "./Profile/MyProfileRoutes";
+import ProductCard from "./Profile/ProductCard";
+import ContactForm from "./Profile/ContactForm";
+import SettingCard from "./Profile/SettingCard";
+import ReferralForm from "./Profile/ReferralCard";
 
 // OurMission Imports
 import MissionHero from "./OurMission/Hero";
@@ -57,10 +63,16 @@ export {
   DynamicCard,
   Footer,
   BottomNavigation,
+  PopupFooter,
 
   // profile Exports
   ProfileSegments,
   BadgeSection,
+  ProductCard,
+  ContactForm,
+  MyProfileRoutes,
+  ReferralForm,
+  SettingCard,
 
   // Shop Exports
   Banner,

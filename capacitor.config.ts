@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.kindilearning.app",
-  appName: "kindi Learning",
+  appName: "Kindi Learning",
   webDir: "out",
   bundledWebRuntime: false,
   server: {

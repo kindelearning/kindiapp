@@ -20,10 +20,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { GraphQLClient, gql } from "graphql-request";
 import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import { getPublishedMileStone, getUserDataByEmail } from "@/lib/hygraph";
-import { useAuth } from "@/app/lib/useAuth";
+import { useAuth } from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 /**
  * @Main_account_Credentials
@@ -38,7 +38,6 @@ const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
     Authorization: `Bearer ${HYGRAPH_TOKEN}`,
   },
 });
-
 
 const GET_ACCOUNT_BY_EMAIL = gql`
   query GetAccountByEmail($email: String!) {
@@ -207,8 +206,6 @@ const DisplayAllMileStone = () => {
 };
 
 const CurvePath = ({ milestones = [] }) => {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
@@ -224,21 +221,21 @@ const CurvePath = ({ milestones = [] }) => {
     }
   }, [user, loading, router]);
 
-  // console.log("profileData", profileData);
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // // console.log("profileData", profileData);
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   useEffect(() => {
     const today = new Date();
@@ -321,7 +318,7 @@ const CurvePath = ({ milestones = [] }) => {
               {milestone.title}
             </button>
           </DialogTrigger>
-          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
+          <DialogContent className="w-full bg-[#eaeaf5] p-0 md:min-w-[700px] ">
             <DialogHeader className="p-4">
               <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                 <div className="text-[#0a1932] claraheading">
@@ -354,7 +351,9 @@ const CurvePath = ({ milestones = [] }) => {
                       // userId="cm25lil0t0zvz07pfuuizj473"
                     />
                   ) : (
-                    <Button className="clarabutton">Login First!</Button>
+                    <Link href="/auth/sign-in">
+                      <Button className="clarabutton">Login First!</Button>
+                    </Link>
                   )}
                 </div>
               </section>
@@ -421,14 +420,13 @@ const CurvePath = ({ milestones = [] }) => {
 };
 
 export default function MileStone() {
-  const { data: session, status } = useSession();
-  const [profileData, setProfileData] = useState(null);
+  // const { data: session, status } = useSession();
+  // const [profileData, setProfileData] = useState(null);
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
-
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
         setHygraphUser(data);
@@ -436,20 +434,20 @@ export default function MileStone() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (session && session.user) {
-      fetchUserData(session.user.email);
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (session && session.user) {
+  //     fetchUserData(session.user.email);
+  //   }
+  // }, [session]);
 
-  const fetchUserData = async (email) => {
-    try {
-      const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-      setProfileData(data.account);
-    } catch (error) {
-      console.error("Error fetching profile data:", error);
-    }
-  };
+  // const fetchUserData = async (email) => {
+  //   try {
+  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
+  //     setProfileData(data.account);
+  //   } catch (error) {
+  //     console.error("Error fetching profile data:", error);
+  //   }
+  // };
 
   return (
     <>

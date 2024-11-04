@@ -4,6 +4,7 @@ import NotFound from "@/app/not-found";
 import { ProductImages } from "@/app/Sections";
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";
+import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
   KidBlack,
@@ -18,9 +19,150 @@ import {
   PhysicalAgilityActivity,
   Themes,
   TimerBlack,
+  CompletedMark,
 } from "@/public/Images";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getActivityById, getUserDataByEmail } from "@/lib/hygraph";
+import { useAuth } from "@/lib/useAuth";
+import { useRouter } from "next/navigation";
+
+const HYGRAPH_ENDPOINT =
+  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+const HYGRAPH_TOKEN =
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+
+const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
+  headers: {
+    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+  },
+});
+
+const GET_ACCOUNT_BY_EMAIL = gql`
+  query GetAccountByEmail($email: String!) {
+    account(where: { email: $email }) {
+      id
+      name
+      username
+      email
+      profilePicture {
+        url
+      }
+      isVerified
+    }
+  }
+`;
+
+const ActivityCompleteButton = ({ activityId, userId }) => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleActivityCompletion = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/mark-activity-completed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, activityId }),
+      });
+
+      console.log("esponse: ", response);
+      if (response.ok) {
+        setSuccess(true);
+      } else {
+        console.error("Failed to mark activity as complete");
+      }
+    } catch (error) {
+      console.error("Error completing activity:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <Button
+      className={`rounded-2xl w-full flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
+        loading
+          ? "opacity-50 cursor-not-allowed bg-red"
+          : success
+          ? "bg-purple hover:bg-purple"
+          : "bg-red hover:bg-red-600"
+      }`}
+      onClick={handleActivityCompletion}
+      disabled={loading || success}
+    >
+      <Image alt="Kindi" className="flex lg:hidden" src={CompletedMark} />
+
+      {loading ? (
+        <span className="flex items-center">
+          <svg
+            className="animate-spin h-5 w-5 mr-2 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
+            />
+          </svg>
+          Loading...
+        </span>
+      ) : success ? (
+        "Activity Completed"
+      ) : (
+        "Mark as Completed"
+      )}
+    </Button>
+  );
+};
+
+const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  if (loading) return null;
+
+  return (
+    <>
+      {user && hygraphUser ? (
+        <ActivityCompleteButton
+          activityId={activityId}
+          userId={hygraphUser.id}
+        />
+      ) : (
+        <Link
+          href="/auth/sign-up"
+          className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
+          target="_blank"
+        >
+          Login to complete this activity
+        </Link>
+      )}
+    </>
+  );
+};
 
 const ActivityAttribute = ({
   title = " Event Timeline",
@@ -223,10 +365,12 @@ export default function ActivityDetailClient({ activity }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Mark Activity as Complete{" "}
                 </div>
-                <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
+                {/* <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
                   Mark as Complete
-                </Button>
-                {/* <DynamicMarkActivityCompleteComponent activityId={id} /> */}
+                </Button> */}
+                <DynamicMarkActivityCompleteComponent
+                  activityId={activity.id}
+                />
               </div>
             </div>
           </div>
@@ -245,6 +389,7 @@ export default function ActivityDetailClient({ activity }) {
               Mark as Complete
             </Button>
             {/* <DynamicMarkActivityCompleteComponent /> */}
+            <DynamicMarkActivityCompleteComponent activityId={activity.id} />
           </div>
         </div>{" "}
       </section>

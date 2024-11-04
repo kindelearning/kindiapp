@@ -56,6 +56,7 @@ import ConnectAccountForm from "./ConnectAccountForm";
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {

@@ -398,7 +398,7 @@ export default function ShopPage() {
                 {/* Search Input Row */}
                 <div className="flex w-full px-4 md:px-2">
                   <SearchInput
-                    ref={searchInputRef}
+                    // ref={searchInputRef}
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
@@ -413,10 +413,10 @@ export default function ShopPage() {
                           Sort
                         </Button>
                       </DrawerTrigger>
-                      <DrawerContent className="w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
+                      <DrawerContent className=" w-full justify-center overflow-clip h-[40vh] md:h-[40vh] items-center flex">
                         <DrawerHeader className="w-full h-full md:h-fit">
-                          <DrawerDescription className="flex h-fit flex-col pt-2 pb-6 overflow-y-scroll justify-start items-start w-full gap-2">
-                            <div className="text-red sticky underline text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
+                          <DrawerDescription className="flex h-fit flex-col py-6 overflow-y-scroll justify-start items-start w-full gap-2">
+                            <div className="text-red sticky underline  text-2xl font-semibold text-center w-full font-fredoka capitalize leading-[28px]">
                               Sort By
                             </div>
                             <div className="flex flex-col gap-4 justify-start items-start">
@@ -485,7 +485,11 @@ export default function ShopPage() {
                                 {skillCategoryOptions.map((category) => (
                                   <label
                                     key={category}
-                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none `}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedCategory === category
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
                                   >
                                     <input
                                       type="radio"
@@ -495,7 +499,11 @@ export default function ShopPage() {
                                       onChange={() =>
                                         handleCategoryChange(category)
                                       }
-                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedCategory === category
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
                                     />
                                     {category}
                                   </label>
@@ -509,7 +517,11 @@ export default function ShopPage() {
                                 {materialOptions.map((material) => (
                                   <label
                                     key={material}
-                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none`}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedMaterial === material
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
                                   >
                                     <input
                                       type="radio"
@@ -519,7 +531,11 @@ export default function ShopPage() {
                                       onChange={() =>
                                         handleMaterialChange(material)
                                       }
-                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedMaterial === material
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
                                     />
                                     {material}
                                   </label>
@@ -533,7 +549,11 @@ export default function ShopPage() {
                                 {typeOfToyOptions.map((toy) => (
                                   <label
                                     key={toy}
-                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none `}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedToyType === toy
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
                                   >
                                     <input
                                       type="radio"
@@ -541,7 +561,11 @@ export default function ShopPage() {
                                       value={toy}
                                       checked={selectedToyType === toy}
                                       onChange={() => handleToyTypeChange(toy)}
-                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedToyType === toy
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
                                     />
                                     {toy}
                                   </label>
@@ -555,7 +579,11 @@ export default function ShopPage() {
                                 {featuresOptions.map((feature) => (
                                   <label
                                     key={feature}
-                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none`}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedFeature === feature
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
                                   >
                                     <input
                                       type="radio"
@@ -565,7 +593,11 @@ export default function ShopPage() {
                                       onChange={() =>
                                         handlefeatureChange(feature)
                                       }
-                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedFeature === feature
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
                                     />
                                     {feature}
                                   </label>
@@ -579,7 +611,11 @@ export default function ShopPage() {
                                 {disscountOptions.map((discount) => (
                                   <label
                                     key={discount}
-                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none `}
+                                    className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+                                      selectedDiscount === discount
+                                        ? "text-red"
+                                        : "text-[#252c32]"
+                                    }`}
                                   >
                                     <input
                                       type="radio"
@@ -589,7 +625,11 @@ export default function ShopPage() {
                                       onChange={() =>
                                         handlediscountChange(discount)
                                       }
-                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 `}
+                                      className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+                                        selectedDiscount === discount
+                                          ? "border-purple text-red"
+                                          : "border-purple"
+                                      }`}
                                     />
                                     {discount}
                                   </label>
@@ -651,8 +691,41 @@ export default function ShopPage() {
                   like:
                 </div>
               )}
-              {/* Display All Products Below */}
 
+              {/* Render filtered products */}
+              <div className="w-full md:grid md:grid-cols-2 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                <div className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
+                  Filtered Product
+                </div>
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
+                    <LocalProductCard
+                      key={product.id}
+                      image={product.thumbnail.url}
+                      title={product.title}
+                      price={product.salePrice}
+                    />
+                  ))
+                ) : (
+                  <>
+                    <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+                      {sortedProducts.map((product) => (
+                        <div key={product.id} className="border">
+                          <Link href={`/shop/${product.id}`}>
+                            <LocalProductCard
+                              image={product.thumbnail.url}
+                              title={product.title}
+                              price={product.salePrice}
+                            />
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Display All Products Below */}
               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
                 <div className="flex justify-between items-center px-4 lg:px-0 w-full">
                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">

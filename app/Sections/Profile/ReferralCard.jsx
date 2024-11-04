@@ -73,7 +73,7 @@ export default function ReferralForm() {
                 Join Referral Program
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-full lg:max-w-[800px] lg:w-full">
+            <DialogContent className="w-full md:max-w-[700px]">
               <DialogHeader>
                 <DialogTitle>
                   <div className="text-center w-full">

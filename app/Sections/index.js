@@ -21,6 +21,7 @@ import BottomNavigation from "./Global/BottomNavigation";
 
 //Profile Imports
 import ProfileSegments from "./Profile/ProfileSegments";
+import AchievementBadge from "./Profile/AchievementBadge";
 import BadgeSection from "./Profile/BadgeSection";
 import MyProfileRoutes from "./Profile/MyProfileRoutes";
 import ProductCard from "./Profile/ProductCard";
@@ -79,13 +80,15 @@ export {
   ProductCard,
   MyLevel,
   ContactForm,
+  AchievementBadge,
   MyProfileRoutes,
   ReferralForm,
   SettingCard,
 
   // Shop Exports
   Banner,
-  ProductGrid,ShopHeader,
+  ProductGrid,
+  ShopHeader,
   ReviewGrid,
   CardGroup,
   ProductDetailClient,

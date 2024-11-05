@@ -1,19 +1,19 @@
-import Link from "next/link";
+import NotFound from "@/app/not-found";
+import { getStandardPagesContent } from "@/lib/hygraph";
 
-export default function TermsAndCondition() {
-  // const standardPages = await getStandardPagesContent();
-  // // console.log("Standard Pages Content: ", standardPages);
-  // if (
-  //   !standardPages ||
-  //   !standardPages.termsConditions ||
-  //   !standardPages.termsConditions.html
-  // ) {
-  //   return (
-  //     <p>
-  //       <NotFound />
-  //     </p>
-  //   );
-  // }
+export default async function TermsAndCondition() {
+  const standardPages = await getStandardPagesContent();
+  if (
+    !standardPages ||
+    !standardPages.termsConditions ||
+    !standardPages.termsConditions.html
+  ) {
+    return (
+      <p>
+        <NotFound />
+      </p>
+    );
+  }
   return (
     <>
       <section className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-0 flex flex-col md:flex-row gap-[20px]">
@@ -31,7 +31,7 @@ export default function TermsAndCondition() {
             </div>
             <hr className="text-[#3f3a64] h-[2px]" />
           </div>
-          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
+          <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.termsConditions?.html ? (
               <div
                 dangerouslySetInnerHTML={{
@@ -41,8 +41,8 @@ export default function TermsAndCondition() {
             ) : (
               <p>No content found</p>
             )}
-          </div> */}
-          <div className="items-center w-full justify-center flex flex-col gap-4">
+          </div>
+          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
             <div className="w-full justify-start items-start gap-2 flex flex-col">
               <span className="text-red text-[23px] font-semibold font-fredoka leading-[25px]">
                 Overview
@@ -432,7 +432,7 @@ export default function TermsAndCondition() {
                 read, understood, and agree to these terms and conditions.
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import "./globals.css";
@@ -18,8 +19,10 @@ export default function RootLayout({ children }) {
           href="/favicon-48x48.png"
           sizes="48x48"
         />
+
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
         <link
           href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Gloria+Hallelujah&family=Montserrat:wght@400;700&display=swap"
           rel="stylesheet"

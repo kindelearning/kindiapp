@@ -1,4 +1,20 @@
-export default function QualityControl() {
+import NotFound from "@/app/not-found";
+import { getStandardPagesContent } from "@/lib/hygraph";
+
+export default async function QualityControl() {
+  const standardPages = await getStandardPagesContent();
+  // console.log("Standard Pages Content: ", standardPages);
+  if (
+    !standardPages ||
+    !standardPages.qualityControl ||
+    !standardPages.qualityControl.html
+  ) {
+    return (
+      <p>
+        <NotFound />
+      </p>
+    );
+  }
   return (
     <>
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -29,8 +45,18 @@ export default function QualityControl() {
           </div>
           {/* The Divider */}
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-
           <div className="items-center w-full justify-center flex flex-col gap-4">
+            {standardPages?.qualityControl?.html ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: standardPages.qualityControl.html,
+                }}
+              />
+            ) : (
+              <p>No content found</p>
+            )}
+          </div>
+          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
             <div className="w-full justify-start items-start gap-2 flex flex-col">
               <span className="text-red text-[23px] font-semibold font-fredoka leading-[25px]">
                 Platform Architecture{" "}
@@ -266,7 +292,7 @@ export default function QualityControl() {
                 the tools necessary for every child to thrive.
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

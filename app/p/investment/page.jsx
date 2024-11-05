@@ -1,4 +1,21 @@
-export default function Investment() {
+import NotFound from "@/app/not-found";
+import { getStandardPagesContent } from "@/lib/hygraph";
+
+export default async function Investment() {
+  const standardPages = await getStandardPagesContent();
+  // console.log("Standard Pages Content: ", standardPages);
+  if (
+    !standardPages ||
+    !standardPages.refundPolicy ||
+    !standardPages.refundPolicy.html
+  ) {
+    return (
+      <p>
+        {" "}
+        <NotFound />
+      </p>
+    );
+  }
   return (
     <>
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -27,8 +44,19 @@ export default function Investment() {
           </div>
           {/* The Divider */}
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
+          <div className="items-center w-full justify-center flex flex-col gap-4">
+            {standardPages?.termsConditions?.html ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: standardPages.termsConditions.html,
+                }}
+              />
+            ) : (
+              <p>No content found</p>
+            )}
+          </div>
 
-          <span className="text-[#3f3a64] text-[16px] font-semibold font-fredoka leading-[25px]">
+          {/* <span className="text-[#3f3a64] text-[16px] font-semibold font-fredoka leading-[25px]">
             Why Invest in Kindi?{" "}
           </span>
           <div className="items-center w-full justify-center flex flex-col gap-4">
@@ -183,7 +211,7 @@ export default function Investment() {
                 young minds.
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

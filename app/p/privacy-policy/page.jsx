@@ -1,6 +1,25 @@
+import NotFound from "@/app/not-found";
+import { getStandardPagesContent } from "@/lib/hygraph";
 import Link from "next/link";
 
-export default function PrivacyPolicy() {
+export default async function PrivacyPolicy() {
+  const standardPages = await getStandardPagesContent();
+  // console.log("Standard Pages Content: ", standardPages);
+  if (
+    !standardPages ||
+    !standardPages.privacyPolicy ||
+    !standardPages.privacyPolicy.html
+  ) {
+    return (
+      <p>
+        {" "}
+        <NotFound />
+      </p>
+    );
+  }
+  // const updatedDate = format(new Date(standardPages.updatedAt), 'MMMM dd, yyyy');
+  const updatedDate = new Date(standardPages.updatedAt).toLocaleDateString();
+
   return (
     <>
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -21,8 +40,9 @@ export default function PrivacyPolicy() {
                 Last Updated:
               </span>
               <span className="text-black text-xs font-normal font-['Fredoka']">
-                {" "}
-                23rd Oct, 2024
+                {updatedDate}
+
+                {/* 23rd Oct, 2024 */}
               </span>
             </div>
             <span className="text-[#3f3a64] text-base font-normal font-fredoka leading-tight">
@@ -41,6 +61,17 @@ export default function PrivacyPolicy() {
           </div>
 
           <div className="items-center w-full justify-center flex flex-col gap-4">
+            {standardPages?.privacyPolicy?.html ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: standardPages.privacyPolicy.html, // Inject the HTML safely
+                }}
+              />
+            ) : (
+              <p>No content found</p>
+            )}
+          </div>
+          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
             <div className="w-full justify-start items-start gap-2 flex flex-col">
               <span className="text-red text-[23px] font-semibold font-fredoka leading-[25px]">
                 1. Information We Collect
@@ -402,7 +433,7 @@ export default function PrivacyPolicy() {
                 read, understood, and agree to these terms and conditions.
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </>

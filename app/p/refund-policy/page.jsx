@@ -1,16 +1,21 @@
+import NotFound from "@/app/not-found";
+import { getStandardPagesContent } from "@/lib/hygraph";
 import Link from "next/link";
 
-export default function RefundPolicy() {
-  // const standardPages = await getStandardPagesContent();
-  // // console.log("Standard Pages Content: ", standardPages);
-  // if (
-  //   !standardPages ||
-  //   !standardPages.refundPolicy ||
-  //   !standardPages.refundPolicy.html
-  // ) {
-
-  //   return <p>No content found</p>;
-  // }
+export default async function RefundPolicy() {
+  const standardPages = await getStandardPagesContent();
+  // console.log("Standard Pages Content: ", standardPages);
+  if (
+    !standardPages ||
+    !standardPages.refundPolicy ||
+    !standardPages.refundPolicy.html
+  ) {
+    return (
+      <p>
+        <NotFound />
+      </p>
+    );
+  }
   return (
     <>
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
@@ -46,7 +51,7 @@ export default function RefundPolicy() {
             {/* The Divider */}
           </div>
           <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
+          <div className="items-center w-full justify-center flex flex-col gap-4">
             {standardPages?.refundPolicy?.html ? (
               <div
                 dangerouslySetInnerHTML={{
@@ -56,8 +61,8 @@ export default function RefundPolicy() {
             ) : (
               <p>No content found</p>
             )}
-          </div> */}
-          <div className="items-center w-full justify-center flex flex-col gap-4">
+          </div>
+          {/* <div className="items-center w-full justify-center flex flex-col gap-4">
             <div className="w-full justify-start items-start gap-2 flex flex-col">
               <span className="text-red text-[23px] font-semibold font-fredoka leading-[25px]">
                 1. Subscription Plans{" "}
@@ -284,7 +289,7 @@ export default function RefundPolicy() {
               </span>
             </div>
             <div className="h-[1.5px] bg-[black] rounded-full my-4" />
-          </div>
+          </div> */}
         </div>
       </section>
     </>

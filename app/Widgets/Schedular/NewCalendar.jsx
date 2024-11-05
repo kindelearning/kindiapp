@@ -99,38 +99,23 @@ const icons = [
 // };
 
 export default function NewCalendar() {
-  // const { data: session } = useSession();
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = new Date();
   const [draggedEvent, setDraggedEvent] = useState(null);
   const [touchStartPosition, setTouchStartPosition] = useState({ x: 0, y: 0 });
 
-  const isBrowser = typeof window !== "undefined";
-
-  // Initial loading of events from localStorage
-  // const [events, setEvents] = useState(() => {
-  //   if (!isBrowser) return [];
-  //   try {
-  //     const savedEvents = localStorage.getItem("events");
-  //     return savedEvents ? JSON.parse(savedEvents) : [];
-  //   } catch (error) {
-  //     console.error("Error loading events from localStorage:", error);
-  //     return [];
-  //   }
-  // });
-
   const [events, setEvents] = useState([
     {
       id: "1",
       title: "Activity 1",
-      date: new Date(2024, 9, 15, 10, 0), // October 15, 2024, 10:00 AM
+      date: new Date(2024, 10, 15, 10, 0), // October 15, 2024, 10:00 AM
       description: "This is an activity",
       thumbnail: { url: ActivityImage },
     },
     {
       id: "2",
       title: "Activity 2",
-      date: new Date(2024, 9, 16, 12, 0), // October 16, 2024, 12:00 PM
+      date: new Date(2024, 10, 16, 12, 0), // October 16, 2024, 12:00 PM
       description: "Another activity",
       thumbnail: { url: ActivityImage },
     },
@@ -146,42 +131,6 @@ export default function NewCalendar() {
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
-
-  // Fetch activities from Hygraph only once if localStorage has no events
-  // useEffect(() => {
-  //   const fetchActivities = async () => {
-  //     try {
-  //       const activitiesFromHygraph = await getAllActivities();
-  //       console.log("Activities fetched from Hygraph:", activitiesFromHygraph);
-
-  //       if (events.length === 0) {
-  //         // Only set events from Hygraph if local storage is empty
-  //         setEvents(activitiesFromHygraph);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching activities from Hygraph:", error);
-  //     }
-  //   };
-
-  //   fetchActivities();
-  // }, []);
-
-  // Fetch user data when session changes
-  // useEffect(() => {
-  //   if (session && session.user) {
-  //     fetchUserData(session.user.email);
-  //   }
-  // }, [session]);
-
-  // const fetchUserData = async (email) => {
-  //   try {
-  //     const data = await client.request(GET_ACCOUNT_BY_EMAIL, { email });
-  //     console.log("User Data:", data);
-  //     setProfileData(data.account);
-  //   } catch (error) {
-  //     console.error("Error fetching profile data:", error);
-  //   }
-  // };
 
   const handlePrevMonth = () => {
     const newDate = new Date(
@@ -432,8 +381,6 @@ export default function NewCalendar() {
               </div>
 
               {/* Show events if they exist */}
-              {/* {checkEventForDate(dayObj.day).map((event) => ( */}
-              {/* {eventsForDay.map((event, index) => ( */}
               {checkEventForDate(dayObj.day).map((event) => (
                 <div
                   key={event.id}

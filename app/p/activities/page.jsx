@@ -588,13 +588,20 @@ export default function ActivitiesPage() {
                                   </div>
                                   <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                     <div className="flex-col w-full gap-[6px] justify-start items-start">
-                                      <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                                        {activity.title.length > 30
-                                          ? `${activity.title.slice(0, 28)}...`
-                                          : activity.title}
-                                      </div>
+                                        {/* Title for Mobile */}
+                                    <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
+                                      {activity.title.length > 20
+                                        ? `${activity.title.slice(0, 18)}...`
+                                        : activity.title}
+                                    </div>
+                                    {/* Title for Tablet */}
+                                    <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
+                                      {activity.title.length > 30
+                                        ? `${activity.title.slice(0, 28)}...`
+                                        : activity.title}
+                                    </div>
                                       <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 md:px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                        <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                           {activity.setUpTime}
                                         </div>
                                         <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
@@ -675,8 +682,17 @@ export default function ActivitiesPage() {
                                         </div>
                                         <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                           <div className="flex-col w-full gap-[6px] justify-start items-start">
-                                            <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                                              {/* {activity.title} */}
+                                            {/* Title for Mobile */}
+                                            <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
+                                              {activity.title.length > 20
+                                                ? `${activity.title.slice(
+                                                    0,
+                                                    18
+                                                  )}...`
+                                                : activity.title}
+                                            </div>
+                                            {/* Title for Tablet */}
+                                            <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
                                               {activity.title.length > 30
                                                 ? `${activity.title.slice(
                                                     0,
@@ -685,7 +701,7 @@ export default function ActivitiesPage() {
                                                 : activity.title}
                                             </div>
                                             <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 md:px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                                 {activity.setUpTime}
                                               </div>
                                               <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
@@ -770,14 +786,20 @@ export default function ActivitiesPage() {
                                 </div>
                                 <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                   <div className="flex-col w-full gap-[6px] justify-start items-start">
-                                    <div className="text-[#0a1932] text-[16px] md:text-xl font-semibold font-fredoka leading-[20px]">
-                                      {/* {activity.title} */}
+                                    {/* Title for Mobile */}
+                                    <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
+                                      {activity.title.length > 20
+                                        ? `${activity.title.slice(0, 18)}...`
+                                        : activity.title}
+                                    </div>
+                                    {/* Title for Tablet */}
+                                    <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
                                       {activity.title.length > 30
                                         ? `${activity.title.slice(0, 28)}...`
                                         : activity.title}
                                     </div>
                                     <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                      <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-2 md:px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                      <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
                                         {activity.setUpTime}
                                       </div>
                                       <ul className="text-[#0a1932] justify-between items-center gap-4 flex px-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">

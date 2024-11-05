@@ -421,7 +421,7 @@ export default function Achievement() {
         />
         <meta name="twitter:image" content="/images/logo.png" />
       </Head>
-      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+      <section className="w-full pb-12 h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
@@ -450,11 +450,16 @@ export default function Achievement() {
                   </div>
                 </>
               ) : (
-                <Image
-                  src={ProfileDP}
-                  alt="Logo"
-                  className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
-                />
+                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                    <Image
+                      src={ProfileDP}
+                      alt="Logo"
+                      // className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
+                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                    />
+                  </div>
+                </div>
               )}
             </div>
             <div className="w-full gap-4 flex flex-col justify-center">
@@ -483,9 +488,20 @@ export default function Achievement() {
                     </p>
                   </div>
                 ) : (
-                  <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                    John Doe
-                  </h2>
+                  // <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                  //   John Doe
+                  // </h2>
+                  <div className="flex w-full flex-col justify-start items-start gap-2">
+                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                      Kindi Learner
+                    </h2>
+                    <p className="font-fredoka text-[12px] lg:text-[20px]">
+                      <Link href="/auth/sign-in" className="text-red">
+                        Login&nbsp;
+                      </Link>
+                      to user more feature
+                    </p>
+                  </div>
                 )}
                 {/* Trigger for the Edit Profile Popup */}
                 <Link
@@ -521,7 +537,7 @@ export default function Achievement() {
                   <BadgesDisplay userId={hygraphUser.id} />
                 ) : (
                   // v
-                  <p className="clarabodyTwo">not found</p>
+                  <p className="clarabodyTwo">Nothing Achievd Yet!</p>
                 )}
               </div>
             </div>

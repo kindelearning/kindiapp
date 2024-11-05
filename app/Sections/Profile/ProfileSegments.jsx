@@ -56,7 +56,7 @@ import ConnectAccountForm from "./ConnectAccountForm";
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  
+
   const [hygraphUser, setHygraphUser] = useState(null);
 
   useEffect(() => {
@@ -124,11 +124,16 @@ export default function ProfileSegments() {
                   </div>
                 </>
               ) : (
-                <Image
-                  src={ProfileDP}
-                  alt="Logo"
-                  className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
-                />
+                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+                    <Image
+                      src={ProfileDP}
+                      alt="Logo"
+                      // className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
+                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+                    />
+                  </div>
+                </div>
               )}
             </div>
 
@@ -158,16 +163,20 @@ export default function ProfileSegments() {
                     </p>
                   </div>
                 ) : (
-                  <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
-                    Kindi Learner
-                  </h2>
+                  <div className="flex w-full flex-col justify-start items-start gap-2">
+                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                      Kindi Learner
+                    </h2>
+                    <p className="font-fredoka text-[12px] lg:text-[20px]">
+                      <Link href="/auth/sign-in" className="text-red">
+                        Login&nbsp;
+                      </Link>
+                      to user more feature
+                    </p>
+                  </div>
                 )}
                 {/* Trigger for the Edit Profile Popup */}
-                <Link
-                  href="/profile/update"
-                  className="hidden md:flex"
-                  target="_blank"
-                >
+                <Link href="/profile/update" className="hidden md:flex">
                   <Badge
                     className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
                     variant="outline"
@@ -185,11 +194,7 @@ export default function ProfileSegments() {
                       <MyLevel userID={hygraphUser.id} />{" "}
                     </>
                   ) : null}
-                  <Link
-                    href="/profile/update"
-                    className="flex md:hidden"
-                    target="_blank"
-                  >
+                  <Link href="/profile/update" className="flex md:hidden">
                     <Badge
                       className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
                       variant="outline"
@@ -203,7 +208,7 @@ export default function ProfileSegments() {
           </div>
           {/* Quick Navigation for the Page */}
           <div className="claracontainer px-0 w-full flex flex-row justify-start overflow-x-scroll scrollbar-hidden items-start overflow-hidden gap-2">
-            <Link target="_blank" href="/profile/milestone">
+            <Link href="/profile/milestone">
               <BadgeSection
                 icon={Milestone}
                 backgroundColor="#3F3D91"
@@ -211,7 +216,7 @@ export default function ProfileSegments() {
                 title="Milestone"
               />
             </Link>
-            <Link target="_blank" href="/profile/progress">
+            <Link href="/profile/progress">
               <BadgeSection
                 icon={ProfileProgress}
                 title="Progress"
@@ -219,7 +224,7 @@ export default function ProfileSegments() {
                 borderColor="#f2c99b"
               />
             </Link>
-            <Link target="_blank" href="/profile/achievements">
+            <Link href="/profile/achievements">
               <BadgeSection
                 icon={Achievement}
                 title="Achievement"
@@ -523,7 +528,6 @@ export default function ProfileSegments() {
                       <div className="flex flex-col gap-4 justify-center items-center w-full">
                         <ContactForm />
                         <Link
-                          target="_blank"
                           href="/p/faq"
                           className="text-center px-4 w-full text-[#3f3a64] clarabodyTwo "
                         >

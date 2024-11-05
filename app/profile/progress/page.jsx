@@ -17,6 +17,7 @@ import { progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
+import Link from "next/link";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -353,7 +354,7 @@ export default function ProgressSection() {
         />
         <meta name="twitter:image" content="/images/logo.png" />
       </Head>
-      <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      <section className="w-full h-auto pb-24 bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
 
         <div className="claracontainer py-4  w-full flex flex-col overflow-hidden gap-8">
@@ -364,13 +365,6 @@ export default function ProgressSection() {
               className="cursor-pointer w-20 -mr-[32px] h-20"
             />
             {user && hygraphUser ? (
-              // <Image
-              //   alt="Kindi"
-              //   src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
-              //   width={100}
-              //   height={100}
-              //   className="cursor-pointer w-30 h-30 border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
-              // />
               <div className="relative w-20 h-20 md:w-28 md:h-28 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                 <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                   <Image
@@ -407,7 +401,14 @@ export default function ProgressSection() {
                 <MyActivity userID={hygraphUser.id} />
               </div>
             ) : (
-              <p>Not Found...</p>
+              <>
+                <p className="font-fredoka px-4 md:px-2 text-[12px] lg:text-[20px]">
+                  <Link href="/auth/sign-in" className="text-red">
+                    Login&nbsp;
+                  </Link>
+                  to user more feature
+                </p>
+              </>
             )}
             {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
           </>
@@ -421,7 +422,7 @@ export default function ProgressSection() {
               />
             ))}
           </div>
-          <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
+          <div className="claracontainer px-4 md:px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">
             <ReferralCard />
           </div>
         </div>

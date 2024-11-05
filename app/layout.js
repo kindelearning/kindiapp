@@ -1,16 +1,24 @@
-import Head from "next/head";
+"use client";
+
 import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import StatusBarManager from "./Sections/Global/StatusBarManager";
+import {
+  SplashScreenHandler,
+  StatusBarManager,
+  VideoOpeningScreen,
+} from "./Sections";
+import { useState } from "react";
 
-export const metadata = {
-  title: "Kindi Learning",
-  description: "Play • Learn • Grow • Thrive • Play",
-};
+// export const metadata = {
+//   title: "Kindi Learning",
+//   description: "Play • Learn • Grow • Thrive • Play",
+// };
 
 export default function RootLayout({ children }) {
+  const [isVideoVisible, setIsVideoVisible] = useState(true);
+
   return (
     <html lang="en">
       <head>
@@ -30,10 +38,16 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={cn("min-h-screen  bg-background font-sans antialiased")}>
+        {isVideoVisible && (
+          <VideoOpeningScreen onFinished={() => setIsVideoVisible(false)} />
+        )}
         <StatusBarManager />
+        <SplashScreenHandler />
 
         <UserProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            {!isVideoVisible && children} {/* Render the rest of your app */}
+          </CartProvider>
         </UserProvider>
       </body>
     </html>

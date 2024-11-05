@@ -17,6 +17,7 @@
     "@capacitor/haptics": "^6.0.1",
     "@capacitor/ios": "^6.1.2",
     "@capacitor/preferences": "^6.0.2",
+    "@capacitor/splash-screen": "^6.0.2",
     "@capacitor/status-bar": "^6.0.1",
     "@hygraph/management-sdk": "^1.2.5",
     "@mailchimp/mailchimp_transactional": "^1.0.59",

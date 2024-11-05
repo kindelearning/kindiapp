@@ -11,6 +11,9 @@ import PopularActivity from "./Home/PopularActivity";
 
 // Global Imports
 import ShareButton from "./Global/ShareButton";
+import VideoOpeningScreen from "./Global/VideoOpeningScreen";
+import StatusBarManager from "./Global/StatusBarManager";
+import SplashScreenHandler from "./Global/SplashScreenHandler";
 import Header from "./Global/Header";
 import DynamicCard from "./Global/DynamicCard";
 import DynamicCardMobile from "./Global/DynamicCardMobile";
@@ -68,6 +71,8 @@ export {
   ShareButton,
   DynamicCardMobile,
   DynamicCard,
+  StatusBarManager,
+  SplashScreenHandler,VideoOpeningScreen,
   Footer,
   BottomNavigation,
   PopupFooter,
@@ -81,7 +86,8 @@ export {
   ProductCard,
   MyLevel,
   ContactForm,
-  AchievementBadge,ImageInput,
+  AchievementBadge,
+  ImageInput,
   MyProfileRoutes,
   ReferralForm,
   SettingCard,

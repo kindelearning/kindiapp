@@ -38,15 +38,16 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={cn("min-h-screen  bg-background font-sans antialiased")}>
-        {isVideoVisible && (
+        {/* {isVideoVisible && (
           <VideoOpeningScreen onFinished={() => setIsVideoVisible(false)} />
-        )}
+        )} */}
         <StatusBarManager />
-        <SplashScreenHandler />
+        {/* <SplashScreenHandler /> */}
 
         <UserProvider>
           <CartProvider>
-            {!isVideoVisible && children} {/* Render the rest of your app */}
+            {children}
+            {/* {!isVideoVisible && children} Render the rest of your app */}
           </CartProvider>
         </UserProvider>
       </body>

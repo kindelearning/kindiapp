@@ -17,10 +17,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { loadStripe } from "@stripe/stripe-js";
-import { ProductGrid, ProductImages, QuantityControl, ReviewGrid } from "..";
+import {
+  ProductGrid,
+  ProductImages,
+  QuantityControl,
+  ReviewGrid,
+  ShopHeader,
+} from "..";
 import { useCart } from "@/app/context/CartContext";
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 const ReviewForm = () => {
   const [name, setName] = useState("");
@@ -200,6 +208,7 @@ export default function ProductDetailClient({ product }) {
 
   return (
     <>
+      <ShopHeader className="sticky" />
       <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Row 1 */}

@@ -1,8 +1,9 @@
 "use client";
 
+import { getStandardPagesContent } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 
-export default function Preloader() {
+export default  function Preloader() {
   const [preloaderVideoUrl, setPreloaderVideoUrl] = useState(null); // State to hold video URL
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function Preloader() {
 
   if (!preloaderVideoUrl) {
     return (
-      <div>
+      <div className="w-full h-screen flex justify-center items-center clarabodyTwo">
         {/* <video autoPlay loop muted className="flex justify-center items-center">
           <source src="preloader.mp4" type="video/mp4" />
         </video> */}

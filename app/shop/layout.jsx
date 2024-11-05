@@ -1,4 +1,4 @@
-import { Footer } from "../Sections";
+import { BottomNavigation, Footer, NewsLetter } from "../Sections";
 
 export default function ShopLayout({ children }) {
   return (
@@ -6,6 +6,8 @@ export default function ShopLayout({ children }) {
       <html lang="en">
         <body>
           {children}
+          <NewsLetter />
+          <BottomNavigation />
           <Footer />
         </body>
       </html>

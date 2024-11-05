@@ -309,8 +309,8 @@ const MyActivity = ({ userID }) => {
   );
 };
 
-export default async function ProgressSection() {
-  const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
+export default function ProgressSection() {
+  // const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
 
   const { user, loading } = useAuth();
   const router = useRouter();

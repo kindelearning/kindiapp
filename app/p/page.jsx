@@ -1,4 +1,4 @@
-import { getHomeData } from "@/lib/hygraph";
+import { getHomeData, getThemes } from "@/lib/hygraph";
 import {
   BottomNavigation,
   DefaultReviews,
@@ -32,6 +32,8 @@ import {
 
 export default async function Home() {
   const homeData = await getHomeData();
+  const themesData = await getThemes();
+
 
   if (!homeData || homeData.length === 0) {
     return <div>Data Not Found</div>; // Handle the not found case
@@ -45,7 +47,7 @@ export default async function Home() {
           <PromotionalSection homeData={homeData} />
           <PromotionalSectionTwo homeData={homeData} />
           <HowItWorks homeData={homeData} />
-          <MonthlyThemes homeData={homeData} />
+          <MonthlyThemes themes={themesData} homeData={homeData} />
           <PopularActivity homeData={homeData} />
           <DefaultReviews />
           <OurPricing homeData={homeData} />

@@ -292,7 +292,7 @@ const BadgesDisplay = ({ userId }) => {
               className="flex flex-col justify-start items-center w-fit max-w-[100px] min-w-[80px] gap-0 cursor-pointer"
             >
               {badge.icon && (
-                <img
+                <Image
                   src={badge.icon.url}
                   alt={badge.name}
                   className="w-[60px] h-[60px] object-cover flex"

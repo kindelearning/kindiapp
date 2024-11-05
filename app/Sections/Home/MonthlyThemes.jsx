@@ -1,6 +1,6 @@
 import { ThemeCard } from "@/app/Widgets";
 
-export default function MonthlyThemes({ homeData }) {
+export default function MonthlyThemes({ homeData, themes }) {
   return (
     <>
       <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
@@ -28,10 +28,19 @@ export default function MonthlyThemes({ homeData }) {
           </div>
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
+            {/* <ThemeCard />
             <ThemeCard />
             <ThemeCard />
-            <ThemeCard />
-            <ThemeCard />
+            <ThemeCard /> */}
+            {themes.map((theme) => (
+              <ThemeCard
+                key={theme.id}
+                image={theme.thumbnail.url}
+                theTime={theme.launchTime}
+                metaDesc={theme.metaDesc}
+                title={theme.title}
+              />
+            ))}
           </div>
         </div>
       </section>

@@ -8,7 +8,7 @@ import { getUserDataByEmail } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 
-export default async function ProfileUpdate() {
+export default  function ProfileUpdate() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);

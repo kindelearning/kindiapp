@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 
 export default function PlayForLife({ fetchedData }) {
-  const videoUrl = standardPages.featuredVideo[0].url;
+  // const videoUrl = standardPages.featuredVideo[0].url;
 
   return (
     <>
-      {/* New COmponent */}
+      {/* New Component */}
       <section
         id="video"
         className="w-full h-auto bg-[#0097cb] items-center justify-center py-8 lg:py-16 flex flex-col gap-[20px] md:flex-row"
@@ -20,7 +20,7 @@ export default function PlayForLife({ fetchedData }) {
                 muted
                 className="object-cover min-h-[240px] max-h-[300px] md:min-h-[440px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
-                <source src="preloader.mp4" type={videoUrl} />
+                <source src={fetchedData.featuredVideo} type='video/mp4' />
                 Your browser does not support the video tag.
               </video>
             </div>

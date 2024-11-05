@@ -226,8 +226,8 @@ export default function ProfileEdit({ userId }) {
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="/styles.css" />
-        <link rel="stylesheet" href="/profile.css" />
+        {/* <link rel="stylesheet" href="/styles.css" />
+        <link rel="stylesheet" href="/profile.css" /> */}
       </Head>
       <section className="w-full pb-24 h-auto bg-[#f5f5f5] flex flex-col md:flex-row items-center justify-center px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">

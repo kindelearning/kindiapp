@@ -3,6 +3,7 @@ import { CartProvider } from "./context/CartContext";
 import { UserProvider } from "./context/UserContext";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import StatusBarManager from "./Sections/Global/StatusBarManager";
 
 export const metadata = {
   title: "Kindi Learning",
@@ -28,7 +29,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+      <body className={cn("min-h-screen  bg-background font-sans antialiased")}>
+        <StatusBarManager />
+
         <UserProvider>
           <CartProvider>{children}</CartProvider>
         </UserProvider>

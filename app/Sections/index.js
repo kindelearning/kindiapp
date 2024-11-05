@@ -14,7 +14,7 @@ import ShareButton from "./Global/ShareButton";
 import Header from "./Global/Header";
 import DynamicCard from "./Global/DynamicCard";
 import DynamicCardMobile from "./Global/DynamicCardMobile";
-import NewsLetter from "./Global/NewsLetter";
+import NewsLetter from "./Global/Newsletter";
 import Footer from "./Global/Footer";
 import PopupFooter from "./Global/PopupFooter";
 import BottomNavigation from "./Global/BottomNavigation";

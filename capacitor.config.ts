@@ -6,6 +6,8 @@ const config: CapacitorConfig = {
   webDir: "out",
   bundledWebRuntime: false,
   server: {
+    // url: "https://kindiapp.vercel.app",
+    // cleartext: false,
     url: "http://192.168.1.72:3000",
     cleartext: true,
   },

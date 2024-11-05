@@ -23,6 +23,7 @@ import BottomNavigation from "./Global/BottomNavigation";
 import ProfileSegments from "./Profile/ProfileSegments";
 import AchievementBadge from "./Profile/AchievementBadge";
 import BadgeSection from "./Profile/BadgeSection";
+import ImageInput from "./Profile/ImageInput";
 import MyProfileRoutes from "./Profile/MyProfileRoutes";
 import ProductCard from "./Profile/ProductCard";
 import ContactForm from "./Profile/ContactForm";
@@ -80,7 +81,7 @@ export {
   ProductCard,
   MyLevel,
   ContactForm,
-  AchievementBadge,
+  AchievementBadge,ImageInput,
   MyProfileRoutes,
   ReferralForm,
   SettingCard,

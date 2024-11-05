@@ -23,7 +23,7 @@ const ThemeCard = ({ image, title, metaDesc, theTime }) => {
             </div>
             <div className="text-white text-[14px] leading-[18px] max-w-[350px] md:text-[16px] md:leading-[20px] lg:text-[20px] lg:leading-[24px] xl:text-[22px] xl:leading-[26px] font-medium font-montserrat">
               {metaDesc.length > 80
-                ? metaDesc.slice(0, 80) + "..."
+                ? metaDesc.slice(0, 66) + "..."
                 : metaDesc ||
                   "Snowy adventures, ice castles, cozy indoor playtimes."}
             </div>

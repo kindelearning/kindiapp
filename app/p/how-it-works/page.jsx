@@ -7,7 +7,12 @@ import {
   PlayForLife,
   PopularActivity,
 } from "@/app/Sections";
-import { getHIWData, getHomeData, getThemes } from "@/lib/hygraph";
+import {
+  getAllActivities,
+  getHIWData,
+  getHomeData,
+  getThemes,
+} from "@/lib/hygraph";
 
 // export default async function HowItWorksPage() {
 //   const pageData = await getHIWData();
@@ -38,6 +43,7 @@ export default async function HowItWorksPage() {
     const pageData = await getHIWData();
     const homeData = await getHomeData();
     const themesData = await getThemes();
+    const activitieData = await getAllActivities();
 
     if (!pageData || pageData.length === 0) {
       return <div>Not Found</div>;
@@ -54,7 +60,7 @@ export default async function HowItWorksPage() {
         <KindiSkillsCategories fetchedData={pageData} />
         <AgeRanges fetchedData={pageData} />
         <MonthlyThemes themes={themesData} homeData={homeData} />
-        <PopularActivity homeData={homeData} />
+        <PopularActivity activities={activitieData} homeData={homeData} />
       </section>
     );
   } catch (error) {

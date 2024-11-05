@@ -573,10 +573,7 @@ export default function ActivitiesPage() {
                         className="w-full flex flex-col gap-4 "
                       >
                         <article className="rounded-lg ">
-                          <Link
-                            target="_blank"
-                            href={`/p/activities/${activity.id}`}
-                          >
+                          <Link href={`/p/activities/${activity.id}`}>
                             <div className="md:w-full hover:shadow-md duration-200 min-w-[170px] w-[170px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
                               <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
                                 <div className="w-full max-w-[180px] md:min-w-full lg:max-w-full h-auto">

@@ -73,7 +73,13 @@ import ProductGrid from "./Shop/ProductGrid";
 import ReviewGrid from "./Shop/ReviewGrid";
 import ShopHeader from "./Shop/ShopHeader";
 
+// Themes import
+import CategoryCard from "./Themes/CategoryCard";
+
 export {
+  // Themes Export
+  CategoryCard,
+
   // Global Export
   Header,
   NewsLetter,
@@ -88,10 +94,12 @@ export {
   PopupFooter,
 
   // Mobile Exports
-  MobileHero,WeeklyCalendar,
+  MobileHero,
+  WeeklyCalendar,
   MobileProducts,
   MobileThemes,
-  MobileCommunity,LocalHeader,
+  MobileCommunity,
+  LocalHeader,
   MobileActivity,
 
   // profile Exports

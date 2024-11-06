@@ -3,6 +3,7 @@ import {
   BottomNavigation,
   Footer,
   Header,
+  LocalHeader,
   MobileActivity,
   MobileCommunity,
   MobileHero,
@@ -10,6 +11,10 @@ import {
   MobileThemes,
   NewsLetter,
 } from "./Sections";
+import Image from "next/image";
+import { KindiVector } from "@/public/Images";
+import Link from "next/link";
+import { Menu } from "lucide-react";
 
 export default async function Home() {
   const homeData = await getHomeData();
@@ -19,10 +24,12 @@ export default async function Home() {
     return <div>Not Found</div>; // Handle the not found case
   }
   const themesData = await getThemes();
+
   return (
     <>
       <section className="w-full flex flex-col gap-0 justify-center items-center">
-        <Header className="sticky" />
+        {/* <Header className="sticky" /> */}
+        <LocalHeader />
         <div className="w-full flex flex-col overflow-hidden gap-0">
           <MobileHero />
           <MobileThemes themes={themesData} homeData={homeData} />

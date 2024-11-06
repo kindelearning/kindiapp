@@ -22,7 +22,7 @@ function LocalProductCard({ image, title, price }) {
   }, []);
 
   return (
-    <div className="flex lg:max-w-[300px] min-w-[170px] md:min-w-full md:w-full max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[16px] overflow-clip w-full">
         <Image
           src={image}

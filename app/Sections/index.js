@@ -13,6 +13,7 @@ import PopularActivity from "./Home/PopularActivity";
 import MobileHero from "./Mobile/MobileHero";
 import MobileActivity from "./Mobile/MobileActivity";
 import MobileThemes from "./Mobile/MobileThemes";
+import LocalHeader from "./Mobile/LocalHeader";
 import MobileProducts from "./Mobile/MobileProducts";
 import WeeklyCalendar from "./Mobile/WeeklyCalendar";
 import MobileCommunity from "./Mobile/MobileCommunity";
@@ -90,7 +91,7 @@ export {
   MobileHero,WeeklyCalendar,
   MobileProducts,
   MobileThemes,
-  MobileCommunity,
+  MobileCommunity,LocalHeader,
   MobileActivity,
 
   // profile Exports

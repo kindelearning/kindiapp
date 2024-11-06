@@ -49,7 +49,7 @@ function LocalProductCard({ image, title, price }) {
           </div>
         </div>
         <h3 className="text-start flex md:hidden text-[#0a1932] clarabodyTwo font-medium w-full px-2 ">
-          {title.length > 24 ? `${title.slice(0, 20)}...` : title}
+          {title.length > 20 ? `${title.slice(0, 18)}...` : title}
         </h3>
         <h3 className="text-start hidden md:flex text-[#0a1932] clarabodyTwo font-medium w-full px-2 ">
           {title.length > 30 ? `${title.slice(0, 24)}...` : title}
@@ -67,7 +67,6 @@ export default function MobileProducts({}) {
     const fetchProducts = async () => {
       const data = await getProducts();
       setProducts(data);
-      setFilteredProducts(data);
     };
     console.log("FetchActivities", fetchProducts);
 
@@ -91,7 +90,7 @@ export default function MobileProducts({}) {
 
           <div className="lg:grid claracontainer w-full flex pl-4 flex-row overflow-x-scroll scrollbar-hidden hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
             {products.map((product) => (
-              <div key={product.id} className="border">
+              <div key={product.id}>
                 <Link href={`/shop/${product.id}`}>
                   <LocalProductCard
                     image={product.thumbnail.url}

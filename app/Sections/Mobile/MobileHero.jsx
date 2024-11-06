@@ -1,4 +1,5 @@
 import React from "react";
+import { WeeklyCalendar } from "..";
 
 export default function MobileHero() {
   return (
@@ -8,7 +9,10 @@ export default function MobileHero() {
           <h1 className="clarabodyTwo text-[#0A1932] w-full justify-start items-center text-start">
             Today&apos;s Activity
           </h1>
-
+          {/* Activity Card */}
+          <div className="flex w-full justify-between p-4 bg-white rounded-[24px]">
+            <WeeklyCalendar />
+          </div>
         </div>
       </section>
     </>

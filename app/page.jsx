@@ -1,18 +1,14 @@
 import { getAllActivities, getHomeData, getThemes } from "@/lib/hygraph";
 import {
   BottomNavigation,
-  DefaultReviews,
   Footer,
   Header,
-  Hero,
-  HowItWorks,
-  MonthlyThemes,
+  MobileActivity,
+  MobileCommunity,
+  MobileHero,
+  MobileProducts,
+  MobileThemes,
   NewsLetter,
-  OurPricing,
-  PopularActivity,
-  PromotionalSection,
-  PromotionalSectionTwo,
-  Slider,
 } from "./Sections";
 
 export default async function Home() {
@@ -28,15 +24,11 @@ export default async function Home() {
       <section className="w-full flex flex-col gap-0 justify-center items-center">
         <Header className="sticky" />
         <div className="w-full flex flex-col overflow-hidden gap-0">
-          <Hero homeData={homeData} />
-          <Slider />
-          <PromotionalSection homeData={homeData} />
-          <PromotionalSectionTwo homeData={homeData} />
-          <HowItWorks homeData={homeData} />
-          <MonthlyThemes themes={themesData} homeData={homeData} />
-          <PopularActivity activities={activitieData} homeData={homeData} />
-          <DefaultReviews />
-          <OurPricing homeData={homeData} />
+          <MobileHero />
+          <MobileThemes themes={themesData} homeData={homeData} />
+          <MobileProducts />
+          <MobileActivity activities={activitieData} homeData={homeData} />
+          <MobileCommunity />
         </div>
         <NewsLetter />
         <BottomNavigation />

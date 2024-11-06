@@ -14,6 +14,7 @@ import MobileHero from "./Mobile/MobileHero";
 import MobileActivity from "./Mobile/MobileActivity";
 import MobileThemes from "./Mobile/MobileThemes";
 import MobileProducts from "./Mobile/MobileProducts";
+import WeeklyCalendar from "./Mobile/WeeklyCalendar";
 import MobileCommunity from "./Mobile/MobileCommunity";
 
 // Global Imports
@@ -86,7 +87,7 @@ export {
   PopupFooter,
 
   // Mobile Exports
-  MobileHero,
+  MobileHero,WeeklyCalendar,
   MobileProducts,
   MobileThemes,
   MobileCommunity,

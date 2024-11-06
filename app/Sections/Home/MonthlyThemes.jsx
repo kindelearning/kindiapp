@@ -3,7 +3,7 @@ import { ThemeCard } from "@/app/Widgets";
 export default function MonthlyThemes({ homeData, themes }) {
   return (
     <>
-      <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto bg-[#F3BD40] items-center justify-center py-4 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
         <div className="claracontainer w-full flex-col justify-start items-center script inline-flex">
           <div className="w-full claracontainer animate-fade-in px-4 duration-150 text-start  md:text-center text-[#eaeaf5] clarascript">
             Enjoy every Precious Moment with your Children

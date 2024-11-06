@@ -8,10 +8,10 @@ const ThemeCard = ({ image, title, metaDesc, theTime }) => {
       className={`flex flex-col gap-[-12px] justify-center items-end animate-fade-in transition-all duration-300  cursor-pointer group`}
     >
       <div
-        className={`p-[8px] w-full bg-[#3f3d91] min-w-[360px] flex flex-col items-end rounded-[32px] animate-slide-up `}
+        className={`p-[8px] w-full bg-[#3f3d91] min-w-[360px] flex flex-col items-end rounded-[16px] animate-slide-up `}
       >
         <div
-          className={`w-full min-h-[160px] flex max-h-[162px] md:min-h-[180px] md:max-h-[182px]  justify-between border-2 border-white  rounded-[28px] `}
+          className={`w-full min-h-[140px] flex max-h-[142px] bg- [#3f3d91] md:min-h-[160px] md:max-h-[162px]  justify-between border-2 border-white  rounded-[12px] `}
         >
           <div
             className={`w-full max-w-[260px] md:max-w-[220px] flex flex-col bg-[#3f3d91] lg:max-w-[460px] z-2 rounded-r-[60px] rounded-l-[50px] lg:rounded-l-[38px] py-4 lg:py-8 justify-start items-start pl-4 pr-2 animate-fade-in`}
@@ -34,7 +34,7 @@ const ThemeCard = ({ image, title, metaDesc, theTime }) => {
               width={400}
               height={100}
               src={image || ThemeDummy}
-              className={`w-full max-w-[130px] md:max-w-[200px] lg:max-w-[240px]  h-full object-cover rounded-r-[28px] animate-fade-in`}
+              className={`w-full max-w-[130px] md:max-w-[200px] lg:max-w-[240px]  h-full object-cover rounded-r-[12px] animate-fade-in`}
             />
           </div>
         </div>

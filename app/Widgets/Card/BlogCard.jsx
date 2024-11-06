@@ -8,13 +8,9 @@ const getRandomNumber = (min, max) => {
 };
 
 const BlogCard = ({
-  // slug,
   image,
   title = "Blog Title",
   metsDesc = "Blog metsDesc",
-  // likes = "123",
-  // comments = "456",
-  // views = "789",
 }) => {
   const randomLikes = getRandomNumber(50, 500); // Adjust range as needed
   const randomComments = getRandomNumber(10, 100); // Adjust range as needed

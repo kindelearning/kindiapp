@@ -9,6 +9,13 @@ import DefaultReviews from "./Home/DefaultReviews";
 import OurPricing from "./Home/OurPricing";
 import PopularActivity from "./Home/PopularActivity";
 
+// Mobile Imports
+import MobileHero from "./Mobile/MobileHero";
+import MobileActivity from "./Mobile/MobileActivity";
+import MobileThemes from "./Mobile/MobileThemes";
+import MobileProducts from "./Mobile/MobileProducts";
+import MobileCommunity from "./Mobile/MobileCommunity";
+
 // Global Imports
 import ShareButton from "./Global/ShareButton";
 import VideoOpeningScreen from "./Global/VideoOpeningScreen";
@@ -72,10 +79,18 @@ export {
   DynamicCardMobile,
   DynamicCard,
   StatusBarManager,
-  SplashScreenHandler,VideoOpeningScreen,
+  SplashScreenHandler,
+  VideoOpeningScreen,
   Footer,
   BottomNavigation,
   PopupFooter,
+
+  // Mobile Exports
+  MobileHero,
+  MobileProducts,
+  MobileThemes,
+  MobileCommunity,
+  MobileActivity,
 
   // profile Exports
   ProfileSegments,

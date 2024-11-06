@@ -54,7 +54,7 @@ function SearchInput({ value, onChange }) {
   );
 }
 
-function LocalProductCard({ image, title, price }) {
+export function LocalProductCard({ image, title, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
     // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place

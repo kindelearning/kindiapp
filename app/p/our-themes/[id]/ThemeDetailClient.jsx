@@ -1,19 +1,16 @@
-import NotFound from "@/app/not-found";
-import { getThemeById } from "@/lib/hygraph";
 import Image from "next/image";
-import React from "react";
 
-export default async function ThemeDetailPage({ params }) {
-  const { id } = params;
-  const theme = await getThemeById(id);
+export default function ThemeDetailClient({ theme }) {
+  //   const { id } = params;
+  //   const theme = await getThemeById(id);
 
-  if (!theme) {
-    return (
-      <div>
-        <NotFound />
-      </div>
-    );
-  }
+  //   if (!theme) {
+  //     return (
+  //       <div>
+  //         <NotFound />
+  //       </div>
+  //     );
+  //   }
 
   return (
     <>

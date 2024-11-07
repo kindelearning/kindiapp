@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/auth"; // Ensure this export exists
+import { loginWithEmail, signUpWithGoogle } from "@/app/firebase/authOLD"; // Ensure this export exists
 
 const Login = () => {
   const [email, setEmail] = useState("");

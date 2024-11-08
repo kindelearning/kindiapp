@@ -2,8 +2,10 @@
 // import { GET_ACCOUNT_BY_EMAIL } from "@/lib/hygraph";
 import { Confidence } from "@/public/Icons";
 import { ActivityImage, KindiHeart } from "@/public/Images";
+import { ArrowRight } from "lucide-react";
 // import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const icons = [
@@ -287,6 +289,12 @@ export default function NewCalendar() {
 
   const days = generateCalendar();
 
+  // Adding the Action button and border for future events
+  const isFutureEvent = (eventDate) => {
+    const currentDate = new Date();
+    const eventDateObj = new Date(eventDate);
+    return eventDateObj >= currentDate; // True if the event is today or in the future
+  };
   return (
     <div className="max-w-full flex flex-col gap-4 justify-center items-center w-full mx-auto p-0">
       {/* Calendar Top Navigation */}
@@ -382,10 +390,15 @@ export default function NewCalendar() {
 
               {/* Show events if they exist */}
               {checkEventForDate(dayObj.day).map((event) => (
-                <div
+                <Link
+                  href={`/p/activities/${event.id}`}
                   key={event.id}
                   draggable
-                  className="w-full bg-white shadow-md rounded-lg p-2 text-sm"
+                  className={`w-full my-2 ${
+                    isFutureEvent(event.date)
+                      ? "border-2 border-red"
+                      : "border-0"
+                  } bg-white shadow-md rounded-lg p-2 text-sm`}
                   onDragStart={(e) => onDragStart(e, event)}
                   onTouchStart={(e) => onTouchStart(e, event)}
                   onTouchMove={onTouchMove}
@@ -393,7 +406,13 @@ export default function NewCalendar() {
                 >
                   {/* Show only the title if there are multiple events, otherwise show title and description */}
                   {eventCount > 1 ? (
-                    <p className="font-semibold text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                    <p
+                      className={`font-semibold ${
+                        isFutureEvent(event.date)
+                          ? "border-2 border-white"
+                          : "border-0"
+                      } text-[14px] border-0 border-white leading-[16px] lg:leading-[12px] lg:text-[12px] text-start`}
+                    >
                       {event.title}
                     </p>
                   ) : (
@@ -449,9 +468,24 @@ export default function NewCalendar() {
                           </div>
                         </div>
                       </div>
+                      <div
+                        className={`-mb-[24px] ${
+                          isFutureEvent(event.date) ? "flex" : "hidden"
+                        } w-full justify-between items-center`}
+                      >
+                        <div />
+                        <Link
+                          href={`/p/activities/${event.id}`}
+                          className={`w-fit px-[6px] py-[2px]  bg-red text-white shadow-md rounded-lg p-2 text-sm`}
+                        >
+                          <p className="font-semibold flex items-center text-[14px] leading-[16px] lg:leading-[12px] lg:text-[12px] text-start">
+                            Lets Start &nbsp; <ArrowRight />
+                          </p>
+                        </Link>
+                      </div>
                     </>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
           );

@@ -3,6 +3,7 @@
 import { ImageInput } from "@/app/Sections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Preferences } from "@capacitor/preferences";
 import { RefreshCcw } from "lucide-react";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
@@ -13,89 +14,74 @@ const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
 const AvailableDaysForm = ({ userId }) => {
-  // Ensure userId is passed as a prop
   const weekdays = ["S", "M", "T", "W", "Th", "F", "Sa"];
   const [selectedDays, setSelectedDays] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // State to track loading status
+  const [isLoading, setIsLoading] = useState(false);
 
-  const updateAvailableDays = async (userId, availableDays) => {
-    const mutation = `
-          mutation UpdateAvailableDays($id: ID!, $availableDays: [String!]) {
-            updateAccount(
-              where: { id: $id }
-              data: { availableDays: $availableDays }
-            ) {
-              id
-              availableDays
-            }
-          }
-        `;
-
-    const variables = {
-      id: userId,
-      availableDays,
-    };
-
-    const response = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-      },
-      body: JSON.stringify({ query: mutation, variables }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to update available days: ${errorText}`);
+  // Save selected days using Capacitor Preferences
+  const saveSelectedDays = async (days) => {
+    try {
+      await Preferences.set({
+        key: "selectedDays",
+        value: JSON.stringify(days),
+      });
+      console.log("Selected days saved successfully:", days);
+    } catch (error) {
+      console.error("Error saving selected days:", error);
     }
-
-    const data = await response.json();
-    console.log("Updated available days:", data);
-    return data.data.updateAccount; // Adjust based on your needs
   };
 
+  // Fetch stored days from Capacitor Preferences
+  const fetchStoredDays = async () => {
+    try {
+      const { value } = await Preferences.get({ key: "selectedDays" });
+      if (value) {
+        const parsedDays = JSON.parse(value);
+        console.log("Fetched stored days:", parsedDays);
+        setSelectedDays(parsedDays);
+      } else {
+        console.log("No stored days found");
+      }
+    } catch (error) {
+      console.error("Error fetching stored days:", error);
+    }
+  };
+
+  // Handle day toggle
   const handleToggleDay = (day) => {
     setSelectedDays((prev) => {
+      let updatedDays;
       if (prev.includes(day)) {
-        return prev.filter((d) => d !== day);
+        updatedDays = prev.filter((d) => d !== day);
       } else {
-        return [...prev, day];
+        updatedDays = [...prev, day];
       }
+      // Save updated days
+      saveSelectedDays(updatedDays);
+      return updatedDays;
     });
   };
 
+  // Fetch stored data on component mount
   useEffect(() => {
-    const storedDays = localStorage.getItem("selectedDays");
-    if (storedDays) {
-      setSelectedDays(JSON.parse(storedDays));
-    }
+    fetchStoredDays();
   }, []);
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (selectedDays.length > 0) {
       try {
-        // Store selected days in local storage
-        localStorage.setItem("selectedDays", JSON.stringify(selectedDays));
-
-        // Set loading state to true
         setIsLoading(true);
-
-        // Call the mutation to update the user profile
-        await updateAvailableDays(userId, selectedDays);
-
-        // Set success message
+        // Optionally call mutation to update available days if needed
+        // await updateAvailableDays(userId, selectedDays);
         setSuccessMessage("Successfully updated available days!");
-
-        // Optionally, you can clear the message after a few seconds
         setTimeout(() => setSuccessMessage(""), 3000);
       } catch (error) {
         console.error("Failed to update available days:", error);
       } finally {
-        // Reset loading state
         setIsLoading(false);
       }
     } else {
@@ -105,8 +91,8 @@ const AvailableDaysForm = ({ userId }) => {
 
   return (
     <form
-      className="w-full px-4 flex flex-col gap-2 justify-start items-center py-2 rounded-xl bg-white"
       onSubmit={handleSubmit}
+      className="w-full px-4 flex flex-col gap-2 justify-start items-center py-2 rounded-xl bg-white"
     >
       <div className="flex w-full justify-between items-center">
         <div className="flex w-full justify-start items-start gap-2 flex-col">
@@ -123,11 +109,6 @@ const AvailableDaysForm = ({ userId }) => {
             isLoading ? "" : ""
           }`}
         >
-          <RefreshCcw
-            className={`w-2 h-2 lg:w-5 lg:h-5 ${
-              isLoading ? "animate-spin" : ""
-            }`}
-          />
           Sync Nursery
         </Button>
       </div>
@@ -147,13 +128,13 @@ const AvailableDaysForm = ({ userId }) => {
           </button>
         ))}
       </div>
-      {/* Success message display */}
       {successMessage && (
         <div className="mt-2 text-green-600 font-medium">{successMessage}</div>
       )}
     </form>
   );
 };
+
 
 export default function ProfileEdit({ userId }) {
   const [loading, setLoading] = useState(false);

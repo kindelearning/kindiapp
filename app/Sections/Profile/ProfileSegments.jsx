@@ -194,14 +194,7 @@ export default function ProfileSegments() {
                       <MyLevel userID={hygraphUser.id} />{" "}
                     </>
                   ) : null}
-                  <Link href="/profile/update" className="flex md:hidden">
-                    <Badge
-                      className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
-                      variant="outline"
-                    >
-                      Edit
-                    </Badge>
-                  </Link>
+                  
                 </div>
               </div>
             </div>

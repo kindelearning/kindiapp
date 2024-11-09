@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import LevelCard from "./LevelCard";
 import { PopupFooter } from "..";
+import Link from "next/link";
 
 const HYGRAPH_MAIN_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -86,7 +87,7 @@ export default function MyLevel({ userID }) {
     if (activityCount > 10 && activityCount <= 15) return 3;
     if (activityCount > 15 && activityCount <= 20) return 4;
     if (activityCount > 20 && activityCount <= 25) return 5;
-    return "Max Level"; // More than 25
+    return "Max Level"; 
   };
 
   if (loading) return <p>Loading...</p>;
@@ -97,15 +98,15 @@ export default function MyLevel({ userID }) {
 
   return (
     <div className="flex w-full flex-col justify-start items-center gap-2">
-      <div className="w-full claracontainer flex flex-row gap-2 justify-start items-center">
+      <div className="w-full claracontainer flex flex-row gap-2 justify-start items-start">
         <div className="text-[#3f3a64] clarabodyTwo">
           User Level: {userLevel}
         </div>
 
         <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-          <DialogTrigger asChild>
+          <DialogTrigger className="-m-[6px] mx-1 h-fit">
             <Badge
-              className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
+              className="text-[10px] h-fit m-0 rounded-full md:text-[16px] cursor-pointer"
               variant="outline"
             >
               Check Now
@@ -144,6 +145,14 @@ export default function MyLevel({ userID }) {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+        <Link href="/profile/update" className="flex md:hidden">
+          <Badge
+            className="text-[10px] rounded-full md:text-[16px] cursor-pointer"
+            variant="outline"
+          >
+            Edit
+          </Badge>
+        </Link>
       </div>
 
       <div className="flex w-full gap-1 items-center">

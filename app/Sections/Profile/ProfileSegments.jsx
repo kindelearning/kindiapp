@@ -354,7 +354,11 @@ export default function ProfileSegments() {
                       {user && hygraphUser ? (
                         <ConnectAccountForm userId={hygraphUser.id} />
                       ) : (
-                        <>id Not found</>
+                        <div className="claracontainer">
+            <Link href="/auth/sign-up" className="clarabutton">
+              Please Login to use this feature!
+            </Link>
+          </div>
                       )}
                     </div>
                   </div>
@@ -390,7 +394,11 @@ export default function ProfileSegments() {
                     {user && hygraphUser ? (
                       <PaymentMethodsList userId={hygraphUser.id} />
                     ) : (
-                      <p>id not found</p>
+                      <div className="claracontainer">
+            <Link href="/auth/sign-up" className="clarabutton">
+              Please Login to use this feature!
+            </Link>
+          </div>
                     )}
                   </div>
 

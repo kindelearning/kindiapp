@@ -7,8 +7,9 @@ import { getUserDataByEmail } from "@/lib/hygraph";
 // import Loading from "../loading";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
-export default  function ProfileUpdate() {
+export default function ProfileUpdate() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
@@ -28,15 +29,17 @@ export default  function ProfileUpdate() {
       </p>
     );
 
-  
-
   return (
     <>
       <section className="w-full pb-32 bg-[#f5f5f5] flex flex-col gap-0 justify-center items-start">
         {user && hygraphUser ? (
           <ProfileEdit userId={hygraphUser.id} />
         ) : (
-          <p>User Id Not found</p>
+          <div className="claracontainer">
+            <Link href="/auth/sign-up" className="clarabutton">
+              Please Login to use this feature!
+            </Link>
+          </div>
         )}
       </section>
     </>

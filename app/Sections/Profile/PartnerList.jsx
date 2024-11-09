@@ -22,6 +22,7 @@ import Image from "next/image";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ConnectAccountForm from "./ConnectAccountForm";
+import Link from "next/link";
 
 export default function PartnerList({ userId }) {
   const [partners, setPartners] = useState([]);
@@ -180,7 +181,11 @@ export default function PartnerList({ userId }) {
                     {user && hygraphUser ? (
                       <ConnectAccountForm userId={hygraphUser.id} />
                     ) : (
-                      <>id Not found</>
+                      <div className="claracontainer">
+                        <Link href="/auth/sign-up" className="clarabutton">
+                          Please Login to use this feature!
+                        </Link>
+                      </div>
                     )}
                   </div>
                 </div>

@@ -52,6 +52,8 @@ import {
 import { data } from "@/app/constant/menu";
 import { Button } from "@/components/ui/button";
 import ConnectAccountForm from "./ConnectAccountForm";
+import { getAuth } from "firebase/auth";
+import app from "@/app/firebase/firebaseConfig";
 
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
@@ -73,6 +75,20 @@ export default function ProfileSegments() {
         <Loading />
       </p>
     );
+
+  const auth = getAuth(app); // Use the initialized app here
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User successfully logged out");
+
+      // Redirect to the home or login page after logging out
+      router.push("/p");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <>
@@ -194,7 +210,6 @@ export default function ProfileSegments() {
                       <MyLevel userID={hygraphUser.id} />{" "}
                     </>
                   ) : null}
-                  
                 </div>
               </div>
             </div>
@@ -355,10 +370,10 @@ export default function ProfileSegments() {
                         <ConnectAccountForm userId={hygraphUser.id} />
                       ) : (
                         <div className="claracontainer">
-            <Link href="/auth/sign-up" className="clarabutton">
-              Please Login to use this feature!
-            </Link>
-          </div>
+                          <Link href="/auth/sign-up" className="clarabutton">
+                            Please Login to use this feature!
+                          </Link>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -395,10 +410,10 @@ export default function ProfileSegments() {
                       <PaymentMethodsList userId={hygraphUser.id} />
                     ) : (
                       <div className="claracontainer">
-            <Link href="/auth/sign-up" className="clarabutton">
-              Please Login to use this feature!
-            </Link>
-          </div>
+                        <Link href="/auth/sign-up" className="clarabutton">
+                          Please Login to use this feature!
+                        </Link>
+                      </div>
                     )}
                   </div>
 
@@ -544,6 +559,15 @@ export default function ProfileSegments() {
                 </DialogHeader>
               </DialogContent>
             </Dialog>
+          </div>
+          {/* Signout Button */}
+          <div className="w-full justify-start items-center flex">
+            <Button
+              className="clarabutton max-w-[300px] bg-red hover:bg-hoverRed"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </div>
           {/* Reffereal Card Section */}
           <div className="claracontainer px-0 w-full flex flex-col justify-start items-start overflow-hidden gap-8">

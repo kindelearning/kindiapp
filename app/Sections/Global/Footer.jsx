@@ -45,26 +45,13 @@ export default function Footer() {
             <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
               special offers and latest news about our products directly{" "}
             </div>
-
-            <div className="hidden lg:flex w-full">
-              {/* <GoogleTranslate /> */}
-            </div>
           </div>
         </div>
-        {/* <div className="claracontainer w-full py-8 px-2 flex flex-col justify-center items-center gap-1">
-          <div className="text-white text-3xl md:text-4xl font-bold font-fredoka">
-            Download Our App
-          </div>
-          <div className="claracontainer w-full py-4 px-2 flex flex-row justify-center items-center gap-1 md:flex-row">
-            <Image alt="Kindi" src={Apple} />
-            <Image alt="Kindi" src={AppStore} />
-          </div>
-        </div> */}
         <div className="claracontainer px-2 w-full py-4 flex flex-col justify-between items-center gap-1 md:flex-row">
           <div className="text-white/90  min-w-[max-content] w-full clarabodyTwo font-semibold font-fredoka">
             {currentYear} KINDI Learning, INC. All rights reserved.
           </div>
-          <Link href="#" className="flex w-fit justify-end items-end gap-2">
+          <Link href="#" className="flex w-full justify-end items-end gap-2">
             <Image
               alt="Kindi"
               src={Facebook}

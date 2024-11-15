@@ -10,6 +10,9 @@ export default function ContactForm() {
     name: "",
     email: "",
     message: "",
+    inquiryType: "",
+    subject: "",
+    phoneNumber: "", // Add phoneNumber here
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -22,7 +25,27 @@ export default function ContactForm() {
       [name]: value,
     }));
   };
-
+  const inquiryOptions = [
+    "Career Opportunities",
+    "Partnership or Collaboration Opportunity",
+    "Investment Opportunities",
+    "Compliment or Praise",
+    "Press or Media Inquiry",
+    "Product Suggestions or Recommendations",
+    "Custom Orders or Special Requests",
+    "Wholesale or Bulk Order Inquiry",
+    "Events",
+    "Subscription or Service Questions",
+    "Billing or Payment",
+    "Website Bug or Technical Issue",
+    "Technical Assistance",
+    "Returns, Exchanges, or Refunds",
+    "Order Status",
+    "Product Information Request",
+    "Account Login or Password Help",
+    "Feedback or Complaint",
+    "Developer Support (API, Integration)",
+  ];
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -40,7 +63,14 @@ export default function ContactForm() {
       const data = await response.json();
       if (data.success) {
         setSuccessMessage("Message sent successfully!");
-        setFormData({ name: "", email: "", message: "" }); // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+          subject: "",
+          inquiryType: "",
+          phoneNumber: "",
+        });
       } else {
         setError("Failed to send the message. Please try again.");
       }
@@ -57,44 +87,78 @@ export default function ContactForm() {
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
         <form
-          onSubmit={handleSubmit}
-          className="flex justify-center items-center flex-col gap-4 w-full"
-        >
-          <Input
-            type="text"
-            name="name"
-            value={formData.name}
-            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
-            placeholder="Your Name"
-            onChange={handleChange}
-            required
-          />
-
-          <Input
-            type="email"
-            name="email"
-            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
-            value={formData.email}
-            placeholder="Your Email"
-            onChange={handleChange}
-            required
-          />
-          <Textarea
-            name="message"
-            value={formData.message}
-            placeholder="Your Message"
-            onChange={handleChange}
-            className="border ring-0 ring-offset-0 focus-visible:ring-0 p-2"
-            required
-          />
-          <Button
-            type="submit"
-            disabled={loading}
-            className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
+            onSubmit={handleSubmit}
+            className="flex justify-center items-center flex-col gap-2 lg:gap-4 w-full"
           >
-            {loading ? "Sending..." : "Submit"}
-          </Button>
-        </form>
+            <div className="flex w-full flex-col lg:flex-row gap-2 lg:gap-1">
+              <Input
+                type="text"
+                name="name"
+                value={formData.name}
+                className="border bg-white p-2"
+                placeholder="Your Name"
+                onChange={handleChange}
+                required
+              />
+
+              <Input
+                type="email"
+                name="email"
+                className="border bg-white p-2"
+                value={formData.email}
+                placeholder="Your Email"
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <Input
+              type="tel"
+              name="phoneNumber"
+              className="border bg-white p-2"
+              value={formData.phoneNumber}
+              required
+              placeholder="Your Contact"
+              onChange={handleChange}
+            />
+            <Input
+              name="subject"
+              value={formData.subject}
+              placeholder="Enter Subject"
+              onChange={handleChange}
+              className="border bg-white p-2"
+              required
+            />
+            <select
+              name="inquiryType"
+              value={formData.inquiryType}
+              onChange={handleChange}
+              required
+              className="border p-2 bg-white font-fredoka text-[#7f8896] rounded-[8px] w-full"
+            >
+              <option className="text-black" value="">Select Inquiry Type</option>
+              {inquiryOptions.map((option, index) => (
+                <option className="text-black" key={index} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <Textarea
+              name="message"
+              value={formData.message}
+              placeholder="Your Message"
+              onChange={handleChange}
+              className="border bg-white p-2"
+              required
+            />
+            <Button
+              type="submit"
+              disabled={loading}
+              className="clarabutton w-[200px] lg:w-[300px] bg-red hover:bg-hoverRed text-white p-2"
+            >
+              {loading ? "Sending..." : "Submit"}
+            </Button>
+          </form>
       </div>
     </section>
   );

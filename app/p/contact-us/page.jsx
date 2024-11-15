@@ -160,7 +160,7 @@ export default function ContactForm() {
               value={formData.inquiryType}
               onChange={handleChange}
               required
-              className="border p-2 font-fredoka text-[#7f8896] rounded-[8px] w-full"
+              className="border p-2 bg-[white] font-fredoka text-[#7f8896] rounded-[8px] w-full"
             >
               <option className="text-black" value="">
                 Select Inquiry Type

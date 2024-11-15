@@ -428,9 +428,9 @@ export default function ActivityDetailClient({ activity }) {
               <Image alt="Kindi" src={Print} />
               Print
             </Button>
-            <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
+            {/* <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
               Mark as Complete
-            </Button>
+            </Button> */}
             {/* <DynamicMarkActivityCompleteComponent /> */}
             <DynamicMarkActivityCompleteComponent activityId={activity.id} />
           </div>

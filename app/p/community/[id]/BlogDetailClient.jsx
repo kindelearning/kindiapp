@@ -130,10 +130,16 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { ShareButton } from "@/app/Sections";
-import { likeBlogPost } from "@/lib/hygraph";
-import { CommentIcon, LikeIcon } from "@/public/Images";
+import { fetchProfilePictures, likeBlogPost } from "@/lib/hygraph";
+import { CommentIcon, LikeIcon, ProfilePlaceHolderOne } from "@/public/Images";
+import CommentForm from "../comments/CommentForm";
 
 export default function BlogDetailClient({ blog }) {
+  const randomComments = getRandomNumber(10, 100); // Adjust range as needed
+  // const [blog, setBlog] = useState(null);
+  const randomDate = getRandomPastDate();
+  const randomLikes = getRandomLikes(0, 100); // Set your desired range
+
   const [likeCount, setLikeCount] = useState(blog.likeCount || 0); // Use initial like count from blog data
   const [isLiking, setIsLiking] = useState(false);
 
@@ -201,10 +207,10 @@ export default function BlogDetailClient({ blog }) {
                       onClick={scrollToCommentSection} // Ensure you have this function defined
                       className="text-[#0a1932] bg-[#f8f8f8] rounded-full p-2 hover:text-[#0a1932]"
                     >
-                      <Image alt="Kindi" src={CommentIcon} />{" "}
+                      <Image alt="Kindi" src={CommentIcon || "129"} />
                       {/* Update path */}
                     </button>
-                    {blog.comments.length}+
+                    {/*  {blog.comments.length}+ */} {randomComments}+
                   </button>
                 </div>
                 <div className="flex items-center">
@@ -228,6 +234,47 @@ export default function BlogDetailClient({ blog }) {
         </div>
         <hr className="border-1 my-3 rounded-full w-full h-[2px] border-[#c7c7c7]" />
         {/* Comments Section */}
+        <div className="w-full claracontainer  md:p-2 lg:p-4 flex flex-col justify-start items-start py-5 px-4 ">
+          <div className="flex flex-col max-w-4xl w-full mx-auto justify-start items-start gap-4">
+            <div className="text-[#0a1932] leading-[46px] text-[44px] font-semibold font-fredoka">
+              Comments
+            </div>
+            {blog.comments && blog.comments.length > 0 ? (
+              <div className="w-full flex flex-col gap-2 justify-end items-end">
+                {blog.comments.map((comment) => (
+                  <div
+                    className="w-full lg:min-w-[max-content] lg:max-w-[700px] flex flex-col justify-normal items-start bg-white gap-4 rounded-[8px] p-2 lg:p-4"
+                    key={comment.id}
+                  >
+                    <div className="w-full flex gap-2 justify-start items-start">
+                      <ProfilePictureComponent />
+                      <div className="w-fit flex flex-col justify-start items-start gap-2">
+                        <div className="text-[#0a1932] text-xs font-semibold font-fredoka leading-none">
+                          {comment.name}
+                        </div>
+                        <div className="w-[115px] text-[#b4b4b4] text-[10px] font-normal font-fredoka leading-none">
+                          {formatDate(randomDate)}{" "}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-[max-content] text-[#0a1932] text-xs font-normal font-fredoka leading-none">
+                      {comment.content}
+                    </div>
+                    <LikeButton />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No comments yet.</p>
+            )}
+
+            <CommentForm
+              className="pt-6"
+              id="comment_Section"
+              blogId={blog.id}
+            />
+          </div>
+        </div>
       </section>
     </>
   );

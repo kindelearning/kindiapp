@@ -66,7 +66,7 @@ const CommentForm = ({ blogId }) => {
           aria-label="Your Name"
           onChange={(e) => setName(e.target.value)}
           required
-          className="border-2 font-fredoka rounded-[8px] focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+          className="border-2 bg-white font-fredoka rounded-[8px] focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white  "
         />
         <Textarea
           placeholder="Your Comment"
@@ -75,7 +75,7 @@ const CommentForm = ({ blogId }) => {
           onChange={(e) => setContent(e.target.value)}
           required
           // className="w-full rounded-[8px] object-cover overflow-clip flex "
-          className="border-2 font-fredoka max-h-[200px] h-[50px] rounded-[8px] focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white border-[#b4b4b4] "
+          className="border-2 bg-white font-fredoka max-h-[200px] h-[50px] rounded-[8px] focus:border-black focus-within:ring-0 ring-offset-0 focus-visible:ring-0 ring-white  "
         />
         <Button
           type="submit"

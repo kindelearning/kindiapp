@@ -544,6 +544,7 @@ export default function ProfileSegments() {
                       <div className="flex flex-col gap-4 justify-center items-center w-full">
                         <ContactForm />
                         <Link
+                          target="_blank"
                           href="/p/faq"
                           className="text-center px-4 w-full text-[#3f3a64] clarabodyTwo "
                         >

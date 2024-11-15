@@ -3,35 +3,67 @@ const HYGRAPH_API_TOKEN =
 const HYGRAPH_API_URL =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
-
 import { NextResponse } from "next/server";
 import { GraphQLClient } from "graphql-request";
 import { gql } from "graphql-request";
 
-
-
 export async function POST(request) {
-  const { name, email, message } = await request.json();
+  const { name, email, message, phoneNumber, inquiryType, subject } =
+    await request.json();
   const hygraphClient = new GraphQLClient(HYGRAPH_API_URL, {
     headers: {
-      Authorization: `Bearer ${HYGRAPH_API_TOKEN}`, // Use the Bearer token for authorization
+      Authorization: `Bearer ${HYGRAPH_API_TOKEN}`,
     },
   });
 
+  // Create the contact entry
   const CREATE_CONTACT = gql`
-    mutation SubmitContactForm(
+    mutation CreateContact(
       $name: String!
       $email: String!
       $message: String!
+      $inquiryType: String!
+      $subject: String!
+      $phoneNumber: String!
     ) {
-      createContact(data: { name: $name, email: $email, message: $message }) {
+      createContact(
+        data: {
+          name: $name
+          email: $email
+          message: $message
+          inquiryType: $inquiryType
+          subject: $subject
+          phoneNumber: $phoneNumber
+        }
+      ) {
+        id
+      }
+    }
+  `;
+
+  // Publish the contact entry
+  const PUBLISH_CONTACT = gql`
+    mutation PublishContact($id: ID!) {
+      publishContact(where: { id: $id }) {
         id
       }
     }
   `;
 
   try {
-    await hygraphClient.request(CREATE_CONTACT, { name, email, message });
+    // Step 1: Create the contact
+    const { createContact } = await hygraphClient.request(CREATE_CONTACT, {
+      name,
+      email,
+      message,
+      inquiryType,
+      subject,
+      phoneNumber,
+    });
+
+    // Step 2: Publish the contact
+    await hygraphClient.request(PUBLISH_CONTACT, { id: createContact.id });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error submitting contact form:", error);
@@ -41,3 +73,34 @@ export async function POST(request) {
     });
   }
 }
+// export async function POST(request) {
+//   const { name, email, message } = await request.json();
+//   const hygraphClient = new GraphQLClient(HYGRAPH_API_URL, {
+//     headers: {
+//       Authorization: `Bearer ${HYGRAPH_API_TOKEN}`, // Use the Bearer token for authorization
+//     },
+//   });
+
+//   const CREATE_CONTACT = gql`
+//     mutation SubmitContactForm(
+//       $name: String!
+//       $email: String!
+//       $message: String!
+//     ) {
+//       createContact(data: { name: $name, email: $email, message: $message }) {
+//         id
+//       }
+//     }
+//   `;
+
+//   try {
+//     await hygraphClient.request(CREATE_CONTACT, { name, email, message });
+//     return NextResponse.json({ success: true });
+//   } catch (error) {
+//     console.error("Error submitting contact form:", error);
+//     return NextResponse.json({
+//       success: false,
+//       error: "Failed to submit contact form",
+//     });
+//   }
+// }

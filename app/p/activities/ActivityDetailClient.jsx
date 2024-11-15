@@ -311,23 +311,63 @@ export default function ActivityDetailClient({ activity }) {
               </div>
               <Accordian
                 title={activity.accordionOne}
-                description={activity.bodyOne}
+                description={
+                  activity.bodyOne && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyOne.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionTwo}
-                description={activity.bodyTwo}
+                description={
+                  activity.bodyTwo && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyTwo.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionThree}
-                description={activity.bodyThree}
+                description={
+                  activity.bodyThree && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyThree.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionFour}
-                description={activity.bodyFour}
+                description={
+                  activity.bodyFour && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyFour.html,
+                      }}
+                    />
+                  )
+                }
               />
               <Accordian
                 title={activity.accordionFive}
-                description={activity.bodyFive}
+                description={
+                  activity.bodyFive && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: activity.bodyFive.html,
+                      }}
+                    />
+                  )
+                }
               />
             </div>
             {/* Col 2(R2) */}

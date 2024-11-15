@@ -8,6 +8,7 @@ import {
 } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
+import PopularActivityCarousel from "./PopularActivityCarousel";
 
 export default function PopularActivity({ homeData, activities }) {
   return (
@@ -32,7 +33,9 @@ export default function PopularActivity({ homeData, activities }) {
         </div>
       </div>
       {/* The Activity Carousel */}
-      <div className="flex overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
+      <PopularActivityCarousel activities={activities} />
+
+      {/* <div className="flex overflow-x-auto py-2 scrollbar-hidden px-4 lg:px-0 w-full claracontainer gap-4 scrollbar-hidden">
         {activities.map((activity) => (
           <div key={activity.id}>
             <article className="rounded-lg ">
@@ -106,7 +109,7 @@ export default function PopularActivity({ homeData, activities }) {
             </article>
           </div>
         ))}
-      </div>
+      </div> */}
     </section>
   );
 }

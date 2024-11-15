@@ -6,7 +6,7 @@ export default function ShopLayout({ children }) {
       <html lang="en">
         <body>
           {children}
-          <NewsLetter />
+          {/* <NewsLetter /> */}
           <BottomNavigation />
           <Footer />
         </body>

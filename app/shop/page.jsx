@@ -70,16 +70,16 @@ export function LocalProductCard({ image, title, price }) {
   }, []);
 
   return (
-    <div className="flex lg:max-w-[300px] min-w-[170px] md:min-w-full md:w-full max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
-      <div className="flex rounded-t-[12px] overflow-clip w-full">
-        <Image
-          src={image}
-          alt={title}
-          width={200}
-          height={200}
-          className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
-        />
-      </div>
+    <div className="flex lg:max-w-[300px] min-w-[170px] max-w-full lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex rounded-t-[12px] overflow-clip w-full">
+      <Image
+        src={image}
+        alt={title}
+        width={200}
+        height={200}
+        className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
+      />
+    </div>
       <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
         <div className="flex items-center px-2 w-full justify-between gap-2">
           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
@@ -387,7 +387,11 @@ export default function ShopPage() {
   }
   return (
     <>
-      <NewHeader headerText="Shop" className="sticky" dynamicBgColor="#eaeaf5" />
+      <NewHeader
+        headerText="Shop"
+        className="sticky"
+        dynamicBgColor="#eaeaf5"
+      />
 
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <Banner />

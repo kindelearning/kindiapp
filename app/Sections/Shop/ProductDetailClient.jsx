@@ -25,6 +25,7 @@ import {
   ShopHeader,
 } from "..";
 import { useCart } from "@/app/context/CartContext";
+import NewHeader from "../Mobile/NewHeader";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -208,7 +209,12 @@ export default function ProductDetailClient({ product }) {
 
   return (
     <>
-      <ShopHeader className="sticky" />
+      {/* <ShopHeader className="sticky" /> */}
+      <NewHeader
+        headerText={product.title}
+        className="sticky"
+        dynamicBgColor="#F5F5F5"
+      />
       <section className="w-full h-auto bg-[#F5F5F5] lg:bg-[#eaeaf5] items-center justify-center py-4 plg:pb-32 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-2 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Row 1 */}

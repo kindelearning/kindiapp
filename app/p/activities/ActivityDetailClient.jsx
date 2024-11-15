@@ -28,6 +28,7 @@ import Link from "next/link";
 import { getActivityById, getUserDataByEmail } from "@/lib/hygraph";
 import { useAuth } from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 
 const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -227,6 +228,8 @@ export default function ActivityDetailClient({ activity }) {
 
   return (
     <>
+      <NewHeader headerText="Activities" />
+
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="w-full hidden lg:flex text-[#3f3a64] claraheading capitalize">

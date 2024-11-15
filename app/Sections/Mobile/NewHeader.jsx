@@ -108,7 +108,7 @@ const usePathname = () => {
   return pathname;
 };
 
-export default function LocalHeader() {
+export default function NewHeader({ headerText, dynamicBgColor }) {
   const pathname = usePathname();
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -138,7 +138,7 @@ export default function LocalHeader() {
   return (
     <header className="sticky rounded- b-[12px] top-0 z-50 w-full  bg-red dark:bg-dark-blue-100  flex flex-col justify-center items-center ">
       <section className="max-w-[1400px] claracontainer px-4 md:px-2 lg:px-4 flex flex-row justify-between items-center py-4 w-full">
-        <Link href="/">
+        {/* <Link href="/">
           <div className="logo">
             <Image
               src={KindiVector}
@@ -146,7 +146,10 @@ export default function LocalHeader() {
               className="lg:w-[110px] w-[80px] md:w-[100px] lg:max-h-[50px]"
             />
           </div>
-        </Link>
+        </Link> */}
+        <div className="text-white font-bold font-fredoka text-[20px] md:text-[24px]">
+          {headerText}
+        </div>
 
         {/* Hamburger icon for small screens */}
         <div className="lg:hidden clara flex items-center">
@@ -311,7 +314,10 @@ export default function LocalHeader() {
           </Link>
         </div>
       </section>
-      <div className="w-full bg-[#f5f5f5] h-[12px] rounded-t-[12px]"></div>
+      <div
+        style={{ backgroundColor: dynamicBgColor || "#eaeaf5" }}
+        className="w-full h-[12px] rounded-t-[12px]"
+      ></div>
     </header>
   );
 }

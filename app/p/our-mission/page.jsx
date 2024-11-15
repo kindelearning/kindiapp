@@ -6,6 +6,7 @@ import {
   PopularActivity,
   TheTeam,
 } from "@/app/Sections";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { getAllActivities, getHomeData, getStoryData } from "@/lib/hygraph";
 
 export default async function OurMission() {
@@ -18,6 +19,8 @@ export default async function OurMission() {
   }
   return (
     <>
+      <NewHeader headerText="Our Mission" dynamicBgColor="#eaeaf500" />
+
       <section className="w-full bg-[#ffffff] flex flex-col gap-0 justify-center items-center">
         <MissionHero fetchedData={pageData} />
         <OurStory fetchedData={pageData} />

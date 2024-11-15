@@ -11,11 +11,6 @@ import {
 } from "./Sections";
 import { useState } from "react";
 
-// export const metadata = {
-//   title: "Kindi Learning",
-//   description: "Play • Learn • Grow • Thrive • Play",
-// };
-
 export default function RootLayout({ children }) {
   const [isVideoVisible, setIsVideoVisible] = useState(true);
 

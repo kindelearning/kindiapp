@@ -24,6 +24,7 @@ import { getAllActivities } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import NotFound from "@/app/not-found";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 
 export default function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
@@ -231,6 +232,7 @@ export default function ActivitiesPage() {
   if (!activities || activities.length === 0) {
     return (
       <>
+
         <section className="w-full min-h-screen bg-[#EAEAF5] items-center justify-center py-4 flex flex-col lg:flex-row gap-[20px]">
           <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col md:flex-col lg:flex-row py-24 overflow-hidden gap-8">
             <Image alt="Kindi" src={NotFoundImg} />
@@ -314,6 +316,8 @@ export default function ActivitiesPage() {
   }
   return (
     <>
+      <NewHeader headerText="Activities" />
+
       <section className="w-full h-auto pb-32 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:p-0 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
           {/* Top Description Section */}

@@ -1,12 +1,15 @@
 import {
   AgeRanges,
   AreasOfLearning,
+  Header,
   HowItWorks,
   KindiSkillsCategories,
+  LocalHeader,
   MonthlyThemes,
   PlayForLife,
   PopularActivity,
 } from "@/app/Sections";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import {
   getAllActivities,
   getHIWData,
@@ -30,6 +33,9 @@ export default async function HowItWorksPage() {
     }
 
     return (
+      <>
+      <Header headerText="Our Mission" dynamicBgColor="#eaeaf500" />
+
       <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <PlayForLife fetchedData={pageData} />
         <HowItWorks homeData={homeData} />
@@ -39,6 +45,7 @@ export default async function HowItWorksPage() {
         <MonthlyThemes themes={themesData} homeData={homeData} />
         <PopularActivity activities={activitieData} homeData={homeData} />
       </section>
+      </>
     );
   } catch (error) {
     console.error("Error rendering HowItWorksPage:", error);

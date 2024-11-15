@@ -23,6 +23,7 @@ import { getProducts } from "@/lib/hygraph";
 import { useEffect, useRef, useState } from "react";
 import NotFound from "../not-found";
 import Image from "next/image";
+import NewHeader from "../Sections/Mobile/NewHeader";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -386,7 +387,8 @@ export default function ShopPage() {
   }
   return (
     <>
-      <Header className="sticky" />
+      <NewHeader headerText="Shop" className="sticky" dynamicBgColor="#eaeaf5" />
+
       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
         <Banner />
         <CardGroup />

@@ -3,6 +3,7 @@
 import { blogData } from "@/app/constant/blog";
 import Error from "@/app/error";
 import NotFound from "@/app/not-found";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { BlogCard } from "@/app/Widgets";
 import { Input } from "@/components/ui/input";
 import { getPublishedPosts } from "@/lib/hygraph";
@@ -78,6 +79,8 @@ export default function Community() {
 
   return (
     <>
+      <NewHeader headerText="Community" />
+
       <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">

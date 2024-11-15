@@ -1,9 +1,11 @@
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { NewCalendar } from "@/app/Widgets";
-import TestingCalendar from "@/app/Widgets/Schedular/TestingCalendar";
 
 export default function Schedule() {
   return (
     <>
+      <NewHeader headerText="Schedule" />
+
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4  w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">

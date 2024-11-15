@@ -133,6 +133,7 @@ import { ShareButton } from "@/app/Sections";
 import { fetchProfilePictures, likeBlogPost } from "@/lib/hygraph";
 import { CommentIcon, LikeIcon, ProfilePlaceHolderOne } from "@/public/Images";
 import CommentForm from "../comments/CommentForm";
+import NewHeader from "@/app/Sections/Mobile/NewHeader";
 
 export default function BlogDetailClient({ blog }) {
   const randomComments = getRandomNumber(10, 100); // Adjust range as needed
@@ -160,6 +161,8 @@ export default function BlogDetailClient({ blog }) {
 
   return (
     <>
+      <NewHeader headerText="Community" dynamicBgColor="#f05c5c" />
+
       <Head>
         <title>{blog.blogTitle}</title>
         <meta name="description" content={blog.blogDescription} />

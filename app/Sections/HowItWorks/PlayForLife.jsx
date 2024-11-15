@@ -1,6 +1,24 @@
+"use client";
+
+import { getUserDataByEmail } from "@/lib/hygraph";
+import { useAuth } from "@/lib/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function PlayForLife({ fetchedData }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
   // const videoUrl = standardPages.featuredVideo[0].url;
 
   return (
@@ -20,7 +38,7 @@ export default function PlayForLife({ fetchedData }) {
                 muted
                 className="object-cover min-h-[240px] max-h-[300px] md:min-h-[440px] lg:max-h-[340px] lg:h-[340px] rounded-[24px] w-full md:w-full lg:w-[540px] h-full"
               >
-                <source src={fetchedData.featuredVideo} type='video/mp4' />
+                <source src={fetchedData.featuredVideo} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -58,12 +76,13 @@ export default function PlayForLife({ fetchedData }) {
                 </div>
               </div>
             </div>
-            <div className="w-auto py-2 h-auto">
-              <Button className="bg-[#ffffff] text-[#019acf] hover:bg-[#ffffff] hover:border-2 hover:border-[#ffffff8a] px-4 md:px-8 xl:px-12 border-2 clarabutton rounded-[10px]">
-                {/* {session ? "Upgrade" : "Get Started"} */}
-                Get Started
+            <div className="w-full flex">
+              <Button className="bg-red hover:bg-purple text-white clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
+                {user && hygraphUser ? "Upgrade" : "Get Started"}
               </Button>
             </div>
+            {/* <div className="w-auto py-2 h-auto">
+            </div> */}
           </div>
         </div>
       </section>

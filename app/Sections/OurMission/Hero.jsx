@@ -1,8 +1,27 @@
+"use client";
+
+import { getUserDataByEmail } from "@/lib/hygraph";
+import { useAuth } from "@/lib/useAuth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HeroBGOurStoryTwo } from "@/public/Images";
 import Image from "next/image";
 
 export default function Hero({ fetchedData }) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
   return (
     <section className="max-w-[1500px] flex justify-center bg-[#ffffff] w-full items-center">
       <div className="w-full h-screen md:max-h-screen md:h-fit md:gap-6 lg:h-[814px]  object-bottom bg-none lg:bg-hero-image bg-contain bottom-0 bg-center bg-no-repeat justify-self-end grid md:flex md:flex-col lg:grid-cols-2 pb-16 gap-6 animate-fadeIn">
@@ -47,8 +66,8 @@ export default function Hero({ fetchedData }) {
             </div>
           </div>
           <div className="w-auto animate-slideInUp animate-delay-4000">
-            <Button className="bg-red hover:bg-hoverRed clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
-              Get Started
+            <Button className="bg-red hover:bg-purple text-white clarabutton px-6 md:px-12 py-3 rounded-[16px] animate-fadeIn animate-delay-4500">
+              {user && hygraphUser ? "Upgrade" : "Get Started"}
             </Button>
           </div>
         </div>

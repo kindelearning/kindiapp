@@ -61,6 +61,7 @@ export default function ProfileSegments() {
 
   const [hygraphUser, setHygraphUser] = useState(null);
 
+  
   useEffect(() => {
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {

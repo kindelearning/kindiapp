@@ -1,4 +1,5 @@
 import { ThemeCard } from "@/app/Widgets";
+import Link from "next/link";
 
 export default function MonthlyThemes({ homeData, themes }) {
   return (
@@ -19,29 +20,33 @@ export default function MonthlyThemes({ homeData, themes }) {
               </span>
             </div>
             <div className="w-full md:w-[500px] xl:w-[800px] animate-fade-in  duration-150 text-start md:text-center text-purple clarabodyTwo">
-              {/* Providing themes for each activity is a powerful way to keep
-              children engaged in learning; we use it to both maintain
-              involvement and reinforce the previous day&apos;s learnings.
-              That&apos;s why we release new themes every month. */}
               <p>{homeData[0].monthlyTheme}</p>
             </div>
           </div>
 
           <div className="lg:grid claracontainer w-full flex flex-row overflow-x-scroll scrollbar-hidden px-2 py-4 hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
-            {/* <ThemeCard />
-            <ThemeCard />
-            <ThemeCard />
-            <ThemeCard /> */}
             {themes.map((theme) => (
-              <ThemeCard
-                key={theme.id}
-                image={theme.thumbnail.url}
-                theTime={theme.launchTime}
-                metaDesc={theme.metaDesc}
-                title={theme.title}
-              />
+              <Link href={`/p/our-themes/${theme.id}`} key={theme.id}>
+                <ThemeCard
+                  key={theme.id}
+                  image={theme.thumbnail.url}
+                  theTime={theme.launchTime}
+                  metaDesc={theme.metaDesc}
+                  title={theme.title}
+                />
+              </Link>
             ))}
           </div>
+          {themes.length > 4 ? (
+            <div className="w-full flex-col justify-center items-center px-4 heading inline-flex">
+              <Link
+                href="/p/our-themes"
+                className="clarabutton text-white py-2 min-w-[200px] lg:w-[240px] text-center px-8 lg:px-4  bg-red hover:bg-purple"
+              >
+                View More
+              </Link>
+            </div>
+          ) : null}
         </div>
       </section>
     </>

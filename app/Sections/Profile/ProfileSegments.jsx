@@ -54,14 +54,33 @@ import { Button } from "@/components/ui/button";
 import ConnectAccountForm from "./ConnectAccountForm";
 import { getAuth } from "firebase/auth";
 import app from "@/app/firebase/firebaseConfig";
+import { StockImages } from "@/app/constant/profile";
 
+const getRandomImage = () => {
+  const randomIndex = Math.floor(Math.random() * StockImages.length);
+  return StockImages[randomIndex].url;
+};
+
+const RandomImageComponent = () => {
+  const randomImage = getRandomImage();
+
+  return (
+    <div className="relative w-20  -mx-[32px] h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+      <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        <Image
+          src={randomImage}
+          alt="Random Profile Placeholder"
+          className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+        />
+      </div>
+    </div>
+  );
+};
 export default function ProfileSegments() {
   const { user, loading } = useAuth();
   const router = useRouter();
-
   const [hygraphUser, setHygraphUser] = useState(null);
 
-  
   useEffect(() => {
     if (user && user.email) {
       getUserDataByEmail(user.email).then((data) => {
@@ -93,7 +112,7 @@ export default function ProfileSegments() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
         <meta property="og:title" content="Profile - Kindilearning" />
@@ -111,7 +130,7 @@ export default function ProfileSegments() {
           content="Your profile page on Kindilearning"
         />
         <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
+      </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
@@ -128,8 +147,12 @@ export default function ProfileSegments() {
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
+                        // src={
+                        //   hygraphUser.profilePicture?.url ||
+                        //   ProfilePlaceHolderOne
+                        // }
                         src={
-                          hygraphUser.profilePicture?.url ||
+                          hygraphUser.myAvatar.profileAvatar.url ||
                           ProfilePlaceHolderOne
                         }
                         alt="User DP"
@@ -141,16 +164,7 @@ export default function ProfileSegments() {
                   </div>
                 </>
               ) : (
-                <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                  <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
-                    <Image
-                      src={ProfileDP}
-                      alt="Logo"
-                      // className="rounded-full border-2 lg:w-full lg:h-full border-red w-[48px] h-[48px]"
-                      className="w-[72px] h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
-                    />
-                  </div>
-                </div>
+                <RandomImageComponent />
               )}
             </div>
 

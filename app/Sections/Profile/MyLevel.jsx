@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import LevelCard from "./LevelCard";
 import { PopupFooter } from "..";
 import Link from "next/link";
+import LevelList from "./LevelList";
 
 const HYGRAPH_MAIN_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
@@ -129,20 +130,22 @@ export default function MyLevel({ userID }) {
             </DialogHeader>
             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
               <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                {[5, 10, 15, 20, 25].map((activityGoal, index) => (
+                {/* {[5, 10, 15, 20, 25].map((activityGoal, index) => (
                   <LevelCard
                     key={index}
                     level={`Level ${index + 1}`}
                     activities={activityGoal.toString()}
                   />
-                ))}
+                ))} */}
+                <LevelList />
+
               </div>
             </DialogDescription>
-            <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
+            {/* <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">
               <DialogClose className="w-full">
                 <PopupFooter PrimaryText="Save and Continue" />
               </DialogClose>
-            </DialogFooter>
+            </DialogFooter> */}
           </DialogContent>
         </Dialog>
         <Link href="/profile/update" className="flex md:hidden">

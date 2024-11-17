@@ -4,13 +4,11 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
   KindiHeart,
+  ProfilePlaceholder01,
   ProfilePlaceHolderOne,
-  progressImage01,
-  progressImage02,
-  progressImage03,
 } from "@/public/Images";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
-import { GraphQLClient, gql } from "graphql-request";
 import Loading from "@/app/loading";
 import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
@@ -23,12 +21,6 @@ const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 const HYGRAPH_TOKEN =
   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-
-const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
-  headers: {
-    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-  },
-});
 
 const ActivitiesCount = () => {
   const [totalActivities, setTotalActivities] = useState(0);
@@ -64,21 +56,6 @@ const ActivitiesCount = () => {
     </>
   );
 };
-
-const GET_ACCOUNT_BY_EMAIL = gql`
-  query GetAccountByEmail($email: String!) {
-    account(where: { email: $email }) {
-      id
-      name
-      username
-      email
-      profilePicture {
-        url
-      }
-      isVerified
-    }
-  }
-`;
 
 const SubBagde = ({
   title = "title",
@@ -309,10 +286,7 @@ const MyActivity = ({ userID }) => {
     </>
   );
 };
-
-export default function ProgressSection() {
-  // const [activities, setActivities] = useState([]); //Getting all the activities from Hygraph
-
+const CurrentUser = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
@@ -325,6 +299,69 @@ export default function ProgressSection() {
     }
   }, [user, loading, router]);
 
+  return (
+    <>
+      {user && hygraphUser ? (
+        <div className="relative -mx-[26px] z-20 min-w-20 lg:min-w-36 w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+          <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+            <Image
+              src={
+                hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
+              }
+              alt="User DP"
+              width={100}
+              height={100}
+              className="w-[72px] cursor-pointer hover:scale-110 ease-in-out duration-200 h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+          <Image
+            src={ProfilePlaceholder01}
+            alt="Random Profile Placeholder"
+            className="cursor-pointer w-16 h-16"
+          />
+        </div>
+      )}
+    </>
+  );
+};
+export default function ProgressSection() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+      });
+    }
+  }, [hygraphUser]);
+
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -335,65 +372,102 @@ export default function ProgressSection() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-        <meta property="og:title" content="Profile - Kindilearning" />
-        <meta
-          property="og:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta property="og:image" content="/images/logo.png" />
-        <meta property="og:url" content="https://kindilearning.com/profile" />
-        <meta property="og:site_name" content="Kindilearning" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Profile - Kindilearning" />
-        <meta
-          name="twitter:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
-      <section className="w-full h-auto pb-24 bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      </head>
+      <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-
-        <div className="claracontainer py-4  w-full flex flex-col overflow-hidden gap-8">
-          <div className="flex w-full px-4 h-[160px] flex-row justify-center gap-0 items-center relative">
-            <Image
-              alt="Kindi"
-              src={progressImage01}
-              className="cursor-pointer w-20 -mr-[32px] h-20"
-            />
-            {user && hygraphUser ? (
-              <div className="relative w-20 h-20 md:w-28 md:h-28 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
-                <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+        <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+          <Tabs
+            defaultValue="CurrentUser"
+            className="w-full flex flex-col gap-24"
+          >
+            <TabsList className="bg-[#eaeaf5]">
+              {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
                   <Image
+                    width={84}
+                    height={84}
                     src={
-                      hygraphUser.profilePicture?.url || ProfilePlaceHolderOne
+                      partner.myAvatar?.profileAvatar?.url ||
+                      ProfilePlaceholder01
                     }
-                    alt="User DP"
-                    width={100}
-                    height={100}
-                    className="w-[72px] h-[72px] md:w-32 md:h-32 object-cover overflow-clip rounded-full"
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
                   />
-                </div>
-              </div>
-            ) : (
-              <Image
-                alt="Kindi"
-                src={progressImage02}
-                width={100}
-                height={100}
-                className="cursor-pointer w-30 rounded-full border-2 border-white z-10 h-30"
-              />
-            )}
-            <Image
-              alt="Kindi"
-              src={progressImage03}
-              className="cursor-pointer w-20 -ml-[32px] h-20"
-            />
-          </div>
-          <>
+                </TabsTrigger>
+              ))}
+              <TabsTrigger
+                className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                value="CurrentUser"
+              >
+                <CurrentUser />
+              </TabsTrigger>
+              {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  key={partner.id}
+                  value={`Partner-${partner.id}`}
+                >
+                  <Image
+                    width={84}
+                    height={84}
+                    src={
+                      partner.myAvatar?.profileAvatar?.url ||
+                      ProfilePlaceholder01
+                    }
+                    alt={`Avatar of ${partner.name}`}
+                    className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                  />
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {hygraphUser?.partner?.map((partner) => (
+              <TabsContent key={partner.id} value={`Partner-${partner.id}`}>
+                {hygraphUser ? (
+                  <div className="w-full flex flex-col gap-2 justify-between items-center">
+                    <div className="font-fredoka text-[12px] lg:text-[20px]">
+                      Email: {partner.email || "Partner"}
+                    </div>
+                    <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                      <ActivitiesCount />
+                      <RemainingActivities userID={partner.id} />
+                      <MyActivity userID={partner.id} />
+                    </div>
+                  </div>
+                ) : null}
+              </TabsContent>
+            ))}
+            <TabsContent value="CurrentUser">
+              <>
+                {hygraphUser ? (
+                  <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                    <ActivitiesCount />
+                    <RemainingActivities userID={hygraphUser.id} />
+                    <MyActivity userID={hygraphUser.id} />
+                  </div>
+                ) : (
+                  <div className="flex w-full flex-col justify-center items-center gap-2">
+                    <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                      Kindi Learner
+                    </h2>
+                    <p className="font-fredoka text-[12px] lg:text-[20px]">
+                      <Link href="/auth/sign-in" className="text-red">
+                        Login&nbsp;
+                      </Link>
+                      to use more feature
+                    </p>
+                  </div>
+                )}
+              </>
+            </TabsContent>
+          </Tabs>
+          {/* <>
             {hygraphUser ? (
               <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
                 <ActivitiesCount />
@@ -410,8 +484,7 @@ export default function ProgressSection() {
                 </p>
               </>
             )}
-            {/* <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full"></div> */}
-          </>
+          </> */}
           <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes

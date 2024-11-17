@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
+  ProfilePlaceholder01,
   ProfilePlaceHolderOne,
   progressImage01,
   progressImage02,
@@ -23,6 +24,7 @@ import { getPublishedMileStone, getUserDataByEmail } from "@/lib/hygraph";
 import { useAuth } from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const ProfileRoute = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // State to track the current index
@@ -139,7 +141,7 @@ const MilestoneCompleteButton = ({ userId, milestoneId }) => {
   );
 };
 
-const DisplayAllMileStone = () => {
+const DisplayAllMileStone = ({ passThecurrentUserId }) => {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -170,8 +172,12 @@ const DisplayAllMileStone = () => {
 
   return (
     <>
-      <TrigSnakeCurve amplitude={7} mileStoneCustomData={milestones} />
-      <CurvePath milestones={milestones} />
+      <TrigSnakeCurve
+        amplitude={7}
+        mileStoneCustomData={milestones}
+        currentUserId={passThecurrentUserId}
+      />
+      <CurvePath milestones={milestones} currentUserId={passThecurrentUserId} />
     </>
   );
 };
@@ -180,6 +186,7 @@ const TrigSnakeCurve = ({
   amplitude = 6,
   mileStoneCustomData = [],
   step = 0.1,
+  currentUserId,
 }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
@@ -321,7 +328,8 @@ const TrigSnakeCurve = ({
                     {user && hygraphUser ? (
                       <MilestoneCompleteButton
                         milestoneId={mileStoneCustomData[index]?.id}
-                        userId={hygraphUser.id}
+                        userId={currentUserId}
+                        // userId={hygraphUser.id}
                       />
                     ) : (
                       <Link href="/auth/sign-up" className="clarabutton">
@@ -339,7 +347,49 @@ const TrigSnakeCurve = ({
   );
 };
 
-const CurvePath = ({ milestones = [] }) => {
+const CurrentUser = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  const [hygraphUser, setHygraphUser] = useState(null);
+
+  useEffect(() => {
+    if (user && user.email) {
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
+    }
+  }, [user, loading, router]);
+
+  return (
+    <>
+      {user && hygraphUser ? (
+        <div className="relative -mx-[26px] z-20 min-w-20 lg:min-w-36 w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
+          <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+            <Image
+              src={
+                hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
+              }
+              alt="User DP"
+              width={100}
+              height={100}
+              className="w-[72px] cursor-pointer hover:scale-110 ease-in-out duration-200 h-[72px] lg:w-36 lg:h-36 object-cover overflow-clip rounded-full"
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
+          <Image
+            src={ProfilePlaceholder01}
+            alt="Random Profile Placeholder"
+            className="cursor-pointer w-16 h-16"
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+const CurvePath = ({ milestones = [], currentUserId }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [message, setMessage] = useState("");
 
@@ -432,11 +482,11 @@ const CurvePath = ({ milestones = [] }) => {
       >
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
-            <button className="clarabutton bg-red px-4 py-2 hover:shadow text-white rounded hover:bg-hoverRed">
+            <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider md: uppercase font-bold text-[10px] md:text-[16px] hover:border-2 hover:border-[#ffffff] border-transparent md:px-8 xl:px-12 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white hover:bg-hoverRed">
               {milestone.title}
             </button>
           </DialogTrigger>
-          <DialogContent className="w-full bg-[#eaeaf5] p-0 md:min-w-[700px] ">
+          <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
             <DialogHeader className="p-4">
               <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
                 <div className="text-[#0a1932] claraheading">
@@ -446,7 +496,9 @@ const CurvePath = ({ milestones = [] }) => {
                   {milestone.description}
                 </div>
                 <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
-                  <div className="text-[#757575] clarabodyTwo ">Date</div>
+                  <div className="text-[#757575] clarabodyTwo ">
+                    Date of Completion
+                  </div>
                   <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
                     {currentDate}
                   </div>
@@ -465,13 +517,11 @@ const CurvePath = ({ milestones = [] }) => {
                   {user && hygraphUser ? (
                     <MilestoneCompleteButton
                       milestoneId={milestone.id}
-                      userId={hygraphUser.id}
-                      // userId="cm25lil0t0zvz07pfuuizj473"
+                      // userId={hygraphUser.id}
+                      userId={currentUserId}
                     />
                   ) : (
-                    <Link href="/auth/sign-in">
-                      <Button className="clarabutton">Login First!</Button>
-                    </Link>
+                    <Button className="clarabutton">Login First!</Button>
                   )}
                 </div>
               </section>
@@ -550,54 +600,114 @@ export default function MileStone() {
     }
   }, [user, loading, router]);
 
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.name);
+      });
+    }
+  }, [hygraphUser]);
+
   return (
     <>
       <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
-          <div className="flex w-full flex-col justify-center items-center">
-            <div className="flex w-full h-[160px] flex-row justify-center gap-0 items-center relative">
-              <Image
-                alt="Kindi"
-                src={progressImage01}
-                className="cursor-pointer w-20 object-cover rounded-full border-2 border-white -mr-[32px] h-20"
-              />
-              {user && hygraphUser ? (
-                <Image
-                  alt="Kindi"
-                  src={hygraphUser.profilePicture?.url || ProfilePlaceHolderOne}
-                  width={100}
-                  height={100}
-                  className="cursor-pointer w-28 h-28 min-w-[100px] min-h-[100px] border-gradient-to-r from-pink-500 to-yellow-500 border-2 border-red rounded-full z-10"
-                />
-              ) : (
-                <Image
-                  alt="Kindi"
-                  src={progressImage02}
-                  width={100}
-                  height={100}
-                  className="cursor-pointer w-30 rounded-full border-2 border-white z-10 h-30"
-                />
-              )}
-              <Image
-                alt="Kindi"
-                src={progressImage03}
-                className="cursor-pointer w-20 -ml-[32px] h-20"
-              />
-            </div>
-            {hygraphUser ? (
-              <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-                {hygraphUser.name}
-              </div>
-            ) : (
-              <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
-                Jacob
-              </div>
-            )}
+          <div className="flex w-full py-6 flex-col justify-center items-center">
+            <Tabs
+              defaultValue="CurrentUser"
+              className="w-full flex flex-col gap-6 lg:gap-12"
+            >
+              <TabsList className="bg-[#eaeaf5]">
+                {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
+                  <TabsTrigger
+                    className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                    key={partner.id}
+                    value={`Partner-${partner.id}`}
+                  >
+                    <Image
+                      width={84}
+                      height={84}
+                      src={
+                        partner.myAvatar?.profileAvatar?.url ||
+                        ProfilePlaceholder01
+                      }
+                      alt={`Avatar of ${partner.name}`}
+                      className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200  object-cover overflow-clip rounded-full"
+                    />
+                  </TabsTrigger>
+                ))}
+                <TabsTrigger
+                  className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                  value="CurrentUser"
+                >
+                  <CurrentUser />
+                </TabsTrigger>
+                {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
+                  <TabsTrigger
+                    className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
+                    key={partner.id}
+                    value={`Partner-${partner.id}`}
+                  >
+                    <Image
+                      width={84}
+                      height={84}
+                      src={
+                        partner.myAvatar?.profileAvatar?.url ||
+                        ProfilePlaceholder01
+                      }
+                      alt={`Avatar of ${partner.name}`}
+                      className="min-w-16 max-w-16 h-16 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                    />
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {hygraphUser?.partner?.map((partner) => (
+                <TabsContent key={partner.id} value={`Partner-${partner.id}`}>
+                  {hygraphUser ? (
+                    <div className="w-full flex flex-col gap-2 lg:gap-4 justify-between items-center">
+                      {/* <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                        Milestone For: {partner.name}
+                      </div> */}
+                      <div className="font-fredoka text-[12px] lg:text-[20px]">
+                        Email: {partner.email || "Partner"}
+                      </div>
+                      <ProfileRoute />
+                      <DisplayAllMileStone passThecurrentUserId={partner.id} />
+                    </div>
+                  ) : null}
+                </TabsContent>
+              ))}
+              <TabsContent value="CurrentUser">
+                <>
+                  {hygraphUser ? (
+                    <div className="flex flex-col justify-center items-center gap-2 lg:gap-4 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
+                      <div className="w-full text-center text-[#0a1932] text-[40px] font-semibold font-fredoka leading-normal">
+                        {hygraphUser.name}
+                      </div>
+                      <ProfileRoute />
+                      <DisplayAllMileStone
+                        passThecurrentUserId={hygraphUser.id}
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex w-full flex-col justify-center items-center gap-2">
+                      <h2 className="text-[#029871] text-[24px] md:text-[28px] lg:text-[32px] xl:text-[40px] font-semibold  font-fredoka leading-tight">
+                        Kindi Learner
+                      </h2>
+                      <p className="font-fredoka text-[12px] lg:text-[20px]">
+                        <Link href="/auth/sign-in" className="text-red">
+                          Login&nbsp;
+                        </Link>
+                        to use more feature
+                      </p>
+                    </div>
+                  )}
+                </>
+              </TabsContent>
+            </Tabs>
           </div>
-          {/* <UserProfile /> */}
-          <ProfileRoute />
-          <DisplayAllMileStone />
         </div>
       </section>
     </>

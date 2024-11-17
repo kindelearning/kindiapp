@@ -4,6 +4,9 @@ import { NewCalendar } from "@/app/Widgets";
 export default function Schedule() {
   return (
     <>
+      <head>
+        <title>Schedule | The Kindi</title>
+      </head>
       <NewHeader headerText="Schedule" />
 
       <section className="w-full h-auto bg-[#EAEAF5] pb-24 items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">

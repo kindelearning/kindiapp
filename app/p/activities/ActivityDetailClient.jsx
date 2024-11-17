@@ -20,7 +20,16 @@ import {
   Themes,
   TimerBlack,
   CompletedMark,
+  ProfilePlaceholder01,
 } from "@/public/Images";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -85,7 +94,7 @@ const ActivityCompleteButton = ({ activityId, userId }) => {
   };
   return (
     <Button
-      className={`rounded-2xl w-full flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
+      className={`rounded-2xl w-full text-[10px] lg:text-[12px] flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
         loading
           ? "opacity-50 cursor-not-allowed bg-red"
           : success
@@ -143,22 +152,132 @@ const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
     }
   }, [user, loading, router]);
 
+  useEffect(() => {
+    if (hygraphUser && hygraphUser.partner) {
+      hygraphUser.partner.forEach((partner) => {
+        const partnerAvatarUrl = partner.profileAvatar
+          ? partner.profileAvatar.url
+          : null;
+
+        // Check if the partner has an avatar in myAvatar field
+        const avatarUrl =
+          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
+
+        if (avatarUrl) {
+          console.log("Partner Avatar URL:", avatarUrl);
+        } else {
+          console.log("No avatar for this partner.");
+        }
+        console.log("Partner ID:", partner.id);
+        console.log("Partner Name:", partner.email);
+      });
+    }
+  }, [hygraphUser]);
+
   if (loading) return null;
 
   return (
     <>
       {user && hygraphUser ? (
-        <ActivityCompleteButton
-          activityId={activityId}
-          userId={hygraphUser.id}
-        />
+        // <ActivityCompleteButton
+        //   activityId={activityId}
+        //   userId={hygraphUser.id}
+        // />
+        <>
+          <Dialog>
+            <DialogTrigger className="w-full">
+              <Button className="bg-red w-full hover:bg-hoverRed clarabutton">
+                Mark as Completed
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogDescription className="w-full grid grid-cols-2 lg:grid-cols-3 justify-between gap-1 lg:gap-2">
+                  {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
+                    <div key={partner.id} value={`Partner-${partner.id}`}>
+                      {hygraphUser ? (
+                        <div className="w-full flex justify-between items-center">
+                          <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
+                            <Image
+                              width={36}
+                              height={36}
+                              src={
+                                partner.myAvatar?.profileAvatar?.url ||
+                                ProfilePlaceholder01
+                              }
+                              alt={`Avatar of ${partner.name}`}
+                              className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                            />
+                            <div className="font-fredoka text-[12px] lg:text-[16px]">
+                              {partner?.email?.split("@")[0]}
+                            </div>
+                            <ActivityCompleteButton
+                              activityId={activityId}
+                              userId={partner.id}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+
+                  <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
+                    <Image
+                      width={36}
+                      height={36}
+                      src={
+                        hygraphUser.myAvatar.profileAvatar.url ||
+                        ProfilePlaceholder01
+                      }
+                      className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                    />
+                    <div className="font-fredoka text-[12px] lg:text-[16px]">
+                      {hygraphUser?.email?.split("@")[0]}
+                    </div>
+                    <ActivityCompleteButton
+                      activityId={activityId}
+                      userId={hygraphUser.id}
+                    />
+                  </div>
+                  {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
+                    <div key={partner.id} value={`Partner-${partner.id}`}>
+                      {hygraphUser ? (
+                        <div className="w-full flex justify-between items-center">
+                          <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
+                            <Image
+                              width={36}
+                              height={36}
+                              src={
+                                partner.myAvatar?.profileAvatar?.url ||
+                                ProfilePlaceholder01
+                              }
+                              alt={`Avatar of ${partner.name}`}
+                              className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
+                            />
+                            <div className="font-fredoka text-[12px] lg:text-[16px]">
+                              {partner?.email?.split("@")[0]}
+                            </div>
+                            <ActivityCompleteButton
+                              activityId={activityId}
+                              userId={partner.id}
+                            />
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  ))}
+                </DialogDescription>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </>
       ) : (
         <Link
           href="/auth/sign-up"
           className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
           target="_blank"
         >
-          Login to complete this activity
+          Login!
         </Link>
       )}
     </>
@@ -215,9 +334,6 @@ const activityIcons = [
 ];
 
 export default function ActivityDetailClient({ activity }) {
-  // const { id } = params;
-  // const activity = await getActivityById(id);
-
   if (!activity) {
     return (
       <div>
@@ -228,7 +344,7 @@ export default function ActivityDetailClient({ activity }) {
 
   return (
     <>
-      <NewHeader headerText='Activity' />
+      <NewHeader headerText="Activity" />
 
       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">

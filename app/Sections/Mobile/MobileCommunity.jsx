@@ -57,7 +57,7 @@ export default function MobileCommunity({}) {
               Playful Learning Essentials
             </h1>
             <Link
-              href="/p/our-themes"
+              href="/p/community"
               className="clarabodyTwo text-red min-w-[max-content] justify-start items-center text-start"
             >
               View All

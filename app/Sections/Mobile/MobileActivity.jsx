@@ -17,7 +17,7 @@ export default function MobileActivity({ activities }) {
               Popular Speach & Language Activites
             </h1>
             <Link
-              href="/p/our-themes"
+              href="/p/activities"
               className="clarabodyTwo text-red min-w-[max-content] justify-start items-center text-start"
             >
               View All

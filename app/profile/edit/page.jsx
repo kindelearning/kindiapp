@@ -1,11 +1,11 @@
 "use client";
 
-import { ImageInput } from "@/app/Sections";
+import AvatarSelectionForm from "@/app/Sections/Profile/ImageInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Preferences } from "@capacitor/preferences";
 import { RefreshCcw } from "lucide-react";
-import Head from "next/head";
+
 import React, { useEffect, useState } from "react";
 
 const HYGRAPH_TOKEN =
@@ -14,7 +14,7 @@ const HYGRAPH_ENDPOINT =
   "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
 
 const AvailableDaysForm = () => {
-  const weekdays = ["S", "M", "T", "W", "Th", "F", "Sa"];
+  const weekdays = ["S", "M", "T", "WE", "Th", "F", "S"];
   const [selectedDays, setSelectedDays] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -96,14 +96,19 @@ const AvailableDaysForm = () => {
             Nursery days
           </div>
         </div>
-        <button
+        <Button
           type="submit"
           className={`transition w-fit duration-300 ease-in-out font-fredoka font-bold hover:border-2 hover:border-[#ffffff] px-2 p-2 md:px-4 border-2 rounded-[32px] flex flex-row gap-1 text-[12px] lg:text-[16px] items-center justify-center bg-[#029871] ${
             isLoading ? "" : ""
           }`}
         >
+          <RefreshCcw
+            className={`w-2 h-2 lg:w-5 lg:h-5 ${
+              isLoading ? "animate-spin" : ""
+            }`}
+          />
           Sync Nursery
-        </button>
+        </Button>
       </div>
       <div className="flex w-full gap-2 flow-row">
         {weekdays.map((day) => (
@@ -195,13 +200,10 @@ export default function ProfileEdit({ userId }) {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile Edit | Kindilearning</title>
         <meta name="description" content="Edit your profile in Kindilearning" />
-        <link rel="icon" href="/favicon.ico" />
-        {/* <link rel="stylesheet" href="/styles.css" />
-        <link rel="stylesheet" href="/profile.css" /> */}
-      </Head>
+      </head>
       <section className="w-full pb-24 h-auto bg-[#f5f5f5] flex flex-col md:flex-row items-center justify-center px-0">
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
@@ -216,7 +218,7 @@ export default function ProfileEdit({ userId }) {
 
           <div className="claracontainer lg:px-[144px] flex flex-col gap-8 justify-center items-center">
             <div className="flex w-full justify-center items-center">
-              <ImageInput />
+              <AvatarSelectionForm accountId={userId} />
             </div>
             <form
               onSubmit={handleSubmit}

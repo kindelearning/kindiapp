@@ -4,7 +4,6 @@ import ProfileEdit from "../edit/page";
 import { useAuth } from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import { getUserDataByEmail } from "@/lib/hygraph";
-// import Loading from "../loading";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import Link from "next/link";

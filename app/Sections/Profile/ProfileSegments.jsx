@@ -55,6 +55,7 @@ import ConnectAccountForm from "./ConnectAccountForm";
 import { getAuth } from "firebase/auth";
 import app from "@/app/firebase/firebaseConfig";
 import { StockImages } from "@/app/constant/profile";
+import { Input } from "@/components/ui/input";
 
 const getRandomImage = () => {
   const randomIndex = Math.floor(Math.random() * StockImages.length);
@@ -74,6 +75,172 @@ const RandomImageComponent = () => {
         />
       </div>
     </div>
+  );
+};
+
+const HYGRAPH_ENDPOINT =
+  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
+const HYGRAPH_TOKEN =
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
+
+const CONNECT_PAYMENT_METHOD_TO_USER_MUTATION = `
+  mutation ConnectPaymentMethodToUser($userId: ID!, $paymentMethodId: ID!) {
+  updateAccount(
+    where: { id: $userId }
+    data: {
+      myPaymentMethod: {
+        connect: { where: { id: $paymentMethodId } }
+      }
+    }
+  ) {
+    id
+  }
+}
+`;
+
+const GET_PAYMENT_METHODS_QUERY = `
+  query GetPaymentMethods($userId: ID!) {
+    account(where: { id: $userId }) {
+      myPaymentMethod {
+        id
+        name
+        number
+        expiryDate
+        cvv
+      }
+    }
+  }
+`;
+const PaymentMethodForm = ({ userId }) => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      name,
+      number: parseInt(number), // Ensure the number is an integer
+      expiryDate,
+      cvv: parseInt(cvv), // Ensure CVV is an integer
+    };
+
+    await createAndPublishPaymentMethod(data);
+  };
+
+  const createAndPublishPaymentMethod = async (data) => {
+    try {
+      // Step 1: Create PaymentMethod
+      const createResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: `
+              mutation CreatePaymentMethod($data: PaymentMethodCreateInput!) {
+                createPaymentMethod(data: $data) {
+                  id
+                }
+              }
+            `,
+          variables: { data },
+        }),
+      });
+      const createResult = await createResponse.json();
+      const paymentMethodId = createResult.data.createPaymentMethod.id;
+
+      // Step 2: Publish PaymentMethod
+      const publishResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: `
+              mutation PublishPaymentMethod($id: ID!) {
+                publishPaymentMethod(where: { id: $id }, to: PUBLISHED) {
+                  id
+                }
+              }
+            `,
+          variables: { id: paymentMethodId },
+        }),
+      });
+      const publishResult = await publishResponse.json();
+
+      // Step 3: Connect the created Payment Method to the user's account
+      const connectResponse = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+        },
+        body: JSON.stringify({
+          query: CONNECT_PAYMENT_METHOD_TO_USER_MUTATION,
+          variables: {
+            userId,
+            paymentMethodId,
+          },
+        }),
+      });
+      const connectResult = await connectResponse.json();
+
+      if (publishResult.errors) {
+        throw new Error("Error publishing payment method");
+      }
+
+      setMessage("Payment method added and published successfully!");
+    } catch (error) {
+      console.error("Error creating or publishing payment method:", error);
+      setMessage("Error adding payment method.");
+    }
+  };
+
+  return (
+    <form
+      className="flex flex-col gap-2 w-full justify-center items-start"
+      onSubmit={handleSubmit}
+    >
+      <Input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        required
+      />
+      <Input
+        type="text"
+        value={number}
+        onChange={(e) => setNumber(e.target.value)}
+        placeholder="Card Number"
+        required
+      />
+      <Input
+        type="date"
+        value={expiryDate}
+        onChange={(e) => setExpiryDate(e.target.value)}
+        required
+      />
+      <Input
+        type="text"
+        value={cvv}
+        onChange={(e) => setCvv(e.target.value)}
+        placeholder="CVV"
+        required
+      />
+      <button
+        className="clarabutton py-2 bg-red hover:bg-hoverRed text-white"
+        type="submit"
+      >
+        Submit Payment Method
+      </button>
+      {message && <p>{message}</p>}
+    </form>
   );
 };
 export default function ProfileSegments() {
@@ -115,21 +282,7 @@ export default function ProfileSegments() {
       <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-        <meta property="og:title" content="Profile - Kindilearning" />
-        <meta
-          property="og:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta property="og:image" content="/images/logo.png" />
-        <meta property="og:url" content="https://kindilearning.com/profile" />
-        <meta property="og:site_name" content="Kindilearning" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Profile - Kindilearning" />
-        <meta
-          name="twitter:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta name="twitter:image" content="/images/logo.png" />
+
       </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
@@ -372,14 +525,14 @@ export default function ProfileSegments() {
                       />
                     </div>
                     <div className="flex w-full flex-col justify-start items-start gap-4">
-                      <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                        Get $20
-                      </div>{" "}
-                      <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
-                        Invite a Partner or friends, family, coworkers,
-                        neighbours, and your favourite barista to Brushlink.
-                        Every time someone books and visits a new dentist
-                        through your link, you both get $20.
+                      <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka ">
+                        Securely grant access to your child&apos;s progress,
+                        activities, and milestones, ensuring that both parents
+                        can stay up-to-date and involved in every step of their
+                        learning. Simply invite your partner to join, and
+                        they&apos;ll gain shared access to the Kindi
+                        experience—helping you both support your little one
+                        together.
                       </div>
                       {user && hygraphUser ? (
                         <ConnectAccountForm userId={hygraphUser.id} />
@@ -454,11 +607,11 @@ export default function ProfileSegments() {
                         </div>
                       </DialogHeader>
                       <DialogDescription className="flex w-full px-4 pb-12 claracontainer flex-col justify-start items-center">
-                        {/* {user && hygraphUser ? (
+                        {user && hygraphUser ? (
                           <PaymentMethodForm userId={hygraphUser.id} />
                         ) : (
                           <p>id not found</p>
-                        )} */}
+                        )}
                       </DialogDescription>
                     </DialogContent>
                   </Dialog>

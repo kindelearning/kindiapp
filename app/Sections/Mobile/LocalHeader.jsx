@@ -3,7 +3,6 @@
 import {
   Achievement,
   KindiVector,
-  Logo,
   Milestone,
   ProfileProgress,
 } from "@/public/Images";
@@ -27,7 +26,6 @@ import { useRouter } from "next/navigation";
 import { getUserDataByEmail } from "@/lib/hygraph";
 import { signOut } from "firebase/auth";
 import Loading from "@/app/loading";
-// import { GoogleTranslate } from "./GoogleTranslate";
 
 const LocalNavitem = ({
   Link = "#",
@@ -127,6 +125,7 @@ export default function LocalHeader() {
       callbackUrl: "/", // Optional: Redirect users to this URL after sign out
     });
   };
+
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
@@ -136,7 +135,7 @@ export default function LocalHeader() {
   }
 
   return (
-    <header className="sticky rounded- b-[12px] top-0 z-50 w-full  bg-red dark:bg-dark-blue-100  flex flex-col justify-center items-center ">
+    <header className="top-0 w-full bg-red dark:bg-dark-blue-100 flex flex-col justify-center items-center ">
       <section className="max-w-[1400px] claracontainer px-4 md:px-2 lg:px-4 flex flex-row justify-between items-center py-4 w-full">
         <Link href="/">
           <div className="logo">
@@ -311,7 +310,7 @@ export default function LocalHeader() {
           </Link>
         </div>
       </section>
-      <div className="w-full bg-[#f5f5f5] h-[12px] rounded-t-[12px]"></div>
+      {/* <div className="w-full bg-[#f5f5f5] h-[12px] rounded-t-[12px]"></div> */}
     </header>
   );
 }

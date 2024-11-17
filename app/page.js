@@ -30,7 +30,7 @@ export default async function Home() {
       <section className="w-full flex flex-col gap-0 justify-center items-center">
         {/* <Header className="sticky" /> */}
         <LocalHeader />
-        <div className="w-full rounded-t-[12px] flex flex-col overflow-hidden gap-0">
+        <div className="w-full rounded-t-[12px] pb-12 flex flex-col overflow-hidden gap-0">
           <MobileHero />
           <MobileThemes themes={themesData} homeData={homeData} />
           <MobileProducts />

@@ -88,9 +88,9 @@ export default function ContactForm() {
 
   return (
     <>
-      <NewHeader headerText="Contact Us" dynamicBgColor="#eaeaf5" />
+      <NewHeader headerText="Contact Us" />
 
-      <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto z-50  -mt-[8px] rounded-t-[16px] pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
             <div className="w-full text-center">

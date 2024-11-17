@@ -19,9 +19,9 @@ export default async function OurMission() {
   }
   return (
     <>
-      <NewHeader headerText="Our Mission" dynamicBgColor="#eaeaf500" />
+      <NewHeader headerText="Our Mission" />
 
-      <section className="w-full bg-[#ffffff] flex flex-col gap-0 justify-center items-center">
+      <section className="w-full bg-[#ffffff] -mt-[8px] rounded-t-[16px]  z-50  flex flex-col gap-0 justify-center items-center">
         <MissionHero fetchedData={pageData} />
         <OurStory fetchedData={pageData} />
         <TheTeam fetchedData={pageData} />

@@ -136,8 +136,8 @@ export default function NewHeader({ headerText, dynamicBgColor }) {
   }
 
   return (
-    <header className="sticky rounded- b-[12px] top-0 z-50 w-full  bg-red dark:bg-dark-blue-100  flex flex-col justify-center items-center ">
-      <section className="max-w-[1400px] claracontainer px-4 md:px-2 lg:px-4 flex flex-row justify-between items-center py-4 w-full">
+    <header className="top-0 z-50 w-full bg-red dark:bg-dark-blue-100 flex flex-col justify-center items-center ">
+      <section className="max-w-[1400px] sticky claracontainer px-4 md:px-2 lg:px-4 flex flex-row justify-between items-center py-4 w-full">
         {/* <Link href="/">
           <div className="logo">
             <Image
@@ -314,10 +314,10 @@ export default function NewHeader({ headerText, dynamicBgColor }) {
           </Link>
         </div>
       </section>
-      <div
+      {/* <div
         style={{ backgroundColor: dynamicBgColor || "#eaeaf5" }}
-        className="w-full h-[12px] rounded-t-[12px]"
-      ></div>
+        className="w-full h-[12px] bottom-0 rounded-t-[12px]"
+      ></div> */}
     </header>
   );
 }

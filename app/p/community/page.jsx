@@ -1,8 +1,7 @@
 "use client";
 
-import { blogData } from "@/app/constant/blog";
 import Error from "@/app/error";
-import NotFound from "@/app/not-found";
+import { LocalHeader } from "@/app/Sections";
 import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { BlogCard } from "@/app/Widgets";
 import { Input } from "@/components/ui/input";
@@ -80,8 +79,7 @@ export default function Community() {
   return (
     <>
       <NewHeader headerText="Community" />
-
-      <section className="w-full h-auto pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto z-50 -mt-[8px] rounded-t-[16px] pb-24 bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-4 md:py-8 md:px-2 lg:p-12 w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
             <div className="w-full text-center">
@@ -116,7 +114,6 @@ export default function Community() {
               filteredBlogs.map((blog) => (
                 <div key={blog.id}>
                   <Link
-                     
                     href={`/p/community/${blog.id}`}
                     onClick={() => console.log("Clicked Blog:", blog.blogTitle)}
                   >
@@ -139,7 +136,6 @@ export default function Community() {
                   {filteredBlogs.map((blog) => (
                     <div key={blog.id}>
                       <Link
-                         
                         href={`/p/community/${blog.id}`}
                         onClick={() =>
                           console.log("Clicked Blog:", blog.blogTitle)
@@ -158,7 +154,6 @@ export default function Community() {
                 </div>
               </div>
             )}
-       
           </div>
         </div>
       </section>

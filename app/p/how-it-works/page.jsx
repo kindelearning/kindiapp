@@ -34,9 +34,9 @@ export default async function HowItWorksPage() {
 
     return (
       <>
-      <Header headerText="Our Mission" dynamicBgColor="#eaeaf500" />
+      <Header headerText="Our Mission"/>
 
-      <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+      <section className="w-full bg-[#EAEAF5] z-50  -mt-[8px] rounded-t-[16px] flex flex-col gap-0 justify-center items-start">
         <PlayForLife fetchedData={pageData} />
         <HowItWorks homeData={homeData} />
         <AreasOfLearning fetchedData={pageData} />

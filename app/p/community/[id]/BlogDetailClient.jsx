@@ -161,9 +161,9 @@ export default function BlogDetailClient({ blog }) {
 
   return (
     <>
-      <NewHeader headerText="Community" dynamicBgColor="#f05c5c" />
+      <NewHeader headerText="Community" />
 
-      <Head>
+      <head>
         <title>{blog.blogTitle}</title>
         <meta name="description" content={blog.blogDescription} />
         <meta property="og:title" content={blog.blogTitle} />
@@ -176,8 +176,8 @@ export default function BlogDetailClient({ blog }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={blog.blogTitle} />
         <meta name="twitter:description" content={blog.blogDescription} />
-      </Head>
-      <section className="w-full h-auto py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
+      </head>
+      <section className="w-full h-auto z-50  -mt-[8px] rounded-t-[16px] py-0 lg:py-12 bg-[#EAEAF5] items-center justify-center pb-24 flex flex-col gap-[20px]">
         <div className="flex overflow-clip lg:rounded-xl lg:max-w-[960px] w-full">
           <Image
             src={blog.thumbnail.url}

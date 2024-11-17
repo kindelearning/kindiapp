@@ -12,9 +12,9 @@ export default async function OurThemes() {
 
   return (
     <>
-      <NewHeader headerText="Our Themes" dynamicBgColor="#eaeaf5" />
+      <NewHeader headerText="Our Themes"  />
 
-      <section className="w-full bg-[#ffffff] flex flex-col gap-0 justify-center items-center">
+      <section className="w-full bg-[#ffffff] -mt-[8px] rounded-t-[16px]  z-50  flex flex-col gap-0 justify-center items-center">
         <ThemesPage themes={themesData} />
       </section>
     </>

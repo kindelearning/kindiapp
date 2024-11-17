@@ -23,9 +23,9 @@ export default async function PrivacyPolicy() {
 
   return (
     <>
-      <NewHeader headerText="Privacy Policy" dynamicBgColor="#eaeaf5" />
+      <NewHeader headerText="Privacy Policy" />
 
-      <section className="w-full bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
+      <section className="w-full -mt-[8px] rounded-t-[16px]  z-50  bg-[#EAEAF5] flex flex-col gap-0 justify-center items-center">
         <div className="claracontainer px-4 md:px-2 lg:px-4 pb-24 pt-8 w-full bg-[#eaeaf5] flex flex-col overflow-hidden gap-8">
           <div className="claracontainer w-full flex flex-col overflow-hidden gap-4">
             <div className="w-full text-center">

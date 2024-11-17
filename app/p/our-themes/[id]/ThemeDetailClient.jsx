@@ -15,9 +15,9 @@ export default function ThemeDetailClient({ theme }) {
 
   return (
     <>
-      <NewHeader headerText=  {theme.title} dynamicBgColor="#f05c5c" />
+      <NewHeader headerText={theme.title} />
 
-      <section className="w-full h-fit pb-24 bg-[#EAEAF5] items-center justify-center flex flex-col gap-[30px] md:gap-[60px] lg:gap-[80px]">
+      <section className="w-full -mt-[8px] rounded-t-[16px]  z-50  h-fit pb-24 bg-[#EAEAF5] items-center justify-center flex flex-col gap-[30px] md:gap-[60px] lg:gap-[80px]">
         <div className="relative w-full h-full ">
           <Image
             width={400}

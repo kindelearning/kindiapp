@@ -29,6 +29,7 @@ export default function PartnerList({ userId }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [hygraphUser, setHygraphUser] = useState(null);
+  const [partnerLoading, setPartnerLoading] = useState(true); // Added loading state for partners
 
   useEffect(() => {
     if (!loading && !user) {
@@ -42,8 +43,10 @@ export default function PartnerList({ userId }) {
 
     // Fetch partners data for the current user
     const fetchPartners = async () => {
+      setPartnerLoading(true); // Set loading state
       const partnerData = await getHygraphPartners(userId);
       setPartners(partnerData);
+      setPartnerLoading(false); // Reset loading state once data is fetched
     };
 
     if (userId) fetchPartners();
@@ -80,7 +83,7 @@ export default function PartnerList({ userId }) {
         {/* Partners Popup Cards */}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 w-full claracontainer gap-4">
-          {partners.length > 0 ? (
+          {/* {partners.length > 0 ? (
             <>
               {partners.map((partner) => (
                 <div
@@ -123,6 +126,52 @@ export default function PartnerList({ userId }) {
                 </div>
               ))}
             </>
+          ) : (
+            <p>No partner information available.</p>
+          )} */}
+          {partnerLoading ? ( // Added loading state for partners
+            <p>Loading partners...</p>
+          ) : partners.length > 0 ? (
+            partners.map((partner) => (
+              <div
+                className="w-full flex flex-row justify-between items-center p-2 bg-white rounded-xl"
+                key={partner.id}
+              >
+                <div className="flex flex-row gap-2 w-full justify-start items-center">
+                  <div className="w-16 h-16 overflow-clip flex justify-center items-center">
+                    {partner.profilePicture ? (
+                      <Image
+                        src={partner.profilePicture?.url}
+                        alt="Profile Image"
+                        width={64}
+                        height={64}
+                        className="min-w-16 min-h-16 object-cover rounded-full"
+                      />
+                    ) : (
+                      <Image
+                        src={ProfilePlaceHolderOne} // Ensure this is correctly imported
+                        alt="Profile Image"
+                        width={64}
+                        height={64}
+                        className="min-w-16 min-h-16 object-cover rounded-full"
+                      />
+                    )}
+                  </div>
+                  <div className="w-full flex-col justify-start items-start inline-flex">
+                    <div className="text-[#0a1932] w-full text-[28px] font-semibold font-fredoka leading-tight">
+                      {partner.username
+                        ? partner.username
+                        : partner.email.split("@")[0]}
+                    </div>
+                    <div className="text-[#757575] w-full clarabodyTwo">
+                      {partner.dateOfBirth
+                        ? `Age: ${calculateAge(partner.dateOfBirth)}`
+                        : "DOB not provided"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
           ) : (
             <p>No partner information available.</p>
           )}
@@ -169,14 +218,14 @@ export default function PartnerList({ userId }) {
                     />
                   </div>
                   <div className="flex w-full flex-col justify-start items-start gap-4">
-                    <div className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                      Get $20
-                    </div>{" "}
-                    <div className="text-[#757575] text-[16px] md:text-2xl font-medium font-fredoka ">
-                      Invite a Partner or friends, family, coworkers,
-                      neighbours, and your favourite barista to Brushlink. Every
-                      time someone books and visits a new dentist through your
-                      link, you both get $20.
+                    <div className="text-[#757575] text-[16px] leading-[18px] md:text-2xl md:leading-[26px] font-normal font-fredoka ">
+                      Securely grant access to your child&apos;s progress,
+                      activities, and milestones, ensuring that both parents can
+                      stay up-to-date and involved in every step of their
+                      learning. Simply invite your partner to join, and
+                      they&apos;ll gain shared access to the Kindi
+                      experience—helping you both support your little one
+                      together.
                     </div>
                     {user && hygraphUser ? (
                       <ConnectAccountForm userId={hygraphUser.id} />

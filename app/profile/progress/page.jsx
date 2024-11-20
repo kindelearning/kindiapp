@@ -65,7 +65,7 @@ const SubBagde = ({
 }) => {
   return (
     <div
-      className={`flex w-full flex-col md:flex-col lg:flex-row max-w-[240px] px-6 items-center gap-2  cursor-pointer  border-4 py-4 border-[${borderColor}] rounded-[12px] text-white`}
+      className={`flex w-full flex-col md:flex-col lg:flex-row max-w-[240px] px-2 items-center gap-2  cursor-pointer  border-4 py-4 border-[${borderColor}] rounded-[12px] text-white`}
       style={{ backgroundColor: backgroundColor, borderColor: borderColor }}
     >
       <div className="text-center text-white text-[56px] font-semibold font-fredoka leading-[60px]">
@@ -84,7 +84,7 @@ const SubProfileRoutes = ({
   iconBackgroundColor = "#f05c5c",
 }) => {
   return (
-    <div className="w-full min-w-[120px] md:min-w-[180px] md:min-h-[136px] lg:h-full rounded-[8px] h-full justify-start gap-1 max-w-[180px] min-h-[120px] cursor-pointer p-4 bg-white items-start inline-flex">
+    <div className="w-full min-w-full md:min-w-[180px] md:min-h-[136px] lg:h-full rounded-[8px] h-full justify-start gap-1 max-w-[180px] min-h-[120px] cursor-pointer p-4 bg-white items-start inline-flex">
       <div className="justify-start items-center w-full gap-[20px] flex flex-col">
         <div
           className="w-[42px] flex justify-center p-2 items-center h-[42px] rounded-[12px]"
@@ -376,14 +376,14 @@ export default function ProgressSection() {
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
       </head>
-      <section className="w-full h-auto bg-[#F5F5F5] pb-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      <section className="w-full h-auto bg-[#F5F5F5] py-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-        <div className="claracontainer py-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+        <div className="claracontainer pt-12 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <Tabs
             defaultValue="CurrentUser"
-            className="w-full flex flex-col gap-24"
+            className="w-full flex flex-col gap-12"
           >
-            <TabsList className="bg-[#eaeaf5]">
+            <TabsList className="bg-[#f5f5f5]">
               {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
                 <TabsTrigger
                   className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"
@@ -467,25 +467,8 @@ export default function ProgressSection() {
               </>
             </TabsContent>
           </Tabs>
-          {/* <>
-            {hygraphUser ? (
-              <div className="flex gap-2 px-4 lg:px-0 overflow-x-scroll scrollbar-hidden w-full">
-                <ActivitiesCount />
-                <RemainingActivities userID={hygraphUser.id} />
-                <MyActivity userID={hygraphUser.id} />
-              </div>
-            ) : (
-              <>
-                <p className="font-fredoka px-4 md:px-2 text-[12px] lg:text-[20px]">
-                  <Link href="/auth/sign-in" className="text-red">
-                    Login&nbsp;
-                  </Link>
-                  to user more feature
-                </p>
-              </>
-            )}
-          </> */}
-          <div className="flex w-full px-2 lg:px-0 justify-start items-center gap-2 flex-wrap">
+
+          <div className="grid grid-cols-2 md:grid-cols-3 w-full px-4 lg:px-0 justify-between items-center gap-2 flex-wrap">
             {progressData.map((card, index) => (
               <SubProfileRoutes
                 key={card.id}

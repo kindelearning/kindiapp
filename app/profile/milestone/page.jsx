@@ -37,8 +37,14 @@ export default function MileStone() {
 
   return (
     <>
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row">
+        {/* Topbar */}
+        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+          <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
+            Profile Milestone
+          </div>
+        </div>
+        <div className="claracontainer bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2 items-center justify-center p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           {/* <UserImages /> */}
           <div className="flex w-full py-6 flex-col justify-center items-center">
             <Tabs

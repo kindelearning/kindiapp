@@ -282,7 +282,6 @@ export default function ProfileSegments() {
       <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-
       </head>
       <section className="w-full h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
@@ -300,10 +299,6 @@ export default function ProfileSegments() {
                   <div className="relative w-20 h-20 lg:w-36 lg:h-36 p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600">
                     <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
                       <Image
-                        // src={
-                        //   hygraphUser.profilePicture?.url ||
-                        //   ProfilePlaceHolderOne
-                        // }
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
                           ProfilePlaceHolderOne
@@ -373,10 +368,7 @@ export default function ProfileSegments() {
                 <div className="flex flex-row w-full justify-start items-center gap-2">
                   {/* Trigger for the Level Popup */}
                   {user && hygraphUser ? (
-                    <>
-                      {" "}
-                      <MyLevel userID={hygraphUser.id} />{" "}
-                    </>
+                    <MyLevel userID={hygraphUser.id} />
                   ) : null}
                 </div>
               </div>

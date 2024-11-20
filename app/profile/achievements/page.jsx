@@ -28,6 +28,7 @@ import Head from "next/head";
 import { getPublishedBadge, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
+import { MyLevel } from "@/app/Sections";
 
 /**
  * @Main_account
@@ -37,176 +38,176 @@ const HYGRAPH_ENDPOINT =
 const HYGRAPH_TOKEN =
   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
 
-const MyLevel = ({ userID }) => {
-  const [activities, setActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+// const MyLevel = ({ userID }) => {
+//   const [activities, setActivities] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState("");
 
-  const fetchActivities = async () => {
-    const query = `
-      query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
-        values: account(where: $where) {
-          id
-          username
-          myActivity(first: $relationalFirst) {
-            id
-            title
-            documentInStages(includeCurrent: true) {
-              id
-              stage
-              updatedAt
-              publishedAt
-            }
-          }
-        }
-      }
-    `;
+//   const fetchActivities = async () => {
+//     const query = `
+//       query GetUserActivities($relationalFirst: Int, $where: AccountWhereUniqueInput!) {
+//         values: account(where: $where) {
+//           id
+//           username
+//           myActivity(first: $relationalFirst) {
+//             id
+//             title
+//             documentInStages(includeCurrent: true) {
+//               id
+//               stage
+//               updatedAt
+//               publishedAt
+//             }
+//           }
+//         }
+//       }
+//     `;
 
-    const variables = {
-      relationalFirst: 10,
-      where: { id: userID },
-    };
+//     const variables = {
+//       relationalFirst: 10,
+//       where: { id: userID },
+//     };
 
-    try {
-      const response = await fetch(HYGRAPH_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-        },
-        body: JSON.stringify({ query, variables }),
-      });
+//     try {
+//       const response = await fetch(HYGRAPH_ENDPOINT, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${HYGRAPH_TOKEN}`,
+//         },
+//         body: JSON.stringify({ query, variables }),
+//       });
 
-      const result = await response.json();
+//       const result = await response.json();
 
-      if (result.errors) {
-        throw new Error(result.errors[0].message);
-      } else {
-        setActivities(result.data.values.myActivity);
-      }
-    } catch (error) {
-      setError("Error fetching activities: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+//       if (result.errors) {
+//         throw new Error(result.errors[0].message);
+//       } else {
+//         setActivities(result.data.values.myActivity);
+//       }
+//     } catch (error) {
+//       setError("Error fetching activities: " + error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  useEffect(() => {
-    fetchActivities();
-  }, [userID]);
+//   useEffect(() => {
+//     fetchActivities();
+//   }, [userID]);
 
-  const getUserLevel = (activityCount) => {
-    if (activityCount >= 0 && activityCount <= 5) {
-      return 1; // Level 1
-    } else if (activityCount > 5 && activityCount <= 10) {
-      return 2; // Level 2
-    } else if (activityCount > 10 && activityCount <= 15) {
-      return 3; // Level 3
-    } else if (activityCount > 15 && activityCount <= 20) {
-      return 4; // Level 4
-    } else if (activityCount > 20 && activityCount <= 25) {
-      return 5; // Level 5
-    } else {
-      return "Max Level"; // More than 25
-    }
-  };
+//   const getUserLevel = (activityCount) => {
+//     if (activityCount >= 0 && activityCount <= 5) {
+//       return 1; // Level 1
+//     } else if (activityCount > 5 && activityCount <= 10) {
+//       return 2; // Level 2
+//     } else if (activityCount > 10 && activityCount <= 15) {
+//       return 3; // Level 3
+//     } else if (activityCount > 15 && activityCount <= 20) {
+//       return 4; // Level 4
+//     } else if (activityCount > 20 && activityCount <= 25) {
+//       return 5; // Level 5
+//     } else {
+//       return "Max Level"; // More than 25
+//     }
+//   };
 
-  if (loading)
-    return (
-      <p>
-        <Loading />
-      </p>
-    );
-  if (error) return <p>{error}</p>;
+//   if (loading)
+//     return (
+//       <p>
+//         <Loading />
+//       </p>
+//     );
+//   if (error) return <p>{error}</p>;
 
-  const userLevel = getUserLevel(activities.length);
-  const progressPercentage = (activities.length / 25) * 100;
+//   const userLevel = getUserLevel(activities.length);
+//   const progressPercentage = (activities.length / 25) * 100;
 
-  return (
-    <div className="flex w-full flex-col justify-start items-center gap-2">
-      <div className="w-full claracontainer flex flex-row gap-2 justify-start items-center">
-        <div className="text-[#3f3a64] clarabodyTwo">
-          User Level: {userLevel}
-        </div>
-        <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
-          <DialogTrigger asChild>
-            <Badge
-              className="text-[10px] md:text-[16px] cursor-pointer"
-              variant="outline"
-            >
-              Check Now
-            </Badge>
-          </DialogTrigger>
-          <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
-            <DialogHeader className="p-4">
-              <div className="flex flex-row justify-center items-center w-full">
-                <DialogTitle>
-                  <div className="text-center">
-                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                      My{" "}
-                    </span>
-                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
-                      Level
-                    </span>
-                  </div>
-                </DialogTitle>
-              </div>
-            </DialogHeader>
-            <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-              <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                <LevelCard level="Level 1" activities="5" />
-                <LevelCard level="Level 2" activities="10" />
-                <LevelCard level="Level 3" activities="15" />
-                <LevelCard level="Level 4" activities="20" />
-                <LevelCard level="Level 5" activities="25" />
-              </div>
-            </DialogDescription>
-            {/* <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
-              <PopupFooter PrimaryText="Save and Continue" />
-            </DialogFooter> */}
-          </DialogContent>
-        </Dialog>
-        <Link href="/profile/update" className="flex lg:hidden" target="_blank">
-          <Badge
-            className="text-[10px] md:text-[16px] cursor-pointer"
-            variant="outline"
-          >
-            Edit
-          </Badge>
-        </Link>
-      </div>
-      <div className="flex w-full gap-1 items-center">
-        <div
-          className="progress-bar-container"
-          style={{
-            width: "100%",
-            backgroundColor: "#e0e0e0",
-            borderRadius: "5px",
-          }}
-        >
-          <div
-            className="progress-bar"
-            style={{
-              width: `${progressPercentage}%`,
-              backgroundColor: "#f15c57",
-              height: "10px",
-              borderRadius: "5px",
-            }}
-          ></div>
-        </div>
-        <p className="clarabodyTwo flex gap-1 w-[max-content] lg:min-w-[120px] ">
-          <p className="clarabodyTwo hidden w-[max-content] lg:flex">
-            Activities:
-          </p>{" "}
-          {activities.length}
-        </p>
-      </div>
-      {/* <p style={{ marginTop: "5px", color: "#555" }}>
-        {Math.round(progressPercentage)}% completed
-      </p> */}
-    </div>
-  );
-};
+//   return (
+//     <div className="flex w-full flex-col justify-start items-center gap-2">
+//       <div className="w-full claracontainer flex flex-row gap-2 justify-start items-center">
+//         <div className="text-[#3f3a64] clarabodyTwo">
+//           User Level: {userLevel}
+//         </div>
+//         <Dialog className="bg-[#EAEAF5] w-full rounded-[28px] claracontainer">
+//           <DialogTrigger asChild>
+//             <Badge
+//               className="text-[10px] md:text-[16px] cursor-pointer"
+//               variant="outline"
+//             >
+//               Check Now
+//             </Badge>
+//           </DialogTrigger>
+//           <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
+//             <DialogHeader className="p-4">
+//               <div className="flex flex-row justify-center items-center w-full">
+//                 <DialogTitle>
+//                   <div className="text-center">
+//                     <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+//                       My{" "}
+//                     </span>
+//                     <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize  ">
+//                       Level
+//                     </span>
+//                   </div>
+//                 </DialogTitle>
+//               </div>
+//             </DialogHeader>
+//             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+//               <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
+//                 <LevelCard level="Level 1" activities="5" />
+//                 <LevelCard level="Level 2" activities="10" />
+//                 <LevelCard level="Level 3" activities="15" />
+//                 <LevelCard level="Level 4" activities="20" />
+//                 <LevelCard level="Level 5" activities="25" />
+//               </div>
+//             </DialogDescription>
+//             {/* <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#ffffff]">
+//               <PopupFooter PrimaryText="Save and Continue" />
+//             </DialogFooter> */}
+//           </DialogContent>
+//         </Dialog>
+//         <Link href="/profile/update" className="flex lg:hidden" target="_blank">
+//           <Badge
+//             className="text-[10px] md:text-[16px] cursor-pointer"
+//             variant="outline"
+//           >
+//             Edit
+//           </Badge>
+//         </Link>
+//       </div>
+//       <div className="flex w-full gap-1 items-center">
+//         <div
+//           className="progress-bar-container"
+//           style={{
+//             width: "100%",
+//             backgroundColor: "#e0e0e0",
+//             borderRadius: "5px",
+//           }}
+//         >
+//           <div
+//             className="progress-bar"
+//             style={{
+//               width: `${progressPercentage}%`,
+//               backgroundColor: "#f15c57",
+//               height: "10px",
+//               borderRadius: "5px",
+//             }}
+//           ></div>
+//         </div>
+//         <p className="clarabodyTwo flex gap-1 w-[max-content] lg:min-w-[120px] ">
+//           <p className="clarabodyTwo hidden w-[max-content] lg:flex">
+//             Activities:
+//           </p>{" "}
+//           {activities.length}
+//         </p>
+//       </div>
+//       {/* <p style={{ marginTop: "5px", color: "#555" }}>
+//         {Math.round(progressPercentage)}% completed
+//       </p> */}
+//     </div>
+//   );
+// };
 
 const badgeLevels = [
   {
@@ -368,7 +369,8 @@ const DisplayAllBadges = () => {
                         {badge.name.length > 16
                           ? badge.name.slice(0, 16) + "..."
                           : badge.name}
-                      </h2>   
+                      </h2>
+                       
                     </div>
                   );
                 })}
@@ -379,10 +381,10 @@ const DisplayAllBadges = () => {
                 <DialogTitle>
                   <div className="text-center">
                     <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      How {" "}
+                      How{" "}
                     </span>
                     <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                     to Earn
+                      to Earn
                     </span>
                   </div>
                 </DialogTitle>
@@ -424,25 +426,10 @@ export default function Achievement() {
 
   return (
     <>
-      <Head>
+      <head>
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
-        <meta property="og:title" content="Profile - Kindilearning" />
-        <meta
-          property="og:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta property="og:image" content="/images/logo.png" />
-        <meta property="og:url" content="https://kindilearning.com/profile" />
-        <meta property="og:site_name" content="Kindilearning" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Profile - Kindilearning" />
-        <meta
-          name="twitter:description"
-          content="Your profile page on Kindilearning"
-        />
-        <meta name="twitter:image" content="/images/logo.png" />
-      </Head>
+      </head>
       <section className="w-full pb-12 h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
         {/* Topbar */}
         <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
@@ -542,7 +529,9 @@ export default function Achievement() {
               <div className="flex flex-col w-full gap-1 items-start justify-start">
                 <div className="flex flex-row w-full justify-start items-start gap-2">
                   {/* Trigger for the Level Popup */}
-                  {hygraphUser ? <MyLevel userID={hygraphUser.id} /> : null}
+                  {user && hygraphUser ? (
+                    <MyLevel userID={hygraphUser.id} />
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -559,9 +548,10 @@ export default function Achievement() {
                   <BadgesDisplay userId={hygraphUser.id} />
                 ) : (
                   // v
-<p className="clarabodyTwo text-red">
+                  <p className="clarabodyTwo text-red">
                     Work Hard and Try Again
-                  </p>                )}
+                  </p>
+                )}
               </div>
             </div>
             <div className="flex flex-col w-full gap-2">

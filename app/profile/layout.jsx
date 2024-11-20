@@ -6,7 +6,7 @@ export default function RootLayout({ children }) {
     <>
       <html lang="en">
         <body>
-          <Header className="sticky" />
+          {/* <Header className="sticky" /> */}
           {children}
           <NewsLetter />
           <BottomNavigation />

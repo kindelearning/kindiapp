@@ -88,7 +88,7 @@ export default function MyLevel({ userID }) {
     if (activityCount > 10 && activityCount <= 15) return 3;
     if (activityCount > 15 && activityCount <= 20) return 4;
     if (activityCount > 20 && activityCount <= 25) return 5;
-    return "Max Level"; 
+    return "Max Level";
   };
 
   if (loading) return <p>Loading...</p>;
@@ -113,7 +113,7 @@ export default function MyLevel({ userID }) {
               Check Now
             </Badge>
           </DialogTrigger>
-          <DialogContent className="bg-[#EAEAF5] max-h-[70%] overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
+          <DialogContent className="bg-[#EAEAF5] max-h-[70%] pb-12 overflow-scroll p-0 overflow-x-hidden rounded-[28px] w-full claracontainer">
             <DialogHeader className="p-4">
               <div className="flex flex-row justify-center items-center w-full">
                 <DialogTitle>
@@ -129,16 +129,8 @@ export default function MyLevel({ userID }) {
               </div>
             </DialogHeader>
             <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
-              <div className="flex flex-col justify-center items-center w-full claracontainer gap-4">
-                {/* {[5, 10, 15, 20, 25].map((activityGoal, index) => (
-                  <LevelCard
-                    key={index}
-                    level={`Level ${index + 1}`}
-                    activities={activityGoal.toString()}
-                  />
-                ))} */}
+              <div className="flex flex-col justify-center pb-6 items-center w-full claracontainer gap-4">
                 <LevelList />
-
               </div>
             </DialogDescription>
             {/* <DialogFooter className="sticky rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full  bg-[#ffffff]">

@@ -376,14 +376,19 @@ export default function ProgressSection() {
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
       </head>
-      <section className="w-full h-auto bg-[#F5F5F5] py-12 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
+      <section className="w-full h-auto bg-[#F5F5F5] pb-24 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-        <div className="claracontainer pt-12 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
+        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+          <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
+            Profile Progress
+          </div>
+        </div>
+        <div className="claracontainer  bg-[#EAEAF5] -mt-4 rounded-t-[12px] z-2  pt-12 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
           <Tabs
             defaultValue="CurrentUser"
             className="w-full flex flex-col gap-12"
           >
-            <TabsList className="bg-[#f5f5f5]">
+            <TabsList className="bg-[#EAEAF5]">
               {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
                 <TabsTrigger
                   className="data-[state=active]:bg-[#f5f5f500] p-0 data-[state=active]:shadow-none"

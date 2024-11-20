@@ -430,9 +430,9 @@ export default function Achievement() {
         <title>Profile - Kindilearning</title>
         <meta name="description" content="Your profile page on Kindilearning" />
       </head>
-      <section className="w-full pb-12 h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row px-0">
+      <section className="w-full pb-12 h-auto bg-[#F5F5F5] md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+        <div className="w-full flex pt-4 pb-7 bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Profile Acheievemnet
           </div>

@@ -37,9 +37,9 @@ export default function MileStone() {
 
   return (
     <>
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center flex flex-col md:flex-row">
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center flex flex-col">
         {/* Topbar */}
-        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+        <div className="w-full flex pt-4 pb-7 bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Profile Milestone
           </div>

@@ -10,7 +10,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReferralCard from "@/app/Sections/Profile/ReferralCard";
 import Loading from "@/app/loading";
-import Head from "next/head";
 import { progressData } from "@/app/constant/menu";
 import { getAllActivities, getUserDataByEmail } from "@/lib/hygraph";
 import { useRouter } from "next/navigation";
@@ -378,7 +377,7 @@ export default function ProgressSection() {
       </head>
       <section className="w-full h-auto bg-[#F5F5F5] pb-24 md:bg-[#EAEAF5] items-center justify-center flex flex-col px-0">
         {/* Topbar */}
-        <div className="w-full flex pt-4 pb-7 md:hidden bg-red">
+        <div className="w-full flex pt-4 pb-7 bg-red">
           <div className="text-center w-full text-white text-[20px] font-semibold font-fredoka leading-tight">
             Profile Progress
           </div>

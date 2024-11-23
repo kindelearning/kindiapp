@@ -250,17 +250,17 @@ export default function BlogDetailClient({ blog }) {
                     key={comment.id}
                   >
                     <div className="w-full flex gap-2 justify-start items-start">
-                      <ProfilePictureComponent />
+                    <ProfilePictureComponent />
                       <div className="w-fit flex flex-col justify-start items-start gap-2">
-                        <div className="text-[#0a1932] text-xs font-semibold font-fredoka leading-none">
-                          {comment.name}
+                      <div className="text-[#0a1932] text-xs font-semibold font-fredoka leading-none">
+                      {comment.name}
                         </div>
                         <div className="w-[115px] text-[#b4b4b4] text-[10px] font-normal font-fredoka leading-none">
                           {formatDate(randomDate)}{" "}
                         </div>
                       </div>
                     </div>
-                    <div className="w-[max-content] text-[#0a1932] text-xs font-normal font-fredoka leading-none">
+                    <div className="w-full flex-wrap text-[#0a1932] text-xs font-normal font-fredoka leading-[14px]">
                       {comment.content}
                     </div>
                     <LikeButton />

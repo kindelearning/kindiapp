@@ -19,12 +19,13 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { activityData } from "@/app/constant/activity";
+import { activityData, activityIcons } from "@/app/constant/activity";
 import { getAllActivities } from "@/lib/hygraph";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
 import NotFound from "@/app/not-found";
 import NewHeader from "@/app/Sections/Mobile/NewHeader";
+import ActivitiesList from "./ActivitiesList";
 
 export default function ActivitiesPage() {
   const [date, setDate] = useState(new Date());
@@ -560,20 +561,20 @@ export default function ActivitiesPage() {
           <div className="claracontainer w-full flex flex-row overflow-hidden gap-8">
             <div className="flex w-full flex-col gap-6 items-center justify-between">
               {/* Activity grid begin */}
-              <div className="flex w-full flex-col gap-2">
-                <div className="grid grid-cols-2 w-full gap-2 md:gap-4 justify-between items-start">
-                  {/* Render filtered activities first */}
-                  {selectedFeatures &&
-                  selectedAgeFocus &&
-                  selectedPrepTime &&
-                  selectedTheme &&
-                  selectedSkilCategory &&
-                  filteredActivities.length > 0 ? (
-                    filteredActivities.map((activity) => (
-                      <div
-                        key={activity.id}
-                        className="w-full flex flex-col gap-4 "
-                      >
+              <div className="grid grid-cols-2 w-full  gap-2">
+                {/* Render filtered activities first */}
+                {selectedFeatures &&
+                selectedAgeFocus &&
+                selectedPrepTime &&
+                selectedTheme &&
+                selectedSkilCategory &&
+                filteredActivities.length > 0 ? (
+                  filteredActivities.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="flex w-full gap-2 md:gap-4 justify-between items-start"
+                    >
+                      <div className="w-full flex flex-col gap-4 ">
                         <article className="rounded-lg ">
                           <Link href={`/p/activities/${activity.id}`}>
                             <div className="md:w-full hover:shadow-md duration-200 overflow-clip min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
@@ -617,33 +618,35 @@ export default function ActivitiesPage() {
                                       </div>
                                     </div>
                                     <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={SpeechLanguageActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={DiscoveringOurWorldActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={ReadingWritingActivity}
-                                      />
-                                      <Image
-                                        alt="Kindi"
-                                        className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                        src={ExperimentsMathActivity}
-                                      />
-                                      <div
-                                        className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                      >
-                                        <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                          +1
-                                        </span>
-                                      </div>
+                                      {activityIcons.map((item, index) => {
+                                        if (activity[item.key] && index < 4) {
+                                          return (
+                                            <div
+                                              key={item.key}
+                                              className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                            >
+                                              <Image
+                                                alt="Kindi"
+                                                src={item.icon}
+                                              />
+                                            </div>
+                                          );
+                                        }
+                                        return null; // Skip rendering if the condition is not met
+                                      })}
+                                      {activityIcons.slice(4, 5).map(
+                                        (item) =>
+                                          activity[item.key] && (
+                                            <div
+                                              key={item.key}
+                                              className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                            >
+                                              <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                                +1
+                                              </span>
+                                            </div>
+                                          )
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -652,118 +655,115 @@ export default function ActivitiesPage() {
                           </Link>
                         </article>
                       </div>
-                    ))
-                  ) : (
-                    <>
-                      <div className="flex flex-col w-full gap-2">
-                        <p className="text-red">
-                          No activities found for the selected Options.
-                          <br />
-                          Try Exploring other Options
-                        </p>
-                        <div className="flex flex-row md:grid md:grid-cols-1 overflow-x-scroll scrollbar-hidden w-full gap-2 md:gap-4 justify-between items-start">
-                          {activities.map((activity) => (
-                            <div key={activity.id}>
-                              <article className="rounded-lg ">
-                                <Link href={`/p/activities/${activity.id}`}>
-                                  <div className="md:w-full hover:shadow-md duration-200 overflow-clip min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
-                                    <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
-                                      <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
-                                        <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
-                                          <Image
-                                            width={280}
-                                            height={250}
-                                            alt={activity.title}
-                                            className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
-                                            src={activity.thumbnail.url}
-                                          />
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 md:gap-4 justify-between col-span-2 w-full gap-2">
+                      <p className="text-red w-full col-span-2">
+                        No activities found for the selected Options.
+                        <br />
+                        Try Exploring other Options
+                      </p>
+                      {activities.map((activity) => (
+                        <div
+                          key={activity.id}
+                          className="w-full flex col-span-1"
+                        >
+                          <article className="rounded-lg overflow-clip">
+                            <Link href={`/p/activities/${activity.id}`}>
+                              <div className="md:w-full md:max-w-full max-w-[196px] hover:shadow-md duration-200 min-w-[170px] w-full min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+                                <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
+                                  <div className="w-full max-w-full md:min-w-full lg:max-w-full h-auto">
+                                    <div className="flex max-h-[180px] min-h-[150px] h-[150px] md:min-h-[200px] md:h-full lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] overflow-clip rounded-t-3xl">
+                                      <Image
+                                        width={280}
+                                        height={250}
+                                        alt={activity.title}
+                                        className="w-full max-h-[180px] duration-300 hover:scale-105 lg:min-h-[276px] lg:h-full lg:max-h-[276px] md:max-h-[300px] object-cover rounded-t-3xl"
+                                        src={activity.thumbnail.url}
+                                      />
+                                    </div>
+                                    <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
+                                      <div className="flex-col w-full gap-[6px] justify-start items-start">
+                                        {/* Title for Mobile */}
+                                        <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
+                                          {activity.title.length > 20
+                                            ? `${activity.title.slice(
+                                                0,
+                                                18
+                                              )}...`
+                                            : activity.title}
                                         </div>
-                                        <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
-                                          <div className="flex-col w-full gap-[6px] justify-start items-start">
-                                            {/* Title for Mobile */}
-                                            <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
-                                              {activity.title.length > 20
-                                                ? `${activity.title.slice(
-                                                    0,
-                                                    18
-                                                  )}...`
-                                                : activity.title}
-                                            </div>
-                                            {/* Title for Tablet */}
-                                            <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
-                                              {activity.title.length > 30
-                                                ? `${activity.title.slice(
-                                                    0,
-                                                    28
-                                                  )}...`
-                                                : activity.title}
-                                            </div>
-                                            <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
-                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                                {activity.setUpTime.slice(
-                                                  0,
-                                                  10
-                                                )}
-                                              </div>
-                                              •
-                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                                {activity.themeName.slice(
-                                                  0,
-                                                  10
-                                                )}
-                                              </div>
-                                              •
-                                              <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
-                                                {activity.focusAge.slice(0, 10)}
-                                              </div>
-                                            </div>
+                                        {/* Title for Tablet */}
+                                        <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
+                                          {activity.title.length > 30
+                                            ? `${activity.title.slice(
+                                                0,
+                                                28
+                                              )}...`
+                                            : activity.title}
+                                        </div>
+                                        <div className="justify-start w-full items-center gap-1 lg:gap-2 inline-flex">
+                                          <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-4 flex px-0 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                            {activity.setUpTime.slice(0, 10)}
                                           </div>
-                                          <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={SpeechLanguageActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={DiscoveringOurWorldActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={ReadingWritingActivity}
-                                            />
-                                            <Image
-                                              alt="Kindi"
-                                              className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                              src={ExperimentsMathActivity}
-                                            />
-                                            <div
-                                              className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                            >
-                                              <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                                +1
-                                              </span>
-                                            </div>
+                                          •
+                                          <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                            {activity.themeName.slice(0, 10)}
+                                          </div>
+                                          •
+                                          <div className="text-[#0a1932] min-w-[max-content] justify-between items-center gap-6 flex pr-2 lg:text-[16px] text-[10px] font-normal font-fredoka list-disc leading-none">
+                                            {activity.focusAge.slice(0, 10)}
                                           </div>
                                         </div>
                                       </div>
+                                      <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
+                                        {activityIcons.map((item, index) => {
+                                          if (activity[item.key] && index < 4) {
+                                            return (
+                                              <div
+                                                key={item.key}
+                                                className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                              >
+                                                <Image
+                                                  alt="Kindi"
+                                                  src={item.icon}
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                          return null; // Skip rendering if the condition is not met
+                                        })}
+                                        {activityIcons.slice(4, 5).map(
+                                          (item) =>
+                                            activity[item.key] && (
+                                              <div
+                                                key={item.key}
+                                                className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                              >
+                                                <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                                  +1
+                                                </span>
+                                              </div>
+                                            )
+                                        )}
+                                      </div>
                                     </div>
                                   </div>
-                                </Link>
-                              </article>
-                            </div>
-                          ))}
+                                </div>
+                              </div>
+                            </Link>
+                          </article>
                         </div>
-                      </div>
-                    </>
-                  )}
-                </div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Showing all the activites at the bottom */}
-              <div className="w-full flex flex-col gap-2 lg:gap-6 lg:pt-6">
+              {/* <div className="w-full flex flex-col gap-2 lg:gap-6 lg:pt-6">
                 <div className="flex claraheading text-[#3f3a64] lg:text-[32px]">
                   Discover All Activities
                 </div>
@@ -786,13 +786,13 @@ export default function ActivitiesPage() {
                                 </div>
                                 <div className="w-full p-2 md:p-4  flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
                                   <div className="flex-col w-full gap-[6px] justify-start items-start">
-                                    {/* Title for Mobile */}
+                            
                                     <div className="text-[#0a1932] text-[16px] md:hidden font-semibold font-fredoka leading-[20px]">
                                       {activity.title.length > 20
                                         ? `${activity.title.slice(0, 18)}...`
                                         : activity.title}
                                     </div>
-                                    {/* Title for Tablet */}
+                             
                                     <div className="text-[#0a1932] text-[16px] hidden md:flex md:text-xl font-semibold font-fredoka leading-[20px]">
                                       {activity.title.length > 30
                                         ? `${activity.title.slice(0, 28)}...`
@@ -813,33 +813,35 @@ export default function ActivitiesPage() {
                                     </div>
                                   </div>
                                   <div className="items-center justify-center gap-2 md:gap-4 grid grid-cols-5">
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={SpeechLanguageActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={DiscoveringOurWorldActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={ReadingWritingActivity}
-                                    />
-                                    <Image
-                                      alt="Kindi"
-                                      className="w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px]"
-                                      src={ExperimentsMathActivity}
-                                    />
-                                    <div
-                                      className={`w-[20px] lg:w-[48px]  md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
-                                    >
-                                      <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
-                                        +1
-                                      </span>
-                                    </div>
+                                    {activityIcons.map((item, index) => {
+                                      if (activity[item.key] && index < 4) {
+                                        return (
+                                          <div
+                                            key={item.key}
+                                            className={`w-[20px] h-[24px] md:w-[36px] md:h-[36px] lg:w-[48px] lg:h-[48px] flex justify-center items-center bg-[#${activityIcons.concatbackgroundColor}] rounded-[16px]`}
+                                          >
+                                            <Image
+                                              alt="Kindi"
+                                              src={item.icon}
+                                            />
+                                          </div>
+                                        );
+                                      }
+                                      return null; 
+                                    })}
+                                    {activityIcons.slice(4, 5).map(
+                                      (item) =>
+                                        activity[item.key] && (
+                                          <div
+                                            key={item.key}
+                                            className={`w-[20px] lg:w-[48px] md:w-[36px] md:h-[36px] md:rounded-xl lg:h-[48px] h-[20px] flex lg:rounded-[12px] justify-center items-center bg-[#F6BEBF] rounded-[4px]`}
+                                          >
+                                            <span className="text-red p-[2px] text-[12px] lg:text-[20px] font-medium font-fredoka">
+                                              +1
+                                            </span>
+                                          </div>
+                                        )
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -850,7 +852,9 @@ export default function ActivitiesPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
+              <ActivitiesList activities={activities} />
+
             </div>
           </div>
         </div>

@@ -1,4 +1,27 @@
-import { ActivityImage, PromotionalImage, ThemeThumb } from "@/public/Images";
+import {
+  ActivityImage,
+  ConfidenceIndependenceActivity,
+  CreativityImaginationActivity,
+  DiscoveringOurWorldActivity,
+  EmotionalSocialStrengthActivity,
+  ExperimentsMathActivity,
+  PhysicalAgilityActivity,
+  PromotionalImage,
+  ReadingWritingActivity,
+  SpeechLanguageActivity,
+  ThemeThumb,
+} from "@/public/Images";
+
+export const activityIcons = [
+  { key: "speechLanguage", icon: SpeechLanguageActivity },
+  { key: "emotionalSocialStrength", icon: EmotionalSocialStrengthActivity },
+  { key: "confidenceIndependence", icon: ConfidenceIndependenceActivity },
+  { key: "physicalAgility", icon: PhysicalAgilityActivity },
+  { key: "readingWriting", icon: ReadingWritingActivity },
+  { key: "discoveringOurWorld", icon: DiscoveringOurWorldActivity },
+  { key: "creativityImagination", icon: CreativityImaginationActivity },
+  { key: "experimentsMath", icon: ExperimentsMathActivity },
+];
 
 export const activityData = [
   {
@@ -84,7 +107,6 @@ export const activityData = [
   },
   // Add more blog data here...
 ];
-
 
 export const filters = [
   {

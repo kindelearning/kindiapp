@@ -20,11 +20,11 @@ export default function ThemeDetailClient({ theme }) {
       <section className="w-full -mt-[8px] rounded-t-[16px]  z-50  h-fit pb-24 bg-[#EAEAF5] items-center justify-center flex flex-col gap-[30px] md:gap-[60px] lg:gap-[80px]">
         <div className="relative w-full h-full ">
           <Image
-            width={400}
-            height={300}
+            width={500}
+            height={500}
             src={theme.thumbnail.url}
             alt={theme.title}
-            className="h-[200px] md:h-[300px] lg:h-[400px] w-full"
+            className="h-[300px] md:h-[300px] object-cover lg:h-[400px] w-full"
           />
           {/* {formattedLaunchTime} */}
         </div>

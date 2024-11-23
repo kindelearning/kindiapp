@@ -31,7 +31,7 @@ const Team = ({
               </div>
             </div>
             <div className="h-[1px] w-full border border-white"></div>
-            <div className="text-white min-h-[260px] flex justify-start items-start text-base font-medium font-montserrat leading-snug">
+            <div className="text-white min-h-[200px] flex justify-start items-start text-base font-medium font-montserrat leading-snug">
               {description}
             </div>
           </div>

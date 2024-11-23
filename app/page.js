@@ -31,9 +31,9 @@ export default async function Home() {
         <LocalHeader />
         <div className="w-full -mt-[8px] z-50 rounded-t-[12px] pb-12 flex flex-col overflow-hidden gap-0">
           <MobileHero />
-          <MobileThemes themes={themesData} homeData={homeData} />
-          <MobileProducts />
           <MobileActivity activities={activitieData} homeData={homeData} />
+          <MobileProducts />
+          <MobileThemes themes={themesData} homeData={homeData} />
           <MobileCommunity />
         </div>
         <NewsLetter />

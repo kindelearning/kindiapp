@@ -1,3 +1,6 @@
+//global
+import HomeHeroGif from "./HomeHero.gif";
+
 import Logo from "./Logo.svg";
 import HowItWorkVideo from "./HowItWorkVideo.png";
 import HIWTwo from "./HIWTwo.svg";
@@ -50,7 +53,6 @@ import Apple from "./Apple.png";
 import AppStore from "./AppStore.png";
 import Language from "./Language.svg";
 import Thomas from "./Thomas.png";
-import JANINE from "./JANINE.svg";
 import BlogThumb from "./BlogThumb.png";
 import BlogThumbTwo from "./BlogThumbTwo.png";
 import BlogThumbThree from "./BlogThumbThree.png";
@@ -218,6 +220,10 @@ export {
   PhysicalAgilityActivity,
   SpeechLanguageActivity,
 
+  //Global Export
+  HomeHeroGif,
+
+  
   //Profile Export
   ProfilePlaceholder01,
   ProfilePlaceholder02,
@@ -379,7 +385,7 @@ export {
   ThemeThumb,
   Apple,
   PartnerBulb,
-  Thomas,JANINE,
+  Thomas,
   ProfileDP,
   AppStore,
   KindiVector,

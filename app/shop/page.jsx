@@ -24,6 +24,8 @@ import { useEffect, useRef, useState } from "react";
 import NotFound from "../not-found";
 import Image from "next/image";
 import NewHeader from "../Sections/Mobile/NewHeader";
+import { cardGroupData } from "../constant/standard";
+import ProductsList from "./ProductsList";
 
 function SearchInput({ value, onChange }) {
   return (
@@ -115,8 +117,37 @@ export default function ShopPage() {
   const [selectedFeature, setSelectedFeature] = useState("");
   const [selectedDiscount, setSelectedDiscount] = useState("");
   const [selectedToyType, setSelectedToyType] = useState("");
+  const [selectedCardGroupProducts, setSelectedCardGroupProducts] =
+    useState("");
   const searchInputRef = useRef(null);
 
+  // FIlters for Card Group
+  useEffect(() => {
+    if (selectedCardGroupProducts.length > 0) {
+      const filtered = products.filter((product) =>
+        product.keywords.some((keyword) =>
+          selectedCardGroupProducts.includes(keyword)
+        )
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts([]); // Reset if no features are selected
+    }
+  }, [selectedCardGroupProducts, products]);
+
+  const handleCardGroupProductsChange = (category) => {
+    setSelectedCardGroupProducts(category);
+    if (category === "") {
+      // Show all products if no category is selected
+      setFilteredProducts(products);
+    } else {
+      // Filter products based on the selected category
+      const filtered = products.filter((product) =>
+        product.keywords.includes(category)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
   // Hook to fetch All products from Hygraph CMS
   useEffect(() => {
     const fetchProducts = async () => {
@@ -390,8 +421,39 @@ export default function ShopPage() {
       <NewHeader headerText="Shop" />
 
       <section className="w-full pb-32 z-50  -mt-[8px] rounded-t-[16px] bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
-        <Banner />
-        <CardGroup />
+      <div className="flex w-full justify-center items-center">
+          <Banner />
+        </div>
+        {/* <CardGroup /> */}
+        <section className="w-full h-auto bg-[#EAEAF5] pl-4 items-center justify-center flex flex-col md:flex-row gap-[20px]">
+          <div className="flex claracontainer lg:hover:pl-4 duration-300 ease-ease-in-out scrollbar-hidden bg-[#eaeaf5] scrollbar-none py-2 overflow-x-scroll overflow-y-hidden gap-2 pr-4 md:gap-3 lg:gap-4">
+            {cardGroupData.map((data, index) => (
+              <div
+                key={index}
+                className={`w-[100px] ${
+                  selectedCardGroupProducts === data.title
+                    ? "bg-opacity-80 border-4 border-white"
+                    : ""
+                } md:w-[120px] h-[120px] md:h-[149px] cursor-pointer hover:scale-105 duration-150 pl-[6.13px] pr-[6.12px] pt-[12.25px] pb-[21.25px] rounded-xl flex-col justify-start items-center gap-2 inline-flex`}
+                style={{ backgroundColor: data.bgColor }}
+                onClick={() => handleCardGroupProductsChange(data.title)} // Passing category title
+              >
+                <div className="w-[74px] h-[74px] relative gap-2 lg:gap-0 flex-col justify-center items-center flex">
+                  <Image
+                    width={73.5}
+                    height={73.5}
+                    className="absolute w-[60px] h-[60px] lg:w-full lg:h-full"
+                    src={data.icon}
+                    alt={data.title}
+                  />
+                </div>
+                <div className="w-[110px] text-center text-white text-[13px] font-semibold font-fredoka leading-none">
+                  {data.title}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
         <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
             {/* the product Grid Column */}
@@ -734,8 +796,7 @@ export default function ShopPage() {
                     All Products
                   </span>
                 </div>
-                <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
-                  {/* {sortedProducts.map((product) => ( */}
+                {/* <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
                   {products.map((product) => (
                     <div key={product.id} className="border">
                       <Link href={`/shop/${product.id}`}>
@@ -747,7 +808,9 @@ export default function ShopPage() {
                       </Link>
                     </div>
                   ))}
-                </div>
+                </div> */}
+                <ProductsList products={products} />
+
               </div>
             </div>
           </div>

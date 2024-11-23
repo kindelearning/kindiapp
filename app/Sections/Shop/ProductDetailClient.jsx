@@ -189,7 +189,16 @@ export default function ProductDetailClient({ product }) {
   const { addToCart } = useCart();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+  const incrementQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
 
+  // Decrement function
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  };
   const handleAddToCart = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -275,10 +284,49 @@ export default function ProductDetailClient({ product }) {
               <div className="claracontainer flex flex-col w-full gap-1">
                 <div className="claracontainer w-full justify-between items-start flex flex-row gap-4">
                   {/* <QuantityControl /> */}
-                  <QuantityControl
-                    initialQuantity={quantity}
-                    onQuantityChange={setQuantity}
-                  />{" "}
+                  <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
+                    <button
+                      onClick={decrementQuantity}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M18 12H6"
+                        />
+                      </svg>
+                    </button>
+                    <span className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={incrementQuantity}
+                      className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full text-gray-600 transition duration-200 ease-in-out"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                   {/* Pass quantity state to QuantityControl */}
                   <div className="w-full flex flex-col gap-1">
                     <div className="flex w-full items-center justify-between gap-2">
@@ -350,10 +398,49 @@ export default function ProductDetailClient({ product }) {
       {/* Row- 5 (Mobile CTA's) */}
       <div className="flex w-full z-20 lg:hidden md:hidden flex-col pb-20 fixed bottom-0 justify-start items-center">
         <div className="claracontainer px-4 py-4 w-full bg-[#ffffff] rounded-t-[24px] shadow-upper sticky bottom-0 z-12 justify-between items-center flex flex-row gap-4">
-          <QuantityControl
-            initialQuantity={quantity}
-            onQuantityChange={setQuantity}
-          />{" "}
+          <div className="flex border-[#eaeaf5] w-fit min-w-[124px] items-center border-1 shadow-sm lg:shadow-none rounded-full overflow-hidden">
+            <button
+              onClick={decrementQuantity}
+              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 transition duration-200 ease-in-out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M18 12H6"
+                />
+              </svg>
+            </button>
+            <span className="w-8 py-1 text-center text-gray-600 bg-white focus:outline-none appearance-none">
+              {quantity}
+            </span>
+            <button
+              onClick={incrementQuantity}
+              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-r-full text-gray-600 transition duration-200 ease-in-out"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+            </button>
+          </div>
           <Button
             type="button"
             onClick={handleAddToCart}

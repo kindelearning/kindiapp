@@ -113,20 +113,10 @@ export default function AvatarSelectionForm({ accountId }) {
     <>
       <div className="flex flex-col w-full gap-[16px] lg:gap-8 justify-between items-start">
         <div className="flex flex-col lg:flex-row gap-4 p-6 justify-between items-start  w-full bg-white rounded-[12px] relative">
-          {/* <div className="flex flex-col gap-4 p-6 justify-center items-center max-w-[360px] w-full bg-white rounded-[12px] relative">
-            <label className="w-32 h-32 rounded-full border-2 border-dashed border-gray-200 flex flex-col justify-center items-center cursor-pointer">
-              <Image
-                src={ProfileDP}
-                className="opacity-0 absolute w-full h-full"
-              />
-            </label>
-            <div className="text-[#0a1932] text-sm font-semibold font-fredoka leading-tight">
-              Select custom avatar
-            </div>
-          </div> */}
+      
 
           <form onSubmit={handleFormSubmit}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
               {avatars.map((avatar) => (
                 <div key={avatar.id} style={{ textAlign: "center" }}>
                   <label>

@@ -14,6 +14,7 @@ import {
   Partner,
   Payments,
   ProfileDP,
+  ProfilePlaceholder01,
   ProfilePlaceHolderOne,
   ProfileProgress,
   ProfileSettingIcon,
@@ -301,7 +302,7 @@ export default function ProfileSegments() {
                       <Image
                         src={
                           hygraphUser.myAvatar.profileAvatar.url ||
-                          ProfilePlaceHolderOne
+                          ProfilePlaceholder01
                         }
                         alt="User DP"
                         width={100}

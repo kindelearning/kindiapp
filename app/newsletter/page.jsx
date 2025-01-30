@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Head from "next/head";
 import Image from "next/image";
 import { BottomNavigation, Footer, Header } from "../Sections";
 import { NewsletterImg } from "@/public/Images";

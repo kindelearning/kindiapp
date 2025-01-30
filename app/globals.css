@@ -59,6 +59,13 @@
   }
 }
 
+@layer components {
+  .prose {
+    max-width: 100%; /* Remove any max-width restriction */
+    padding: 0; /* Adjust if necessary */
+  }
+}
+
 @layer base {
   * {
     @apply border-0;
@@ -100,7 +107,19 @@
     width: 100%;
   }
 
-
+  .prose p {
+    margin-top: 2px; /* Adjust the top margin as needed */
+    margin-bottom: 2px; /* Adjust the bottom margin as needed */
+    line-height: 1; /* Adjust the line height for better readability */
+  }
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4 {
+    margin-top: 24px; /* Adjust the top margin as needed */
+    margin-bottom: 16px; /* Adjust the bottom margin as needed */
+    line-height: 1; /* Adjust the line height for better readability */
+  }
 
   .skiptranslate {
     position: fixed !important; /* Ensure it’s fixed */

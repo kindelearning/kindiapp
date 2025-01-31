@@ -1,44 +1,38 @@
 "use client";
 
-import Error from "@/app/error";
-import { LocalHeader } from "@/app/Sections";
 import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { BlogCard } from "@/app/Widgets";
-import { Input } from "@/components/ui/input";
-import { getPublishedPosts } from "@/lib/hygraph";
-import { BlogThumb, BlogThumbTwo } from "@/public/Images";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
-function SearchInput({ value, onChange }) {
-  return (
-    <div className="flex w-full items-center bg-white rounded-full border border-gray-200">
-      <span className="px-3 text-gray-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      </span>
-      <Input
-        type="email"
-        placeholder="Search for products..."
-        value={value}
-        onChange={onChange}
-        className="w-full border-0 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0   focus:border-0 focus-within:border-0 px-3 py-2"
-      />
-    </div>
-  );
-}
+// function SearchInput({ value, onChange }) {
+//   return (
+//     <div className="flex w-full items-center bg-white rounded-full border border-gray-200">
+//       <span className="px-3 text-gray-400">
+//         <svg
+//           xmlns="http://www.w3.org/2000/svg"
+//           className="h-6 w-6"
+//           fill="none"
+//           viewBox="0 0 24 24"
+//           stroke="currentColor"
+//         >
+//           <path
+//             strokeLinecap="round"
+//             strokeLinejoin="round"
+//             strokeWidth={2}
+//             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+//           />
+//         </svg>
+//       </span>
+//       <Input
+//         type="email"
+//         placeholder="Search for products..."
+//         value={value}
+//         onChange={onChange}
+//         className="w-full border-0 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0   focus:border-0 focus-within:border-0 px-3 py-2"
+//       />
+//     </div>
+//   );
+// }
 
 // export default function Community() {
 //   const [blogs, setBlogs] = useState([]); // Initialize as an empty array
@@ -160,6 +154,7 @@ function SearchInput({ value, onChange }) {
 //     </>
 //   );
 // }
+
 export default function Page() {
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -216,6 +211,7 @@ export default function Page() {
   };
   return (
     <>
+      <NewHeader headerText="Community" />
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
         <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer p-4 w-full flex flex-col items-center justify-center overflow-hidden gap-4 lg:gap-12">

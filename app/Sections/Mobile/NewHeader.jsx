@@ -136,7 +136,7 @@ export default function NewHeader({ headerText, dynamicBgColor }) {
   }
 
   return (
-    <header className="top-0 z-50 w-full bg-red dark:bg-dark-blue-100 flex flex-col justify-center items-center ">
+    <header className="top-0 z-50 w-full rounded-b-[12px] sticky bg-red dark:bg-dark-blue-100 flex flex-col justify-center items-center ">
       <section className="max-w-[1400px] sticky claracontainer px-4 md:px-2 lg:px-4 flex flex-row justify-between items-center py-4 w-full">
         {/* <Link href="/">
           <div className="logo">

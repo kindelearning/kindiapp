@@ -16,7 +16,7 @@ const Team = ({
           style={{ backgroundColor: bgColor }}
           className={`w-full bg-[${bgColor}] rounded-xl flex flex-col lg:flex-row xl:flex-row`}
         >
-          <Image
+          <img
             alt="Kindi"
             className="w-full max-h-[400px] object-cover md:w-full lg:max-w-[240px] lg:max-h-[330px] lg:h-full h-auto rounded-l-[12px] "
             src={imageSrc || TeamMember}

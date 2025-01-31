@@ -54,6 +54,14 @@ import {
   CreativityImagination,
   Experiments,
   ActivityCard,
+  SpeechLanguageActivity,
+  EmotionalSocialStrengthActivity,
+  ConfidenceIndependenceActivity,
+  PhysicalAgilityActivity,
+  ReadingWritingActivity,
+  DiscoveringOurWorldActivity,
+  CreativityImaginationActivity,
+  ExperimentsMathActivity,
 } from "@/public/Images";
 import Image from "next/image";
 
@@ -620,4 +628,18 @@ export const activities = [
     tags: ["Tag 1", "Tag 2"],
     icons: [KindiHeart, Confidence, UserActive, Bag],
   },
+];
+
+export const activityIcons = [
+  { title: "Speech & Language", icon: SpeechLanguageActivity },
+  {
+    title: "Emotional & Social Strength",
+    icon: EmotionalSocialStrengthActivity,
+  },
+  { title: "Confidence & Independence", icon: ConfidenceIndependenceActivity },
+  { title: "Physical Agility", icon: PhysicalAgilityActivity },
+  { title: "Reading & Writing", icon: ReadingWritingActivity },
+  { title: "Discovering Our World", icon: DiscoveringOurWorldActivity },
+  { title: "Creativity & Imagination", icon: CreativityImaginationActivity },
+  { title: "Experiments & Math", icon: ExperimentsMathActivity },
 ];

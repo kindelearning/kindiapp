@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-function LocalProductCard({ image, title, price }) {
+export function LocalProductCard({ image, title, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
     // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
@@ -22,7 +22,7 @@ function LocalProductCard({ image, title, price }) {
   }, []);
 
   return (
-    <div className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full max-w-[176px] lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <div className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[16px] overflow-clip w-full">
         <Image
           src={image}
@@ -74,11 +74,11 @@ export default function MobileProducts({}) {
   }, []);
   return (
     <>
-      <section className="w-full h-auto bg-[#F5F5F5] items-center justify-center py-4 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto bg- [#F5F5F5] items-center justify-center py-4 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
         <div className="claracontainer w-full flex-col justify-start gap-4 items-center script inline-flex">
           <div className="flex justify-between px-4  items-center w-full">
             <h1 className="clarabodyTwo text-[#0A1932] w-full justify-start items-center text-start">
-              Theme Inspired Resources
+              Latest Resources
             </h1>
             <Link
               href="/shop"
@@ -88,7 +88,7 @@ export default function MobileProducts({}) {
             </Link>
           </div>
 
-          <div className="lg:grid claracontainer w-full flex pl-4 flex-row overflow-x-scroll scrollbar-hidden hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
+          <div className="grid claracontainer w-full  pl-4 flex-row  gap-4 grid-cols-2">
             {products.map((product) => (
               <div key={product.id}>
                 <Link href={`/shop/${product.id}`}>

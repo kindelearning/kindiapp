@@ -1,5 +1,12 @@
 "use client";
-
+ 
+import { fetchShopProducts } from "../data/p/Dynamic/Shop";
+import Banner from "./sections/Banner";
+import { BottomNavigation, Header, Newsletter } from "../Sections";
+import ProductCard from "./sections/ProductCard";
+import { useEffect, useState } from "react";
+import SearchInput from "./sections/SearchInput";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
@@ -9,20 +16,13 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
-import { Banner, BottomNavigation, Header, MobileProducts, NewsLetter } from "../Sections";
-import { cardGroupData } from "../constant/standard";
-
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import FilterSection, {
   Checkbox,
   ProductsWithPagination,
   RadioGroup,
-} from "../Sections/Shop/AdvanceFIlters";
-import { fetchShopProducts } from "../data/p/Dynamic/Shop";
-import SearchInput from "../Sections/Shop/SearchInput";
-import { LocalProductCard } from "../Sections/Mobile/MobileProducts";
+} from "./sections/AdvanceFIlters";
+import { cardGroupData } from "../constant/standard";
+import Image from "next/image";
 
 export default function ShopPage() {
   const [products, setProducts] = useState([]); // State to hold the products
@@ -442,17 +442,17 @@ export default function ShopPage() {
               </div>
 
               {/* Display Filtered Products First */}
-              <div className="w-full md:px-2 lg:px-0 grid grid-cols-2 px-4 flex-col  gap-2">
+              <div className="w-full lg:grid lg:grid-cols-3 xl:grid-cols-3 pl-4 md:px-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
                 {/* Product Dom, all filters/sorted products will be shown here */}
+                {/* `https://lionfish-app-98urn.ondigitalocean.app${image}` */}
                 {paginatedProducts.map((product) => {
                   return (
                     <div key={product.id} className="product-card">
-                      <LocalProductCard
+                      <ProductCard
                         productUrl={`/shop/${product.documentId}`}
                         image={
-                          product?.FeaturedImage
-                            ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage?.[0]?.url}`
-                            : "/Images/BlogThumb.png"
+                          product?.FeaturedImage? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage?.[0]?.url}` :
+                          "/Images/BlogThumb.png"
                         }
                         // image={
                         //   product?.FeaturedImage?.[0]?.url ||
@@ -469,7 +469,10 @@ export default function ShopPage() {
                   );
                 })}
               </div>
-             
+              {/* // image={`https://lionfish-app-98urn.ondigitalocean.app${
+                //   product?.FeaturedImage?.[0]?.url ||
+                //   "/uploads/default-image.webp"
+                // }`} */}
               {/* Pagination Controls */}
               <div className="w-full hidden lg:flex justify-between items-center mt-6">
                 <button
@@ -495,64 +498,13 @@ export default function ShopPage() {
           </div>
         </div>
       </section>
-      <NewsLetter />
+      <Newsletter />
       <BottomNavigation />
     </>
   );
 }
 
-
-
-// export function LocalMobileProducts({ image, title, price }) {
-//   const [rating, setRating] = useState(0);
-//   useEffect(() => {
-//     // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
-//     const generateRandomRating = () => {
-//       const min = 3;
-//       const max = 4.8;
-//       const randomRating = (Math.random() * (max - min) + min).toFixed(1);
-//       return randomRating;
-//     };
-
-//     setRating(generateRandomRating());
-//   }, []);
-
-//   return (
-//     <div className="flex lg:max-w-[300px] min-w-[170px] max-w-full lg:min-w-[240px] w-full flex-col rounded-[12px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
-//       <div className="flex rounded-t-[12px] overflow-clip w-full">
-//         <Image
-//           src={image}
-//           alt={title}
-//           width={200}
-//           height={200}
-//           className="w-full hover:scale-110 duration-300 h-[160px] md:h-[220px] rounded-t-[12px] object-cover"
-//         />
-//       </div>
-//       <div className="claracontainer flex flex-col justify-start min-h-[100px] items-start  w-full gap-2">
-//         <div className="flex items-center px-2 w-full justify-between gap-2">
-//           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-//             $ {price || "29"}
-//           </h1>
-//           <div className="flex flex-row justify-center gap-[2px] items-center">
-//             <Image
-//               alt="Kindi"
-//               src={Ratings}
-//               className="text-yellow-400 w-4 h-4"
-//             />
-//             <span className="text-right text-[#0a1932] clarabodyTwo">
-//               {rating}+
-//             </span>
-//           </div>
-//         </div>
-//         <h3 className="text-start text-[#0a1932] clarabodyTwo font-medium w-full px-2 pb-4">
-//           {title.length > 30 ? `${title.slice(0, 24)}...` : title}
-//         </h3>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export function ShopPag2e() {
+// export function ShopPage2() {
 //   const [products, setProducts] = useState([]);
 //   const [sortOption, setSortOption] = useState("priceLowToHigh");
 //   const [sortedProducts, setSortedProducts] = useState([]);
@@ -567,41 +519,29 @@ export default function ShopPage() {
 //     useState("");
 //   const searchInputRef = useRef(null);
 
-//   // FIlters for Card Group
-//   useEffect(() => {
-//     if (selectedCardGroupProducts.length > 0) {
-//       const filtered = products.filter((product) =>
-//         product.keywords.some((keyword) =>
-//           selectedCardGroupProducts.includes(keyword)
-//         )
-//       );
-//       setFilteredProducts(filtered);
-//     } else {
-//       setFilteredProducts([]); // Reset if no features are selected
-//     }
-//   }, [selectedCardGroupProducts, products]);
+//   // Function to handle Search Operation
+//   const handleSearchChange = (event) => {
+//     const term = event.target.value.toLowerCase();
+//     setSearchTerm(term);
 
-//   const handleCardGroupProductsChange = (category) => {
-//     setSelectedCardGroupProducts(category);
-//     if (category === "") {
-//       // Show all products if no category is selected
-//       setFilteredProducts(products);
-//     } else {
-//       // Filter products based on the selected category
-//       const filtered = products.filter((product) =>
-//         product.keywords.includes(category)
-//       );
-//       setFilteredProducts(filtered);
-//     }
+//     const filtered = products.filter((product) =>
+//       product.title.toLowerCase().includes(term)
+//     );
+
+//     // Log the search term and filtered results
+//     console.log("Search Term:", term);
+//     console.log("Filtered Products:", filtered);
+
+//     setFilteredProducts(filtered);
 //   };
+
 //   // Hook to fetch All products from Hygraph CMS
 //   useEffect(() => {
 //     const fetchProducts = async () => {
-//       const data = await getProducts();
-//       setProducts(data);
-//       setFilteredProducts(data);
+//       const fetchedProducts = await fetchShopProducts();
+//       setProducts(fetchedProducts);
+//       setFilteredProducts(fetchedProducts);
 //     };
-//     console.log("FetchActivities", fetchProducts);
 
 //     fetchProducts();
 //   }, []);
@@ -659,20 +599,32 @@ export default function ShopPage() {
 //     sortProducts(value);
 //   };
 
-//   // Function to handle Search Operation
-//   const handleSearchChange = (event) => {
-//     const term = event.target.value.toLowerCase();
-//     setSearchTerm(term);
+//   // FIlters for Card Group
+//   useEffect(() => {
+//     if (selectedCardGroupProducts.length > 0) {
+//       const filtered = products.filter((product) =>
+//         product.keywords.some((keyword) =>
+//           selectedCardGroupProducts.includes(keyword)
+//         )
+//       );
+//       setFilteredProducts(filtered);
+//     } else {
+//       setFilteredProducts([]); // Reset if no features are selected
+//     }
+//   }, [selectedCardGroupProducts, products]);
 
-//     const filtered = products.filter((product) =>
-//       product.title.toLowerCase().includes(term)
-//     );
-
-//     // Log the search term and filtered results
-//     console.log("Search Term:", term);
-//     console.log("Filtered Products:", filtered);
-
-//     setFilteredProducts(filtered);
+//   const handleCardGroupProductsChange = (category) => {
+//     setSelectedCardGroupProducts(category);
+//     if (category === "") {
+//       // Show all products if no category is selected
+//       setFilteredProducts(products);
+//     } else {
+//       // Filter products based on the selected category
+//       const filtered = products.filter((product) =>
+//         product.keywords.includes(category)
+//       );
+//       setFilteredProducts(filtered);
+//     }
 //   };
 
 //   // List of Skills Options Based Filters options
@@ -784,7 +736,7 @@ export default function ShopPage() {
 //     }
 //   };
 
-//   // // List of featuresOptions  Based Filters options
+//   // List of featuresOptions  Based Filters options
 //   const featuresOptions = [
 //     "Emotional & Social Strength",
 //     "Confidence & Independence",
@@ -864,14 +816,12 @@ export default function ShopPage() {
 //   }
 //   return (
 //     <>
-//       <NewHeader headerText="Shop" />
-
-//       <section className="w-full pb-32 z-50  -mt-[8px] rounded-t-[16px] bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
+//       <Header className="sticky" />
+//       <section className="w-full pb-32 bg-[#EAEAF5] flex flex-col gap-0 justify-center items-start">
 //         <div className="flex w-full justify-center items-center">
 //           <Banner />
 //         </div>
-//         {/* <CardGroup /> */}
-//         <section className="w-full h-auto bg-[#EAEAF5] pl-4 items-center justify-center flex flex-col md:flex-row gap-[20px]">
+//         <section className="w-full h-auto bg-[#EAEAF5] pl-0 items-center justify-center flex flex-col md:flex-row gap-[20px]">
 //           <div className="flex claracontainer lg:hover:pl-4 duration-300 ease-ease-in-out scrollbar-hidden bg-[#eaeaf5] scrollbar-none py-2 overflow-x-scroll overflow-y-hidden gap-2 pr-4 md:gap-3 lg:gap-4">
 //             {cardGroupData.map((data, index) => (
 //               <div
@@ -902,11 +852,200 @@ export default function ShopPage() {
 //         </section>
 //         <div className="w-full h-auto bg-[#eaeaf5] items-center justify-center py-2  flex flex-col md:flex-row gap-[20px]">
 //           <div className="claracontainer py-4 w-full bg-[#eaeaf5] flex flex-row overflow-hidden gap-8">
+//             {/* Filter Column For Larger Screens*/}
+//             <div className="md:hidden lg:flex h-fit xl:flex hidden sticky top-0 max-w-[26%] flex-col px-4 py-6 gap-4 w-full items-start justify-start bg-[#ffffff] rounded-[24px] z-10">
+//               <div className="text-red text-[32px] font-semibold font-fredoka leading-[25px] tracking-wide">
+//                 Filters
+//               </div>
+//               <div className="claracontainer flex flex-col justify-start items-start gap-6 w-full">
+//                 {/* Sorting Based on Various Options */}
+//                 <div className="claracontainer flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Sort Products
+//                   </div>
+//                   <div className="flex flex-col gap-4 justify-start items-start">
+//                     {sortingOptions.map((option) => (
+//                       <div
+//                         className="flex cursor-pointer items-center space-x-2"
+//                         key={option.id}
+//                       >
+//                         <input
+//                           id={option.id}
+//                           type="radio"
+//                           name="sortOption"
+//                           className={`${
+//                             sortOption === option.value
+//                               ? "border-red text-red"
+//                               : "border-purple text-purple"
+//                           }`}
+//                           checked={sortOption === option.value}
+//                           onChange={() => handleSortChange(option.value)}
+//                         />
+//                         <label
+//                           htmlFor={option.id}
+//                           className="text-sm font-medium cursor-pointer leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+//                         >
+//                           {option.label}
+//                         </label>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </div>
+//                 {/* FIlters Based on Skill Category Options */}
+//                 <div className="flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Select Skill Options
+//                   </div>
+//                   {skillCategoryOptions.map((category) => (
+//                     <label
+//                       key={category}
+//                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+//                         selectedCategory === category
+//                           ? "text-red"
+//                           : "text-[#252c32]"
+//                       }`}
+//                     >
+//                       <input
+//                         type="radio"
+//                         name="skillCategory"
+//                         value={category}
+//                         checked={selectedCategory === category}
+//                         onChange={() => handleCategoryChange(category)}
+//                         className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+//                           selectedCategory === category
+//                             ? "border-purple text-red"
+//                             : "border-purple"
+//                         }`}
+//                       />
+//                       {category}
+//                     </label>
+//                   ))}
+//                 </div>
+//                 {/* FIlters Based on Material Options */}
+//                 <div className="flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Select Material Options
+//                   </div>
+//                   {materialOptions.map((material) => (
+//                     <label
+//                       key={material}
+//                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+//                         selectedMaterial === material
+//                           ? "text-red"
+//                           : "text-[#252c32]"
+//                       }`}
+//                     >
+//                       <input
+//                         type="radio"
+//                         name="skillCategory"
+//                         value={material}
+//                         checked={selectedMaterial === material}
+//                         onChange={() => handleMaterialChange(material)}
+//                         className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+//                           selectedMaterial === material
+//                             ? "border-purple text-red"
+//                             : "border-purple"
+//                         }`}
+//                       />
+//                       {material}
+//                     </label>
+//                   ))}
+//                 </div>
+//                 {/* FIlters Based on ToyType Options */}
+//                 <div className="flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Select Type of Toy
+//                   </div>
+//                   {typeOfToyOptions.map((toy) => (
+//                     <label
+//                       key={toy}
+//                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+//                         selectedToyType === toy ? "text-red" : "text-[#252c32]"
+//                       }`}
+//                     >
+//                       <input
+//                         type="radio"
+//                         name="skillCategory"
+//                         value={toy}
+//                         checked={selectedToyType === toy}
+//                         onChange={() => handleToyTypeChange(toy)}
+//                         className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+//                           selectedToyType === toy
+//                             ? "border-purple text-red"
+//                             : "border-purple"
+//                         }`}
+//                       />
+//                       {toy}
+//                     </label>
+//                   ))}
+//                 </div>
+//                 {/* FIlters Based on feature Options */}
+//                 <div className="flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Select Educational Features
+//                   </div>
+//                   {featuresOptions.map((feature) => (
+//                     <label
+//                       key={feature}
+//                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+//                         selectedFeature === feature
+//                           ? "text-red"
+//                           : "text-[#252c32]"
+//                       }`}
+//                     >
+//                       <input
+//                         type="radio"
+//                         name="skillCategory"
+//                         value={feature}
+//                         checked={selectedFeature === feature}
+//                         onChange={() => handlefeatureChange(feature)}
+//                         className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+//                           selectedFeature === feature
+//                             ? "border-purple text-red"
+//                             : "border-purple"
+//                         }`}
+//                       />
+//                       {feature}
+//                     </label>
+//                   ))}
+//                 </div>
+//                 {/* FIlters Based on Discounts Options */}
+//                 <div className="flex flex-col justify-start items-start gap-2 w-full">
+//                   <div className="text-[#252c32] text-xl font-semibold font-fredoka leading-[25px]">
+//                     Select Discount Type
+//                   </div>
+//                   {disscountOptions.map((discount) => (
+//                     <label
+//                       key={discount}
+//                       className={`block cursor-pointer text-sm font-medium font-fredoka leading-none ${
+//                         selectedDiscount === discount
+//                           ? "text-red"
+//                           : "text-[#252c32]"
+//                       }`}
+//                     >
+//                       <input
+//                         type="radio"
+//                         name="skillCategory"
+//                         value={discount}
+//                         checked={selectedDiscount === discount}
+//                         onChange={() => handlediscountChange(discount)}
+//                         className={`mr-2 text-sm text-red font-medium font-fredoka leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${
+//                           selectedDiscount === discount
+//                             ? "border-purple text-red"
+//                             : "border-purple"
+//                         }`}
+//                       />
+//                       {discount}
+//                     </label>
+//                   ))}
+//                 </div>
+//               </div>
+//             </div>
 //             {/* the product Grid Column */}
 //             <div className="flex w-full flex-col justift-start items-start gap-[20px] md:gap-[28px]">
 //               <div className="flex flex-col w-full gap-2">
 //                 {/* Search Input Row */}
-//                 <div className="flex w-full px-4 md:px-2">
+//                 <div className="flex w-full px-4 lg:px-0">
 //                   <SearchInput
 //                     // ref={searchInputRef}
 //                     value={searchTerm}
@@ -1163,8 +1302,8 @@ export default function ShopPage() {
 //                   </div>
 //                 </div>
 //               </div>
-//               {/* Display Filtered Products First */}
 
+//               {/* Display Filtered Products First */}
 //               {(selectedCategory &&
 //                 selectedMaterial &&
 //                 selectedFeature &&
@@ -1172,28 +1311,27 @@ export default function ShopPage() {
 //                 selectedToyType &&
 //                 filteredProducts.length > 0) ||
 //                 (!shouldShowAllProducts && (
-//                   <>
+//                   <div className="w-full flex flex-col gap-2 justify-start items-start">
 //                     <div className="flex justify-between items-center lg:px-0 px-4 w-full">
 //                       <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
 //                         Search Results
 //                       </span>
 //                     </div>
-//                     <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
-//                       {filteredProducts.map((product) => (
+//                     <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+//                       {products.map((product) => (
 //                         <div key={product.id} className="border">
-//                           <Link href={`/shop/${product.id}`}>
-//                             <LocalMobileProducts
-//                               image={product.thumbnail.url}
-//                               title={product.title}
-//                               price={product.salePrice}
+//                           <Link href={`/shop/${product.documentId}`}>
+//                             <ProductCard
+//                               image={`https://lionfish-app-98urn.ondigitalocean.app${product.FeaturedImage.url}`}
+//                               price={product.DiscountPrice}
+//                               title={product.Name}
 //                             />
 //                           </Link>
 //                         </div>
 //                       ))}
 //                     </div>
-//                   </>
+//                   </div>
 //                 ))}
-
 //               {/* Message if no matching products found */}
 //               {searchTerm && filteredProducts.length === 0 && (
 //                 <div className="text-center clarabodyTwo text-red-500 ">
@@ -1203,26 +1341,26 @@ export default function ShopPage() {
 //               )}
 
 //               {/* Render filtered products */}
-//               <div className="w-full md:grid md:grid-cols-2 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
+//               <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
 //                 {filteredProducts.length > 0 ? (
 //                   filteredProducts.map((product) => (
-//                     <LocalMobileProducts
-//                       key={product.id}
-//                       image={product.thumbnail.url}
-//                       title={product.title}
-//                       price={product.salePrice}
-//                     />
+//                     <Link href={`/shop/${product.id}`} key={product.id}>
+//                       <MobileProductCard
+//                         key={product.id}
+//                         image={product.thumbnail.url}
+//                         title={product.title}
+//                         price={product.salePrice}
+//                       />
+//                     </Link>
 //                   ))
 //                 ) : (
 //                   <>
-//                     <div className="w-full md:grid md:grid-cols-1 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2">
-//                       {/* <div className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
-//                         No matching Product Found{" "}
-//                       </div> */}
+//                     <div>
+//                       {/* <div className="w-full lg:grid lg:grid-cols-3 pl-4 md:pl-2 lg:px-0 flex flex-row overflow-x-scroll scrollbar-hidden gap-2"> */}
 //                       {sortedProducts.map((product) => (
 //                         <div key={product.id} className="border">
 //                           <Link href={`/shop/${product.id}`}>
-//                             <LocalMobileProducts
+//                             <ProductCard
 //                               image={product.thumbnail.url}
 //                               title={product.title}
 //                               price={product.salePrice}
@@ -1235,33 +1373,32 @@ export default function ShopPage() {
 //                 )}
 //               </div>
 
-//               {/* Display All Products Below */}
-//               <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
-//                 <div className="flex justify-between items-center px-4 lg:px-0 w-full">
-//                   <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
-//                     All Products
-//                   </span>
-//                 </div>
-//                 {/* <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-2 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
-//                   {products.map((product) => (
-//                     <div key={product.id} className="border">
-//                       <Link href={`/shop/${product.id}`}>
-//                         <LocalMobileProducts
-//                           image={product.thumbnail.url || ProductImage}
-//                           title={product.title}
-//                           price={product.salePrice}
-//                         />
-//                       </Link>
-//                     </div>
-//                   ))}
-//                 </div> */}
-//                 <ProductsList products={products} />
-//               </div>
-//             </div>
+//   <div className="flex flex-col justify-start items-start gap-2 md:gap-4 w-full">
+//     <div className="flex justify-between items-center px-4 lg:px-0 w-full">
+//       <span className="w-[max-content] text-[#0A1932] font-fredoka tex-[24px] font-semibold">
+//         All Products
+//       </span>
+//     </div>
+//     <ProductsList products={products} />
+//     {/* <div className="w-full lg:grid lg:grid-cols-3 px-4 md:px-0 lg:px-0 grid grid-cols-2 overflow-hidden gap-2">
+//       {products.map((product) => (
+//         <div key={product.id} className="border">
+//           <Link href={`/shop/${product.id}`}>
+//             <MobileProductCard
+//               image={product.thumbnail.url || ProductImage}
+//               title={product.title}
+//               price={product.salePrice}
+//             />
+//           </Link>
+//         </div>
+//       ))}
+//     </div> */}
+//   </div>
+// </div>
 //           </div>
 //         </div>
 //       </section>
-//       <NewsLetter />
+//       <Newsletter />
 //       <BottomNavigation />
 //     </>
 //   );

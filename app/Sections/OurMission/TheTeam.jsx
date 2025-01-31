@@ -1,5 +1,5 @@
 import { Team } from "@/app/Widgets";
-import { JANINE, Thomas } from "@/public/Images";
+import { Thomas } from "@/public/Images";
 
 export default function TheTeam({ fetchedData }) {
   return (
@@ -17,7 +17,7 @@ export default function TheTeam({ fetchedData }) {
         <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-[20px] justify-between items-start">
           <Team
             bgColor="#ff8e00"
-            imageSrc={JANINE}
+            imageSrc={Thomas}
             title="JANINE HAENEL"
             degree="BA (Hons) Childhood Studies (Level 6)"
             description={fetchedData[0].aboutJanineHaenel}

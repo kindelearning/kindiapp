@@ -1,12 +1,12 @@
 "use client";
 
 import ProfileEdit from "../edit/page";
-import { useAuth } from "@/app/lib/useAuth";
+import { useAuth } from "@/lib/useAuth";
 import { useRouter } from "next/navigation";
 import { getUserDataByEmail } from "@/lib/hygraph";
-// import Loading from "../loading";
 import { useEffect, useState } from "react";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 export default function ProfileUpdate() {
   const { user, loading } = useAuth();
@@ -15,21 +15,11 @@ export default function ProfileUpdate() {
 
   useEffect(() => {
     if (user && user.email) {
-      // Fetch user data by email when the user is available
-      const fetchData = async () => {
-        try {
-          const data = await getUserDataByEmail(user.email);
-          setHygraphUser(data);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        }
-      };
-
-      fetchData();
+      getUserDataByEmail(user.email).then((data) => {
+        setHygraphUser(data);
+      });
     }
   }, [user, loading, router]);
-  
-  
 
   if (loading)
     return (
@@ -40,12 +30,15 @@ export default function ProfileUpdate() {
 
   return (
     <>
-    {/* I am the update page not edit page */}
       <section className="w-full pb-32 bg-[#f5f5f5] flex flex-col gap-0 justify-center items-start">
         {user && hygraphUser ? (
           <ProfileEdit userId={hygraphUser.id} />
         ) : (
-          <p>User Not found</p>
+          <div className="claracontainer">
+            <Link href="/auth/sign-up" className="clarabutton">
+              Please Login to use this feature!
+            </Link>
+          </div>
         )}
       </section>
     </>

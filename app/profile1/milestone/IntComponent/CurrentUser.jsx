@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/app/lib/useAuth";
+import { useAuth } from "@/lib/useAuth";
 import { getUserDataByEmail } from "@/lib/hygraph";
 import { ProfilePlaceholder01 } from "@/public/Images";
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default function CurrentUser() {
           <div className="w-full h-full bg-white rounded-full flex overflow-clip items-center justify-center">
             <Image
               src={
-                hygraphUser.myAvatar.profileAvatar.url || 'https://ap-south-1.graphassets.com/cm1dom2gf0lqw07pi72v8797k/cm3jnqto60fx008o0ctpfoiaq'
+                hygraphUser.myAvatar.profileAvatar.url || ProfilePlaceHolderOne
               }
               alt="User DP"
               width={100}

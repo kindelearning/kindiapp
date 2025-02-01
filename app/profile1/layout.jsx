@@ -1,14 +1,14 @@
 import "../globals.css";
-import { cn } from "@/lib/utils";
-import { BottomNavigation, Footer, Header, Newsletter } from "../Sections";
+import { BottomNavigation, Footer, Header, NewsLetter } from "../Sections";
 
 export default function RootLayout({ children }) {
   return (
     <>
       <html lang="en">
         <body>
-          <Header className="sticky" />
+          {/* <Header className="sticky" /> */}
           {children}
+          <NewsLetter />
           <BottomNavigation />
           <Footer />
         </body>

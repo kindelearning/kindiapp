@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/lib/useAuth";
+import { useAuth } from "@/app/lib/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,30 +8,27 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getUserDataByEmail } from "@/lib/hygraph";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import MilestoneCompleteButton from "./MilestoneCompleteButton";
-import { getPublishedMileStone } from "@/lib/hygraph";
-import Link from "next/link";
+import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { DialogClose } from "@radix-ui/react-dialog";
+import MarkMilestoneCompleteForm from "./MilestoneCompleteButton";
+import { fetchUserDetails } from "../../api";
+import { activityIcons } from "@/app/constant/menu";
 
-export function CurvePath({ milestones = [], currentUserId }) {
+export function CurvePath({
+  milestones = [],
+  currentUserId,
+  custommilestoneidfromuser,
+}) {
   const [currentDate, setCurrentDate] = useState("");
-  const [message, setMessage] = useState("");
-  const { user, loading } = useAuth();
   const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
 
   useEffect(() => {
     const today = new Date();
@@ -42,11 +39,9 @@ export function CurvePath({ milestones = [], currentUserId }) {
       day: "numeric",
     });
     setCurrentDate(formattedDate);
-    const savedMessage = localStorage.getItem("milestoneMessage");
-    if (savedMessage) {
-      setMessage(savedMessage);
-    }
   }, []);
+
+  // console.log("realMilestoneData from CurevePath", custommilestoneidfromuser);
 
   // Dynamically set container height based on the number of nodes
   const nodeSpacing = 200; // Define the desired spacing between nodes
@@ -79,12 +74,10 @@ export function CurvePath({ milestones = [], currentUserId }) {
   const paths = [];
 
   // Loop through milestones data
-  for (let i = 0; i < milestones.length; i++) {
-    const milestone = milestones[i];
+  for (let i = 0; i < custommilestoneidfromuser.length; i++) {
+    // if (i % 2 !== 0) continue; // Skip odd indices
+    const milestone = custommilestoneidfromuser[i];
 
-    // Position calculation:
-    // - Center the first and last nodes
-    // - Alternate the others to the left and right
     const top = i * nodeSpacing;
     const left =
       i === 0 || i === milestones.length - 1
@@ -93,7 +86,6 @@ export function CurvePath({ milestones = [], currentUserId }) {
         ? containerWidth * 0.3 // Left for even
         : containerWidth * 0.7; // Right for odd
 
-    // Calculate button positioning adjustments
     const buttonTop = top + 60; // Adjust top spacing
     const buttonLeft = left - 110; // Adjust left spacing
 
@@ -111,18 +103,41 @@ export function CurvePath({ milestones = [], currentUserId }) {
         <Dialog className="p-2 lg:p-4">
           <DialogTrigger>
             <button className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white">
-              {milestone.title}
+              {(milestone.Title?.length > 28
+                ? milestone.Title.substring(0, 28) + "..."
+                : milestone.Title) || "Action"}
             </button>
           </DialogTrigger>
           <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px] ">
             <DialogHeader className="p-4">
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Update {milestone.Title}
+                    {/* Update {milestone.documentId} */}
+                  </span>{" "}
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    for your Kid
+                  </span>
+                </div>
+              </DialogTitle>
               <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                <div className="text-[#0a1932] claraheading">
-                  {milestone.title}
+                <div className="flex w-fit font-fredoka gap-2 justify-between items-center">
+                  <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {milestone.Category}
+                  </Badge>
+                  <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {milestone.SubCategory}
+                  </Badge>
                 </div>
-                <div className="w-full text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                  {milestone.description}
+                <div className="text-[#0a1932] text-[32px] font-semibold leading-8 font-fredoka">
+                  {milestone.Title}
                 </div>
+                <div
+                  className="w-full prose text-[#4a4a4a] clarabodyTwo justify-center items-center"
+                  dangerouslySetInnerHTML={{ __html: milestone.Description }}
+                />
+                {/* </div> */}
                 <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
                   <div className="text-[#757575] clarabodyTwo ">
                     Date of Completion
@@ -135,22 +150,17 @@ export function CurvePath({ milestones = [], currentUserId }) {
             </DialogHeader>
             <DialogFooter>
               <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-t-[16px] items-center justify-between py-4 flex flex-row">
-                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                <DialogClose className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                   <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
                     <ChevronLeft className="w-[24px] h-[24px]" />
                     Back
                   </Button>
-                </div>
+                </DialogClose>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                  {user && hygraphUser ? (
-                    <MilestoneCompleteButton
-                      milestoneId={milestone.id}
-                      // userId={hygraphUser.id}
-                      userId={currentUserId}
-                    />
-                  ) : (
-                    <Button className="clarabutton">Login First!</Button>
-                  )}
+                  <MarkMilestoneCompleteForm
+                    passmilestoneId={milestone.id}
+                    userId={currentUserId}
+                  />
                 </div>
               </section>
             </DialogFooter>
@@ -220,24 +230,11 @@ export const TrigSnakeCurve = ({
   mileStoneCustomData = [],
   step = 0.1,
   currentUserId,
+  custommilestoneidfromuser,
 }) => {
   const [currentDate, setCurrentDate] = useState("");
-  const [message, setMessage] = useState("");
   const numButtons = mileStoneCustomData.length;
   const maxY = numButtons * Math.PI * 2;
-
-  // Getting Hygraph User for Auth
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
 
   // Current Date
   useEffect(() => {
@@ -249,10 +246,6 @@ export const TrigSnakeCurve = ({
       day: "numeric",
     });
     setCurrentDate(formattedDate);
-    const savedMessage = localStorage.getItem("milestoneMessage");
-    if (savedMessage) {
-      setMessage(savedMessage);
-    }
   }, []);
 
   if (!mileStoneCustomData || mileStoneCustomData.length === 0) {
@@ -326,19 +319,46 @@ export const TrigSnakeCurve = ({
           <Dialog className="p-2 lg:p-4">
             <DialogTrigger>
               <button className="text-[12px] min-w-[60px] max-w-[80px] w-full rounded-sm px-2 bg-red text-white">
-                {mileStoneCustomData[index]?.title || "Action"}
+                {(mileStoneCustomData[index]?.Title?.length > 20
+                  ? mileStoneCustomData[index]?.Title.substring(0, 14) + "..."
+                  : mileStoneCustomData[index]?.Title) || "Action"}
               </button>
             </DialogTrigger>
             <DialogContent className="w-full bg-[#eaeaf5] p-0 lg:min-w-[800px]">
               <DialogHeader className="p-4">
-                <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
-                  <div className="text-[#0a1932] claraheading">
-                    {mileStoneCustomData[index]?.title}
+                <DialogTitle>
+                  <div className="text-center">
+                    <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      Update {mileStoneCustomData[index]?.Title}
+                    </span>{" "}
+                    <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      for your Kid
+                    </span>
                   </div>
-                  <div className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center">
-                    {mileStoneCustomData[index]?.description ||
-                      "Description not found"}
+                </DialogTitle>
+                <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
+                  <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
+                    <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                      {mileStoneCustomData[index]?.Category}
+                      {/* {mileStoneCustomData[index]?.Category.split(" ")[0]} */}
+                    </Badge>
+                    <Badge className="bg-[#eaeaf5] hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                      {/* {mileStoneCustomData[index]?.SubCategory.split(" ")[0]} */}
+                      {mileStoneCustomData[index]?.SubCategory}
+                    </Badge>
                   </div>
+                  <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
+                    {mileStoneCustomData[index]?.Title}
+                  </div>
+                  <div
+                    className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        mileStoneCustomData[index]?.Description ||
+                        "Description not found",
+                    }}
+                  />
+
                   <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
                     <div className="text-[#757575] clarabodyTwo">
                       Date of Completion
@@ -358,17 +378,10 @@ export const TrigSnakeCurve = ({
                     </Button>
                   </div>
                   <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
-                    {user && hygraphUser ? (
-                      <MilestoneCompleteButton
-                        milestoneId={mileStoneCustomData[index]?.id}
-                        userId={currentUserId}
-                        // userId={hygraphUser.id}
-                      />
-                    ) : (
-                      <Link href="/auth/sign-up" className="clarabutton">
-                        Login First!
-                      </Link>
-                    )}
+                    <MarkMilestoneCompleteForm
+                      passmilestoneId={custommilestoneidfromuser[index]?.id}
+                      userId={currentUserId}
+                    />
                   </div>
                 </section>
               </DialogFooter>
@@ -380,124 +393,503 @@ export const TrigSnakeCurve = ({
   );
 };
 
-export default function DisplayAllMileStone({ passThecurrentUserId }) {
+export function DisplayAllMileStone2({ passThecurrentUserId }) {
   const [milestones, setMilestones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [realMilestoneData, setRealMilestoneData] = useState([]);
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSubCategory, setSelectedSubCategory] = useState("All");
 
   useEffect(() => {
-    const fetchMilestones = async () => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+
       try {
-        const data = await getPublishedMileStone();
-        console.log("Fetched milestones:", data);
-        setMilestones(data);
-      } catch (err) {
-        setError("Error fetching milestones.");
+        const data = await fetchUserDetails(token);
+        setUserData(data);
+        const evenIndexedMilestones = data.allMilestones.filter(
+          (_, index) => index % 2 === 0
+        );
+        console.log("even Indexed Milestones", evenIndexedMilestones);
+        // setRealMilestoneData(data.allMilestones);
+        setRealMilestoneData(evenIndexedMilestones);
+
+        // Milestone Data fetchcing
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const milestoneData = await response.json(); // Parse the JSON from the response
+        if (!Array.isArray(milestoneData.data)) {
+          throw new Error("Fetched data is not an array.");
+        }
+
+        setMilestones(milestoneData.data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMilestones();
-  }, []);
+    fetchData();
+  }, [router]);
 
-  // Adding Filters for milestone based on Category and subcategory
-  const categories = [
-    "All",
-    ...new Set(milestones.map((m) => m.category || "Uncategorized")),
-  ];
-
-  // Extract unique subcategories for the selected category
-  const subCategories =
-    selectedCategory === "All"
-      ? ["All"]
-      : [
-          "All",
-          ...new Set(
-            milestones
-              .filter((m) => m.category === selectedCategory)
-              .map((m) => m.subCategory || "Unspecified")
-          ),
-        ];
-
-  // Filter milestones based on selected category and subcategory
-  const filteredMilestones = milestones.filter((milestone) => {
-    const matchesCategory =
-      selectedCategory === "All" || milestone.category === selectedCategory;
-    const matchesSubCategory =
-      selectedSubCategory === "All" ||
-      milestone.subCategory === selectedSubCategory;
-    return matchesCategory && matchesSubCategory;
-  });
+  console.log("Fetched milestones:", milestones);
+  // console.log("Fetched euserData on Milestone pag:", userData);
+  // console.log("Fetched setRealMilestoneId ", realMilestoneData);
 
   if (!Array.isArray(milestones)) {
     return <p>Error: Expected milestones to be an array.</p>;
   }
+
+  // Extract unique categories and subcategories
+  const categories = [
+    // "All",
+    ...new Set(milestones.map((m) => m.Category).filter(Boolean)),
+  ];
+
+  const subCategories = [
+    "All",
+    ...new Set(
+      milestones
+        .filter(
+          (m) => selectedCategory === "All" || m.Category === selectedCategory
+        )
+        .map((m) => m.SubCategory)
+        .filter(Boolean)
+    ),
+  ];
+
+  // Filter milestones based on selected filters
+  const filteredMilestones = milestones.filter(
+    (m) =>
+      (selectedCategory === "All" || m.Category === selectedCategory) &&
+      (selectedSubCategory === "All" || m.SubCategory === selectedSubCategory)
+  );
+
+  console.log(
+    "Filtered Milestone based on category and subcategory",
+    filteredMilestones
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <>
-      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]">
-        <div className="flex w-full flex-col items-start">
-          <select
-            id="category-select"
-            value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
-              setSelectedSubCategory("All"); // Reset subcategory selection when category changes
-            }}
-            className="border  w-full border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+      <div className=" mx-auto flex flex-col gap-4">
+        <div className="flex gap-2 w-full  items-center justify-center max-w-full overflow-x-scroll scrollbar-hidden">
+          {categories && <CategorySlider categories={categories} />}
         </div>
 
-        {/* Subcategory Filter as Badge/Chip (conditionally rendered) */}
-        {selectedCategory !== "All" && (
-          <div className="subcategory-filter mt-4">
-            <div className="flex overflow-x-scroll scrollbar-hidden flex-wrap gap-2">
-              {subCategories.map((subCategory) => (
-                <span
-                  key={subCategory}
-                  onClick={() => setSelectedSubCategory(subCategory)}
-                  className={`cursor-pointer border-white border-2 duration-200 px-4 py-1 rounded-full ${
-                    selectedSubCategory === subCategory
-                      ? "bg-red  text-white"
-                      : "bg-gray-200  text-gray-800"
-                  } hover:bg-red hover:text-white`}
-                  style={{
-                    display: "inline-block",
-                    margin: "0.2rem",
-                    // border:
-                    //   selectedSubCategory === subCategory
-                    //     ? "2px solid #000"
-                    //     : "1px solid #ccc",
-                  }}
-                >
-                  {subCategory}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
+        {/* SubCategory Filter */}
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+          {subCategories.map((subCat) => (
+            <Badge
+              key={subCat}
+              onClick={() => setSelectedSubCategory(subCat)}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm ${
+                selectedSubCategory === subCat
+                  ? "bg-red text-white"
+                  : "bg-gray-200  text-gray-700"
+              }`}
+            >
+              {subCat}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      <section className="w-full pb-24 h-full bg-[#EAEAF5] items-center justify-center py-4 flex flex-col gap-[20px]"></section>
       <TrigSnakeCurve
         amplitude={6}
+        custommilestoneidfromuser={realMilestoneData}
         mileStoneCustomData={filteredMilestones}
         currentUserId={passThecurrentUserId}
       />
       <CurvePath
+        custommilestoneidfromuser={realMilestoneData}
         milestones={filteredMilestones}
         currentUserId={passThecurrentUserId}
       />
     </>
+  );
+}
+
+export function CategorySlider({ categories }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Function to move to the next category
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === categories.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  // Function to move to the previous category
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? categories.length - 1 : prevIndex - 1
+    );
+  };
+
+  // Find the matched icon from the activityIcons array based on the category name
+  const matchedIcon = activityIcons.find(
+    (icon) => icon.title === categories[currentIndex]
+  );
+
+  return (
+    <div className="flex items-center rounded-[20px] w-fit bg-white justify-between gap-0">
+      {/* Slider Container */}
+      <div className="flex justify-center items-center gap-2 w-fit">
+        {/* Previous Button */}
+        <button
+          onClick={prevSlide}
+          className="w-[32px] h-[32px] flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        >
+          <ChevronLeft />
+        </button>
+
+        {/* Current Category Display */}
+        <div className="flex w-fit justify-center">
+          <div className="px-2 py-2 w-full max-w-[260px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
+            {matchedIcon && (
+              <Image
+                src={matchedIcon.icon}
+                alt={categories[currentIndex]}
+                className="w-[24px] h-[24px]"
+              />
+            )}
+
+            <span className="font-fredoka min-w-[max-content] font-semibold">
+              {categories[currentIndex]}
+            </span>
+          </div>
+        </div>
+
+        {/* Next Button */}
+        <button
+          onClick={nextSlide}
+          className="w-[32px] h-[32px] flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10"
+        >
+          <ChevronRight />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default function DisplayAllMileStone({ passThecurrentUserId }) {
+  const [milestones, setMilestones] = useState([]); // Stores all milestones
+  const [loading, setLoading] = useState(true); // Loading state
+  const [selectedCategory, setSelectedCategory] = useState(null); // Selected category
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null); // Selected subcategory
+  const [filteredData, setFilteredData] = useState([]); // Stores filtered milestones
+  const [realMilestoneData, setRealMilestoneData] = useState([]);
+  const [userData, setUserData] = useState(null);
+
+  // Fetch milestones from the API
+  useEffect(() => {
+    const fetchMilestones = async () => {
+      const token = localStorage.getItem("jwt");
+      if (!token) {
+        return;
+      }
+      try {
+        const myData = await fetchUserDetails(token);
+        setUserData(myData);
+        const evenIndexedMilestones = myData.allMilestones.filter(
+          (_, index) => index % 2 === 0
+        );
+        console.log("even Indexed Milestones", evenIndexedMilestones);
+        // setRealMilestoneData(data.allMilestones);
+        setRealMilestoneData(evenIndexedMilestones);
+
+        const response = await fetch(
+          "https://lionfish-app-98urn.ondigitalocean.app/api/milestones?populate=*"
+        );
+        const data = await response.json();
+        setMilestones(data.data); // Set fetched milestones
+        setLoading(false); // Stop loading
+      } catch (error) {
+        console.error("Error fetching milestones:", error);
+        setLoading(false); // Stop loading even on error
+      }
+    };
+
+    fetchMilestones();
+  }, []);
+
+  // Group milestones by Category and SubCategory
+  const groupMilestones = () => {
+    const groupedData = {};
+
+    milestones.forEach((milestone) => {
+      const { Category, SubCategory } = milestone;
+
+      if (!groupedData[Category]) {
+        groupedData[Category] = {};
+      }
+
+      if (!groupedData[Category][SubCategory]) {
+        groupedData[Category][SubCategory] = [];
+      }
+
+      groupedData[Category][SubCategory].push(milestone);
+    });
+
+    return groupedData;
+  };
+
+  // Set default selected category and subcategory
+  useEffect(() => {
+    if (milestones.length > 0) {
+      const groupedMilestones = groupMilestones();
+      const firstCategory = Object.keys(groupedMilestones)[0];
+      const firstSubCategory =
+        firstCategory && Object.keys(groupedMilestones[firstCategory])[0];
+
+      setSelectedCategory(firstCategory || null);
+      setSelectedSubCategory(firstSubCategory || null);
+    }
+  }, [milestones]);
+
+  // Update filtered data when category or subcategory changes
+  // Update filtered data and handle category or subcategory selection
+  useEffect(() => {
+    const groupedMilestones = groupMilestones();
+
+    if (selectedCategory) {
+      const subCategories = Object.keys(
+        groupedMilestones[selectedCategory] || {}
+      );
+      if (subCategories.length > 0) {
+        // Preselect the first subcategory only when switching categories
+        if (
+          !selectedSubCategory ||
+          !subCategories.includes(selectedSubCategory)
+        ) {
+          setSelectedSubCategory(subCategories[0]); // Automatically select the first subcategory
+        }
+      } else {
+        setSelectedSubCategory(null); // Reset subcategory if none exist
+      }
+
+      // Filter milestones based on selected category and subcategory
+      setFilteredData(
+        selectedSubCategory
+          ? groupedMilestones[selectedCategory][selectedSubCategory] || []
+          : Object.values(groupedMilestones[selectedCategory] || {}).flat()
+      );
+    } else {
+      setFilteredData([]); // Clear filtered data if no category is selected
+      setSelectedSubCategory(null); // Reset subcategory
+    }
+  }, [selectedCategory, selectedSubCategory, milestones]);
+
+  // Handle loading state
+  if (loading) {
+    return <div className="text-center text-lg font-medium">Loading...</div>;
+  }
+
+  const groupedMilestones = groupMilestones();
+  const categories = Object.keys(groupedMilestones);
+  const subCategories = selectedCategory
+    ? Object.keys(groupedMilestones[selectedCategory] || {})
+    : [];
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center gap-4">
+      {/* Categories */}
+      {categories && (
+        <CategoryCarousel
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
+      )}
+      {/* {categories && (
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+          {categories.map((category) => (
+            <Badge
+              key={category}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm 
+              ${
+                selectedCategory === category
+                  ? "bg-red text-white"
+                  : "bg-gray-200  text-gray-700"
+              }
+            hover:bg-hoverRed cursor-pointer transition`}
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category ? null : category
+                )
+              }
+            >
+              {category}
+            </Badge>
+          ))}
+        </div>
+      )} */}
+
+      {/* Subcategories */}
+      {selectedCategory && (
+        <div className="flex gap-2 w-full max-w-full items-center justify-center overflow-x-scroll scrollbar-hidden">
+          {subCategories.map((subCategory) => (
+            <Badge
+              key={subCategory}
+              className={`px-4 py-1 hover:bg-red hover:text-white rounded-full text-sm
+                ${
+                  selectedSubCategory === subCategory
+                    ? "bg-red text-white"
+                    : "bg-gray-200  text-gray-700"
+                }
+              hover:bg-hoverRed cursor-pointer transition`}
+              onClick={() =>
+                setSelectedSubCategory(
+                  selectedSubCategory === subCategory ? null : subCategory
+                )
+              }
+            >
+              {subCategory}
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      <div className="flex flex-col lg:py-12 w-full">
+        {Array.isArray(filteredData) ? (
+          <CurvePath
+            custommilestoneidfromuser={realMilestoneData}
+            milestones={filteredData}
+            currentUserId={passThecurrentUserId}
+          />
+        ) : null}
+        {Array.isArray(filteredData) ? (
+          <TrigSnakeCurve
+            amplitude={6}
+            custommilestoneidfromuser={realMilestoneData}
+            mileStoneCustomData={filteredData}
+            currentUserId={passThecurrentUserId}
+          />
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+{
+  /* Filtered Milestones
+{Array.isArray(filteredData) ? (
+    filteredData.map((milestone) => (
+      <div
+        key={milestone.id}
+        className="p-4 border rounded-lg shadow-sm hover:shadow-md transition"
+      >
+        <h4 className="text-lg font-semibold mb-2">{milestone.Title}</h4>
+        <p
+          className="text-gray-700"
+          dangerouslySetInnerHTML={{ __html: milestone.Description }}
+        />
+      </div>
+    ))
+  ) : (
+    <p className="text-gray-500">
+      No milestones found for the selected category or subcategory.
+    </p>
+  );
+}
+ */
+}
+function CategoryCarousel({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Update selectedCategory whenever currentIndex changes
+  useEffect(() => {
+    setSelectedCategory(categories[currentIndex]);
+  }, [currentIndex, categories, setSelectedCategory]);
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < categories.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const matchedIcon = activityIcons.find(
+    (icon) => icon.title === categories[currentIndex]
+  );
+
+  return (
+    <div className="flex py-1 px-1 items-center rounded-[20px] w-fit bg-white justify-between gap-0">
+      <div className="flex justify-center items-center gap-2 w-fit">
+        {/* Left Arrow */}
+        <button
+          className={`w-[32px] h-[32px] ${
+            currentIndex === 0
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          }  flex justify-center items-center left-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10`}
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        {/* Visible Category */}
+        <div className="flex w-fit justify-center">
+          <div className="px-2 py-2 w-full max-w-[360px] rounded-full gap-2 bg-white transition duration-200 flex items-center">
+          {matchedIcon && (
+              <Image
+                src={matchedIcon.icon}
+                alt={categories[currentIndex]}
+                className="w-[24px] h-[24px]"
+              />
+            )}
+            <div
+              className={`px-2 font-fredoka min-w-[max-content] rounded-full text-lg font-medium 
+          ${
+            selectedCategory === categories[currentIndex]
+              ? "bg-red-600 text-red"
+              : "bg-transparent text-gray-700"
+          }`}
+            >
+              {categories[currentIndex]}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Arrow */}
+        <button
+          className={`w-[32px] h-[32px] ${
+            currentIndex === categories.length - 1
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-gray-200"
+          } flex justify-center items-center right-0 top-1/2 transform bg-white bg-opacity-30 backdrop-blur-lg text-[#000000] p-2 rounded-full z-10 rounded-full`}
+          onClick={handleNext}
+          disabled={currentIndex === categories.length - 1}
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+    </div>
   );
 }

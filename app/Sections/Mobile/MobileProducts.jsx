@@ -88,17 +88,15 @@ export default function MobileProducts({}) {
             </Link>
           </div>
 
-          <div className="grid claracontainer w-full  pl-4 flex-row  gap-4 grid-cols-2">
+          <div className="grid claracontainer w-full pl-4 flex-row  justify-between gap-4 grid-cols-2">
             {products.map((product) => (
-              <div key={product.id}>
-                <Link href={`/shop/${product.id}`}>
-                  <LocalProductCard
-                    image={product.thumbnail.url}
-                    title={product.title}
-                    price={product.salePrice}
-                  />
-                </Link>
-              </div>
+              <Link key={product.id} href={`/shop/${product.id}`}>
+                <LocalProductCard
+                  image={product.thumbnail.url}
+                  title={product.title}
+                  price={product.salePrice}
+                />
+              </Link>
             ))}
           </div>
         </div>

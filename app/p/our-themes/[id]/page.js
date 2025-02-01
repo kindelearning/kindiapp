@@ -1,16 +1,31 @@
-import { getAllThemeIds, getThemeById } from "@/lib/hygraph";
-import ThemeDetailClient from "./ThemeDetailClient";
 import Image from "next/image";
 import { ThemeDummy } from "@/public/Images";
 
-// Fetch dynamic IDs for static generation in the App Router
 export async function generateStaticParams() {
-  const ids = await getAllThemeIds(); // Fetch theme IDs dynamically
-  console.log("Themes Ids:", ids); // Debugging - Remove for production
+  try {
+    // Fetch data from API
+    const response = await fetch(
+      "https://lionfish-app-98urn.ondigitalocean.app/api/our-themes"
+    );
+    const { data } = await response.json();
 
-  return ids.map((id) => ({
-    id: id.toString(), // Ensure ID is a string
-  }));
+    // Ensure data exists
+    if (!Array.isArray(data) || data.length === 0) {
+      console.error("⚠️ No blogs found or API response is empty");
+      return [];
+    }
+
+    // Log fetched document IDs for debugging
+    console.log(
+      "✅ Fetched blog document IDs:",
+      data.map((blog) => blog.documentId)
+    );
+
+    return data.map((blog) => ({ id: blog.documentId })); // Use "documentId" instead of "id"
+  } catch (error) {
+    console.error("❌ Error fetching blogs:", error);
+    return [];
+  }
 }
 
 async function fetchThemeById(documentId) {
@@ -22,22 +37,9 @@ async function fetchThemeById(documentId) {
   if (!data || !data.data) {
     return null; // If data is not found
   }
- 
+
   return data.data;
 }
-
-// export default async function ThemeDetailPage({ params }) {
-//   const { id } = params;
-
-//   // Fetch theme data on the server side based on ID
-//   const theme = await getThemeById(id);
-
-//   if (!theme) {
-//     return <div>Theme not found!</div>; // Show message if theme doesn't exist
-//   }
-
-//   return <ThemeDetailClient theme={theme} />; // Pass theme data to client component
-// }
 
 export default async function ThemePage({ params }) {
   const { id } = params;

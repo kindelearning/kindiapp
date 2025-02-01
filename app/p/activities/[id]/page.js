@@ -7,7 +7,7 @@ export async function generateStaticParams() {
 
   return ids.map((id) => ({
     id: id.toString(), // Ensure ID is a string
-  }));
+  })); 
 }
 
 export default async function ActivityDetailPage({ params }) {

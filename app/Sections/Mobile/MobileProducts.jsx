@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export function LocalProductCard({ image, title, price }) {
+export function LocalProductCard({ image, productUrl, title, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
     const generateRandomRating = () => {
@@ -21,7 +21,11 @@ export function LocalProductCard({ image, title, price }) {
   }, []);
 
   return (
-    <div className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
+    <Link
+      href={productUrl}
+      target="_blank"
+      className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md"
+    >
       <div className="flex rounded-t-[16px] overflow-clip w-full">
         <Image
           // src={`https://lionfish-app-98urn.ondigitalocean.app${image}`}
@@ -35,7 +39,7 @@ export function LocalProductCard({ image, title, price }) {
       <div className="claracontainer flex flex-col justify-start min-h-[80px] pb-2 md:min-h-[100px] items-start w-full gap-2">
         <div className="flex items-center px-2 w-full justify-between gap-2">
           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-            $ {price || "29"}
+          £  {price || "29"}
           </h1>
           <div className="flex flex-row justify-center gap-[2px] items-center">
             <Image
@@ -55,7 +59,7 @@ export function LocalProductCard({ image, title, price }) {
           {title.length > 30 ? `${title.slice(0, 24)}...` : title}
         </h3>
       </div>
-    </div>
+    </Link>
   );
 }
 

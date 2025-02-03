@@ -1,22 +1,32 @@
 import { ProductDetailClient } from "@/app/Sections";
-import { getAllProductIds, getProductById } from "@/lib/hygraph";
+
 
 export async function generateStaticParams() {
-  const ids = await getAllProductIds();
-  return ids.map((id) => ({
-    id: id.toString(),
-  }));
-}
+  try {
+    // Fetch data from API
+    const response = await fetch(
+      "https://lionfish-app-98urn.ondigitalocean.app/api/products"
+    );
+    const { data } = await response.json();
 
+    // Ensure data exists
+    if (!Array.isArray(data) || data.length === 0) {
+      console.error("⚠️ No product found or API response is empty");
+      return [];
+    }
 
+    // Log fetched document IDs for debugging
+    console.log(
+      "✅ Fetched product document IDs:",
+      data.map((product) => product.documentId)
+    );
 
-export default async function ProductDetailPage({ params }) {
-  const { id } = params;
-  const fetchedProduct = await getProductById(id);
-
-  if (!fetchedProduct) {
-    return <div>Product not found!</div>;
+    return data.map((product) => ({ id: product.documentId })); // Use "documentId" instead of "id"
+  } catch (error) {
+    console.error("❌ Error fetching product:", error);
+    return [];
   }
-
-  return <ProductDetailClient product={fetchedProduct} />;
+}
+export default function ProductDetailPage({ params }) {
+  return <ProductDetailClient params={params} />;
 }

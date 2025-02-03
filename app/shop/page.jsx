@@ -446,8 +446,8 @@ export default function ShopPage() {
                 {/* Product Dom, all filters/sorted products will be shown here */}
                 {paginatedProducts.map((product) => {
                   return (
-                    <div key={product.id} className="product-card">
-                      <LocalProductCard
+                    <div key={product.documentId} className="product-card">
+                      <LocalProductCard 
                         productUrl={`/shop/${product.documentId}`}
                         image={
                           product?.FeaturedImage

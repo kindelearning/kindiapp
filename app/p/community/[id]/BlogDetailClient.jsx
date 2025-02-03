@@ -159,8 +159,8 @@ import { CommentForm } from "../comments/CommentForm";
 //   );
 // }
 
-export default function BlogDetailPage({ params }) {
-  const { id } = params;
+export default function BlogDetailPage({ blog }) {
+  // const { id } = params;
   const [blogData, setBlogData] = useState(null);
   const [comments, setComments] = useState([]);
   const [visibleComments, setVisibleComments] = useState([]);

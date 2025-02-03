@@ -1,9 +1,7 @@
 import { getAllBlogIds, getBlogById } from "@/lib/hygraph";
 import BlogDetailPage from "./BlogDetailClient";
 
-// Use generateStaticParams in the App Router
-export async function generateStaticParams() {
-  
+export default async function generateStaticParams() {
   try {
     // Fetch data from API
     const response = await fetch(
@@ -29,29 +27,32 @@ export async function generateStaticParams() {
     return [];
   }
 }
- 
-async function fetchBlogById(documentId) {
-  const res = await fetch(
-    `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}?populate=*`
-  );
-  const data = await res.json();
 
-  if (!data || !data.data) {
-    return null; // If data is not found
-  }
+// async function fetchBlogById(documentId) {
+//   const res = await fetch(
+//     `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}?populate=*`
+//   );
+//   const data = await res.json();
 
-  return data.data;
-}
+//   if (!data || !data.data) {
+//     return null; // If data is not found
+//   }
 
-// export default async function BlogDetail({ params }) {
-//   const { id } = params;
+//   return data.data;
+// }
+
+// export default async function BlogDetail() {
+//   // const { id } = params;
 
 //   // Fetch blog data on the server side
-//   const blog = await getBlogById(id);
+//   const blog = await fetch(
+//     `https://lionfish-app-98urn.ondigitalocean.app/api/blogs/${documentId}?populate=*`
+//   );
+//   const data = await blog.json();
 
-//   if (!blog) {
+//   if (!data.data) {
 //     return <div>Blog not found!</div>;
 //   }
 
-//   return <BlogDetailPage blog={blog} />;
+//   return <BlogDetailPage blog={data} />;
 // }

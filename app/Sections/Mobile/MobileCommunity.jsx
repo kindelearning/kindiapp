@@ -6,11 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const LocalBlogCard = ({
+function LocalBlogCard({
   image,
   title = "Blog Title",
   metsDesc = "Blog metsDesc",
-}) => {
+}) {
   return (
     <>
       <div className="bg-white min-w-[300px] shadow-md cursor-pointer rounded-2xl overflow-hidden">
@@ -34,11 +34,11 @@ const LocalBlogCard = ({
       </div>
     </>
   );
-};
+}
+
 export default function MobileCommunity({}) {
   const [blogs, setBlogs] = useState([]); // Initialize as an empty array
 
-  // Fetch blogs on component mount
   useEffect(() => {
     const fetchBlogs = async () => {
       const data = await getPublishedPosts();

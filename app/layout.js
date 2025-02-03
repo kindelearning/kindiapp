@@ -10,6 +10,7 @@ import {
   VideoOpeningScreen,
 } from "./Sections";
 import { useState } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function RootLayout({ children }) {
   const [isVideoVisible, setIsVideoVisible] = useState(true);

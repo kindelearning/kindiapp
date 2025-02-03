@@ -1,7 +1,5 @@
 import ActivityDetailClient from "../ActivityDetailClient";
 
-
-
 export async function generateStaticParams() {
   try {
     // Fetch data from API

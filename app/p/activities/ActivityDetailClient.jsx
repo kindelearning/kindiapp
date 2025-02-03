@@ -52,56 +52,23 @@ export const ActivityAttribute = ({
     </div>
   );
 };
-
+ 
 export default function ActivityDetailClient({ params }) {
   const { id } = params;
   const [activity, setActivity] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingActivity, setLoadingActivity] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [matchedActivityId, setMatchedActivityId] = useState(null);
 
+  // Effect for fetching activity data (no token required)
   useEffect(() => {
     if (!id) return; // Avoid fetching if id is undefined/null
     console.log("useEffect triggered for activity fetch");
-
     const fetchActivityData = async () => {
       try {
-        setLoading(true);
-
-        // Fetch user details (requires token)
-        const token = localStorage.getItem("jwt");
-        // if (token) {
-        //   const userResponse = await fetchUserDetails(token);
-        //   console.log("User Response:", userResponse);
-        //   setUserData(userResponse.allActivities);
-        //   const allActivities = userResponse.allActivities;
-
-        //   // Find matching activity for userData if available
-        //   if (Array.isArray(allActivities)) {
-        //     const matchedActivity = allActivities.find(
-        //       (activity) => activity.documentId === id
-        //     );
-        //     if (matchedActivity) {
-        //       setMatchedActivityId(matchedActivity.id);
-        //       console.log(
-        //         "Found matching activity in allActivities:",
-        //         matchedActivity.id
-        //       );
-        //     } else {
-        //       console.log("No activity found with the given documentId.");
-        //     }
-        //   } else if (allActivities && allActivities.documentId === id) {
-        //     setMatchedActivityId(allActivities.id);
-        //     console.log("Found matching activity ID:", allActivities.id);
-        //   } else {
-        //     console.log("No activity found with the given documentId.");
-        //   }
-        // } else {
-        //   console.log("User token not found. Skipping user data fetch.");
-        // }
-
-        // Fetch activity details (does not require token)
+        setLoadingActivity(true);
         const url = `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${id}?populate=*`;
         console.log("Fetching activity data from:", url);
         const response = await fetch(url);
@@ -120,12 +87,12 @@ export default function ActivityDetailClient({ params }) {
         console.error("Error fetching activity:", err);
         setError("Failed to load activity data.");
       } finally {
-        setLoading(false);
+        setLoadingActivity(false);
       }
     };
-
     fetchActivityData();
   }, [id]);
+
   // Effect for fetching user details (requires token)
   useEffect(() => {
     if (!id) return; // Ensure id exists
@@ -135,15 +102,13 @@ export default function ActivityDetailClient({ params }) {
       setLoadingUser(false);
       return;
     }
-
     const fetchUserData = async () => {
       try {
-        setLoading(true);
+        setLoadingUser(true);
         const userResponse = await fetchUserDetails(token);
         console.log("User Response:", userResponse);
         setUserData(userResponse.allActivities);
         const allActivities = userResponse.allActivities;
-
         // Find matching activity in user details
         if (Array.isArray(allActivities)) {
           const matchedActivity = allActivities.find(
@@ -151,50 +116,35 @@ export default function ActivityDetailClient({ params }) {
           );
           if (matchedActivity) {
             setMatchedActivityId(matchedActivity.id);
-            console.log(
-              "Found matching activity in user data:",
-              matchedActivity.id
-            );
+            console.log("Found matching activity in user data:", matchedActivity.id);
           } else {
             console.log("No matching activity found in user data.");
           }
         } else if (allActivities && allActivities.documentId === id) {
           setMatchedActivityId(allActivities.id);
-          console.log(
-            "Found matching activity (single object):",
-            allActivities.id
-          );
+          console.log("Found matching activity (single object):", allActivities.id);
         } else {
           console.log("User data did not contain a matching activity.");
         }
       } catch (err) {
         console.error("Error fetching user details:", err);
       } finally {
-        setLoading(false);
+        setLoadingUser(false);
       }
     };
-
     fetchUserData();
   }, [id]);
 
-  console.log("Activity Data", activity);
+  const loading = loadingActivity || loadingUser;
+  console.log("Activity Data:", activity);
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!activity) {
     return <div>Failed to load activity or activity not found.</div>;
   }
 
-  const {
-    Title,
-    Skills,
-    LearningAreaIcons,
-    Theme,
-    FocusAge,
-    ActivityDate,
-    SetUpTime,
-    Gallery,
-    Accordions,
-  } = activity || {};
+  // Adjust destructuring if your API uses an `attributes` field
+  const { Title, Skills, LearningAreaIcons, Theme, FocusAge, ActivityDate, SetUpTime, Gallery, Accordions } = activity || {};
 
   return (
     <>
@@ -223,15 +173,13 @@ export default function ActivityDetailClient({ params }) {
             {/* Row 1 (R2) */}
             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                <div className="text-[#0a1932] text-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   {Title || "Activity Title"}
                 </div>
-                <div className="items-center cursor-pointer w-full justify-center flex flex-col gap-2">
+                <div className="items-center cursor-pointer w-full flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
-                    features={
-                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
-                    }
+                    features={new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"}
                   />
                   <ActivityAttribute
                     image={Themes}
@@ -251,13 +199,11 @@ export default function ActivityDetailClient({ params }) {
                   />
                 </div>
               </div>
-
-              <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+              <div className="flex w-full flex-col items-start gap-2">
+                <div className="text-[#0a1932] font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Learning Areas
                 </div>
-
-                <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+                <div className="items-center overflow-x-scroll flex flex-row gap-1">
                   {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
                     LearningAreaIcons.map((skill, index) => {
                       const skillTitle = skill.children[0]?.text;
@@ -269,8 +215,8 @@ export default function ActivityDetailClient({ params }) {
                           src={iconSrc}
                           alt={skillTitle}
                           width={32}
-                          title={skillTitle}
                           height={32}
+                          title={skillTitle}
                           className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out"
                         />
                       );
@@ -280,8 +226,8 @@ export default function ActivityDetailClient({ params }) {
                   )}
                 </div>
               </div>
-              <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+              <div className="flex w-full flex-col items-start gap-2">
+                <div className="text-[#0a1932] font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Skills
                 </div>
                 <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
@@ -301,9 +247,7 @@ export default function ActivityDetailClient({ params }) {
                 <Dialog>
                   <DialogTrigger className="w-full">
                     <Button
-                      disabled={
-                        !activity.Resources || activity.Resources.length === 0
-                      }
+                      disabled={!activity.Resources || activity.Resources.length === 0}
                       className={`w-full clarabuttton flex md:hidden ${
                         activity.Resources && activity.Resources.length > 0
                           ? "bg-[#3f3a64] text-white"
@@ -318,13 +262,9 @@ export default function ActivityDetailClient({ params }) {
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                          {activity.Resources &&
-                          activity.Resources.length > 0 ? (
+                          {activity.Resources && activity.Resources.length > 0 ? (
                             activity.Resources.map((resource) => (
-                              <ResourceCard
-                                key={resource.id}
-                                resource={resource}
-                              />
+                              <ResourceCard key={resource.id} resource={resource} />
                             ))
                           ) : (
                             <p>No resources available.</p>
@@ -344,21 +284,18 @@ export default function ActivityDetailClient({ params }) {
               ))}
             </div>
           </div>
-
           {/* Col Two */}
           <div className="claracontainer p-0 pb-24 flex flex-col justify-start items-start gap-8">
             {/* Row 1 (R2) */}
             <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
               <div className="flex w-full flex-col justify-normal items-center gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                <div className="text-[#0a1932] text-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   {Title}
                 </div>
-                <div className="items-center w-full justify-center flex flex-col gap-2">
+                <div className="items-center w-full flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
-                    features={
-                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
-                    }
+                    features={new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"}
                   />
                   <ActivityAttribute
                     image={Themes}
@@ -378,11 +315,11 @@ export default function ActivityDetailClient({ params }) {
                   />
                 </div>
               </div>
-              <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+              <div className="flex w-full flex-col items-start gap-2">
+                <div className="text-[#0a1932] font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Learning Areas
                 </div>
-                <div className="items-center overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+                <div className="items-center overflow-x-scroll flex flex-row gap-1">
                   {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
                     LearningAreaIcons.map((skill, index) => {
                       const skillTitle = skill.children[0]?.text;
@@ -394,8 +331,8 @@ export default function ActivityDetailClient({ params }) {
                           src={iconSrc}
                           alt={skillTitle}
                           width={32}
-                          title={skillTitle}
                           height={32}
+                          title={skillTitle}
                           className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out"
                         />
                       );
@@ -405,8 +342,8 @@ export default function ActivityDetailClient({ params }) {
                   )}
                 </div>
               </div>
-              <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+              <div className="flex w-full flex-col items-start gap-2">
+                <div className="text-[#0a1932] font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Skills
                 </div>
                 <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
@@ -425,9 +362,7 @@ export default function ActivityDetailClient({ params }) {
                 <Dialog>
                   <DialogTrigger className="w-full">
                     <Button
-                      disabled={
-                        !activity.Resources || activity.Resources.length === 0
-                      }
+                      disabled={!activity.Resources || activity.Resources.length === 0}
                       className={`w-full clarabuttton flex md:hidden ${
                         activity.Resources && activity.Resources.length > 0
                           ? "bg-[#3f3a64] text-white"
@@ -442,13 +377,9 @@ export default function ActivityDetailClient({ params }) {
                       <DialogTitle></DialogTitle>
                       <DialogDescription>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                          {activity.Resources &&
-                          activity.Resources.length > 0 ? (
+                          {activity.Resources && activity.Resources.length > 0 ? (
                             activity.Resources.map((resource) => (
-                              <ResourceCard
-                                key={resource.id}
-                                resource={resource}
-                              />
+                              <ResourceCard key={resource.id} resource={resource} />
                             ))
                           ) : (
                             <p>No resources available.</p>
@@ -460,11 +391,7 @@ export default function ActivityDetailClient({ params }) {
                 </Dialog>
               </div>
               {Accordions?.map((accordion, index) => (
-                <Accordian
-                  key={index}
-                  title={accordion.Question}
-                  description={accordion.Answer}
-                />
+                <Accordian key={index} title={accordion.Question} description={accordion.Answer} />
               ))}
               {/* Row 2 (R2) */}
               <div className="flex w-full flex-col py-6 md:py-0 justify-start items-start gap-2">
@@ -483,9 +410,7 @@ export default function ActivityDetailClient({ params }) {
                   <Dialog>
                     <DialogTrigger className="w-full">
                       <Button
-                        disabled={
-                          !activity.Resources || activity.Resources.length === 0
-                        }
+                        disabled={!activity.Resources || activity.Resources.length === 0}
                         className={`w-full clarabuttton flex ${
                           activity.Resources && activity.Resources.length > 0
                             ? "bg-[#3f3a64] text-white"
@@ -511,13 +436,9 @@ export default function ActivityDetailClient({ params }) {
                         </div>
                         <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                            {activity.Resources &&
-                            activity.Resources.length > 0 ? (
+                            {activity.Resources && activity.Resources.length > 0 ? (
                               activity.Resources.map((resource) => (
-                                <ResourceCard
-                                  key={resource.id}
-                                  resource={resource}
-                                />
+                                <ResourceCard key={resource.id} resource={resource} />
                               ))
                             ) : (
                               <p>No resources available.</p>
@@ -528,25 +449,20 @@ export default function ActivityDetailClient({ params }) {
                     </DialogContent>
                   </Dialog>
                 </div>
-
                 <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                   <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                     Print Activity
                   </div>
                   <PrintDocument activityid={activity.documentId} />
                 </div>
-
                 <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                   <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                     Mark Activity as Complete
                   </div>
-                  <MarkActivityCompleteForm
-                    passactivityId={matchedActivityId}
-                  />
+                  <MarkActivityCompleteForm passactivityId={matchedActivityId} />
                 </div>
               </div>
             </div>
-
             {/* Mobile Specific Row */}
             <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
               <PrintDocument activityid={activity.documentId} />
@@ -558,7 +474,6 @@ export default function ActivityDetailClient({ params }) {
     </>
   );
 }
-
 // export default function ActivityDetailClient({ params }) {
 //   const { id } = params;
 //   const [activity, setActivity] = useState(null);

@@ -27,6 +27,6 @@ export async function generateStaticParams() {
   }
 }
 
-export default async function BlogDetail({ params }) {
+export default function BlogDetail({ params }) {
   return <BlogDetailPage params={params} />;
 }

@@ -41,7 +41,7 @@ export function LogoutButton() {
         disabled={loading}
         className="clarabutton max-w-[300px] bg-red hover:bg-hoverRed"
       >
-        {loading ? "Logging out..." : "Log out"}
+        {loading ? "Logging out..." : "Sign Out"}
       </Button>
     </div>
   );

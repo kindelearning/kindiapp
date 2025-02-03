@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Activity from "@/app/Widgets/Card/Activity";
+// import Activity from "@/app/Widgets/Card/Activity";
 import { Confidence } from "@/public/Icons";
 import { PopupFooter } from "@/app/Sections";
 
@@ -63,6 +63,7 @@ const questions = [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.",
   },
 ];
+
 const Accordion = ({ questions }) => {
   return (
     <div className="w-full claracontainer flex flex-col gap-4 py-4">
@@ -174,7 +175,7 @@ const page = () => {
                     Completed
                   </div>
                   <div className="grid grid-cols-4 w-full claracontainer gap-4">
-                    {activities.map((activity, index) => (
+                    {/* {activities.map((activity, index) => (
                       <Activity
                         key={index}
                         title={activity.title}
@@ -182,7 +183,7 @@ const page = () => {
                         tags={activity.tags}
                         icons={activity.icons}
                       />
-                    ))}
+                    ))} */}
                   </div>
                 </DialogDescription>
                 <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#eaeaf5]">
@@ -234,7 +235,7 @@ const page = () => {
                     Completed
                   </div>
                   <div className="grid grid-cols-4 w-full claracontainer gap-4">
-                    {activities.map((activity, index) => (
+                    {/* {activities.map((activity, index) => (
                       <Activity
                         key={index}
                         title={activity.title}
@@ -242,7 +243,7 @@ const page = () => {
                         tags={activity.tags}
                         icons={activity.icons}
                       />
-                    ))}
+                    ))} */}
                   </div>
                 </DialogDescription>
                 <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#eaeaf5]">
@@ -279,7 +280,7 @@ const page = () => {
                     Completed
                   </div>
                   <div className="grid grid-cols-4 w-full claracontainer gap-4">
-                    {activities.map((activity, index) => (
+                    {/* {activities.map((activity, index) => (
                       <Activity
                         key={index}
                         title={activity.title}
@@ -287,7 +288,7 @@ const page = () => {
                         tags={activity.tags}
                         icons={activity.icons}
                       />
-                    ))}
+                    ))} */}
                   </div>
                 </DialogDescription>
                 <DialogFooter className="sticky  rounded-t-[16px] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bottom-0 m-0 w-full px-4 bg-[#eaeaf5]">

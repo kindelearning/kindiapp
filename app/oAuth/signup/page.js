@@ -34,7 +34,7 @@ export function GoogleSignUp() {
 
       const data = await res.json();
       if (data?.jwt) {
-        // Handle successful signup, save token, and log in the user
+        // Handle successful signup, save token, and Sign in the user
         console.log("Google signup successful:", data);
       } else {
         console.log("Error during Google signup:", data);

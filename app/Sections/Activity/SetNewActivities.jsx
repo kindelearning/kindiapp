@@ -165,7 +165,7 @@ export default function SetNewActivities({ kidId }) {
     const fetchActivities = async () => {
       const token = localStorage.getItem("jwt");
       if (!token) {
-        alert("Please log in to continue");
+        alert("Please Sign in to continue");
         router.push("/login"); // Adjust as needed
         return;
       }

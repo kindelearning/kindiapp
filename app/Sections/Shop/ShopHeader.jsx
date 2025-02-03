@@ -232,7 +232,7 @@ export default function ShopHeader() {
                           className="w-full"
                         >
                           <div className="bg-[#ffffff] py-2 w-full text-[12px] font-fredoka border-[black] text-[black] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[10px] transition duration-300 ease-in-out">
-                            Log in
+                            Sign in
                           </div>
                         </Link>
                         <Link
@@ -326,7 +326,7 @@ export default function ShopHeader() {
             <>
               <Link href="/auth/sign-in">
                 <Button className="bg-[#ffffff] border-purple text-purple hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-                  Log In
+                  Sign in
                 </Button>
               </Link>
               <Link href="/auth/sign-up">

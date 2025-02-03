@@ -74,7 +74,7 @@ const Page = () => {
             <DialogTrigger className="w-full p-0">
               <div className="flex w-full">
                 <Button className="bg-purple w-full border-[#ffffff] h-[50px] text-[#ffffff] hover:bg-[#ffffff] hover:border-[#2b2b2b] hover:text-dark-blue-100 px-[40px] border-2 rounded-[16px] transition duration-300 ease-in-out">
-                  Log in
+                  Sign in
                 </Button>
               </div>
             </DialogTrigger>
@@ -144,7 +144,7 @@ const Page = () => {
                   
                   <div className="w-full flex gap-8 flex-col justify-center items-center  h-full">
                     <div className="text-[#0a1932] text-2xl font-semibold font-fredoka leading-loose">
-                      Log in
+                      Sign in
                     </div>
                     <Link href="/auth/sign-in" className="w-full px-4 justify-end items-start text-center">
                       <Button className="w-full flex  gap-2 bg-red hover:bg-red clarabutton rounded-2xl shadow border-2 border-white">

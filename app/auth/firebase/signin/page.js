@@ -83,7 +83,7 @@ const Login = () => {
           className="border p-2 m-2"
         />
         <button type="submit" className="bg-blue-500 text-white p-2 m-2">
-          Log In
+          Sign in
         </button>
       </form>
       {message && <p style={{ color: "green" }}>{message}</p>}

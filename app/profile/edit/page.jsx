@@ -486,7 +486,7 @@ export function UpdateRawProfile() {
     const fetchData = async () => {
       const token = localStorage.getItem("jwt");
       if (!token) {
-        setError("Please log in to continue.");
+        setError("Please Sign in to continue.");
         setLoading(false);
         return;
       }

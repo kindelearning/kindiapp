@@ -47,7 +47,7 @@ import { useEffect, useState } from "react";
 //         emotional, and physical development in your toddler. You&apos;ll receive
 //         clear instructions and tools to make playtime fun, educational, and
 //         stress-free. Just follow the guided activities and watch your child
-//         thrive! Log in anytime, from anywhere, and discover new resources every
+//         thrive! Sign in anytime, from anywhere, and discover new resources every
 //         week!
 //       </>
 //     ),
@@ -120,7 +120,7 @@ import { useEffect, useState } from "react";
 //   {
 //     title: "How do I cancel my subscription?",
 //     description:
-//       "To cancel your subscription, please log in to your account and navigate to the account settings section. There, you’ll find the option to cancel your subscription. Follow the prompts to complete the cancellation process.",
+//       "To cancel your subscription, please Sign in to your account and navigate to the account settings section. There, you’ll find the option to cancel your subscription. Follow the prompts to complete the cancellation process.",
 //   },
 //   {
 //     title: "How can I get in touch with you? ",

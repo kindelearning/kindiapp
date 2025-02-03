@@ -342,7 +342,7 @@ export default function Achievement() {
                 </span>
                 <br />
                 <span className="text-red claraheading uppercase">
-                  Please log in to access your profile.
+                  Please Sign in to access your profile.
                 </span>
               </div>
               <div className="flex w-full justify-center items-center gap-4 flex-col lg:flex-row text-white text-center">

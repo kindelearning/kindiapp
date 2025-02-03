@@ -75,7 +75,7 @@ export default function UpdatePartnerForm({ userId }) {
 
     const token = localStorage.getItem("jwt");
     if (!token) {
-      setError("Please log in to continue.");
+      setError("Please Sign in to continue.");
       setIsSubmitting(false);
       return;
     }

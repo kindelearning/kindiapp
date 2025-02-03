@@ -1,6 +1,6 @@
 "use client";
 
-// import { LocalProductCard } from "@/app/shop/page";
+import { fetchShopProducts } from "@/app/data/p/Dynamic/Shop";
 import { getProducts } from "@/lib/hygraph";
 import { Ratings } from "@/public/Images";
 import Image from "next/image";
@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 export function LocalProductCard({ image, title, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
-    // Function to generate a random number between 3 and 4.8, rounded to 1 decimal place
     const generateRandomRating = () => {
       const min = 3;
       const max = 4.8;
@@ -25,6 +24,7 @@ export function LocalProductCard({ image, title, price }) {
     <div className="flex md:max-w-[300px] min-w-[170px] md:min-w-[300px] md:w-full lg:min-w-[240px] w-full flex-col rounded-[16px] items-center gap-2 lg:gap-4 bg-white hover:shadow-md">
       <div className="flex rounded-t-[16px] overflow-clip w-full">
         <Image
+          // src={`https://lionfish-app-98urn.ondigitalocean.app${image}`}
           src={image}
           alt={title}
           width={200}
@@ -62,13 +62,12 @@ export function LocalProductCard({ image, title, price }) {
 export default function MobileProducts({}) {
   const [products, setProducts] = useState([]);
 
-  // Hook to fetch All products from Hygraph CMS
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts();
+      const data = await fetchShopProducts();
       setProducts(data);
     };
-    console.log("FetchActivities", fetchProducts);
+    // console.log("FetchActivities", fetchProducts);
 
     fetchProducts();
   }, []);
@@ -89,15 +88,27 @@ export default function MobileProducts({}) {
           </div>
 
           <div className="grid claracontainer w-full pl-4 flex-row  justify-between gap-4 grid-cols-2">
-            {products.map((product) => (
-              <Link key={product.id} href={`/shop/${product.id}`}>
-                <LocalProductCard
-                  image={product.thumbnail.url}
-                  title={product.title}
-                  price={product.salePrice}
-                />
-              </Link>
-            ))}
+            {Array.isArray(products) && products.length > 0 ? (
+              products.map((product) => (
+                <Link
+                  key={product.documentId}
+                  href={`/shop/${product.documentId}`}
+                >
+                  <LocalProductCard
+                    image={
+                      Array.isArray(product?.FeaturedImage) &&
+                      product?.FeaturedImage.length > 0
+                        ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`
+                        : "/Images/shop/ProductImage.png"
+                    }
+                    title={product?.Name || "Unnamed Product"}
+                    price={product?.DiscountPrice || "N/A"}
+                  />
+                </Link>
+              ))
+            ) : (
+              <p className="text-gray-500">No products available.</p>
+            )}
           </div>
         </div>
       </section>

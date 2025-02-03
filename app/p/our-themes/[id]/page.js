@@ -46,7 +46,7 @@ export default async function ThemePage({ params }) {
   const themeData = await fetchThemeById(id);
   console.log("Object found", themeData);
   if (!themeData) {
-    notFound(); // If the theme is not found, show the 404 page
+    console.log('No Data Found')
   }
 
   // Destructure the necessary properties from the fetched theme data

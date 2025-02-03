@@ -42,14 +42,14 @@ export default function Footer() {
           </div>
           <div className="w-full claracontainer px-4 flex flex-col md:border-l-[0px] md:border-l-emerald-50 border-0 justify-between gap-[20px] items-start md:w-full xl:w-1/3">
             <Image alt="Kindi" src={KindiVector} className="flex w-[120px]" />
-            <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
+            {/* <div className="w-auto text-white clarabodyTwo font-medium font-fredoka capitalize mb-8 md:mb-0">
               special offers and latest news about our products directly{" "}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="claracontainer px-2 w-full py-4 flex flex-col justify-between items-center gap-1 md:flex-row">
           <div className="text-white/90  min-w-[max-content] w-full clarabodyTwo font-semibold font-fredoka">
-            {currentYear} KINDI Learning, INC. All rights reserved.
+            {currentYear} KINDI Learning, LTD. All rights reserved.
           </div>
           <Link href="#" className="flex w-full justify-end items-end gap-2">
             <Image

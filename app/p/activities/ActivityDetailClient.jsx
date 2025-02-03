@@ -1,26 +1,14 @@
 "use client"; // This is now a client component
 
-import NotFound from "@/app/not-found";
-import { ProductImages } from "@/app/Sections";
 import { Accordian } from "@/app/Widgets";
 import { Button } from "@/components/ui/button";
-import { GraphQLClient, gql } from "graphql-request";
 import {
   ActivityBlack,
   KidBlack,
-  Print,
   SpeechLanguageActivity,
-  ReadingWritingActivity,
-  ConfidenceIndependenceActivity,
-  CreativityImaginationActivity,
-  DiscoveringOurWorldActivity,
-  EmotionalSocialStrengthActivity,
-  ExperimentsMathActivity,
-  PhysicalAgilityActivity,
   Themes,
   TimerBlack,
-  CompletedMark,
-  ProfilePlaceholder01,
+  ActivityImage,
 } from "@/public/Images";
 import {
   Dialog,
@@ -33,264 +21,21 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { getActivityById, getUserDataByEmail } from "@/lib/hygraph";
-import { useAuth } from "@/lib/useAuth";
-import { useRouter } from "next/navigation";
 import NewHeader from "@/app/Sections/Mobile/NewHeader";
+import ProductMedia from "@/app/shop/section/ProductMedia";
+import { getIconForSkill } from "@/app/Sections/Activity/ActivityCard";
+import ResourceCard from "./ActivityResource";
+import PrintDocument from "./Prinables/MyDocument";
+import MarkActivityCompleteForm from "./ActivityCompleteButton";
+import { fetchUserDetails } from "@/app/profile/api";
 
-const HYGRAPH_ENDPOINT =
-  "https://ap-south-1.cdn.hygraph.com/content/cm1dom1hh03y107uwwxrutpmz/master";
-const HYGRAPH_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MjcwNjQxNzcsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aC0xLmh5Z3JhcGguY29tL3YyL2NtMWRvbTFoaDAzeTEwN3V3d3hydXRwbXovbWFzdGVyIiwibWFuYWdlbWVudC1uZXh0LmdyYXBoY21zLmNvbSJdLCJpc3MiOiJodHRwczovL21hbmFnZW1lbnQtYXAtc291dGgtMS5oeWdyYXBoLmNvbS8iLCJzdWIiOiI2Yzg4NjI5YS1jMmU5LTQyYjctYmJjOC04OTI2YmJlN2YyNDkiLCJqdGkiOiJjbTFlaGYzdzYwcmZuMDdwaWdwcmpieXhyIn0.YMoI_XTrCZI-C7v_FX-oKL5VVtx95tPmOFReCdUcP50nIpE3tTjUtYdApDqSRPegOQai6wbyT0H8UbTTUYsZUnBbvaMd-Io3ru3dqT1WdIJMhSx6007fl_aD6gQcxb-gHxODfz5LmJdwZbdaaNnyKIPVQsOEb-uVHiDJP3Zag2Ec2opK-SkPKKWq-gfDv5JIZxwE_8x7kwhCrfQxCZyUHvIHrJb9VBPrCIq1XE-suyA03bGfh8_5PuCfKCAof7TbH1dtvaKjUuYY1Gd54uRgp8ELZTf13i073I9ZFRUU3PVjUKEOUoCdzNLksKc-mc-MF8tgLxSQ946AfwleAVkFCXduIAO7ASaWU3coX7CsXmZLGRT_a82wOORD8zihfJa4LG8bB-FKm2LVIu_QfqIHJKq-ytuycpeKMV_MTvsbsWeikH0tGPQxvAA902mMrYJr9wohOw0gru7mg_U6tLOwG2smcwuXBPnpty0oGuGwXWt_D6ryLwdNubLJpIWV0dOWF8N5D6VubNytNZlIbyFQKnGcPDw6hGRLMw2B7-1V2RpR6F3RibLFJf9GekI60UYdsXthAFE6Xzrlw03Gv5BOKImBoDPyMr0DCzneyAj9KDq4cbNNcihbHl1iA6lUCTNY3vkCBXmyujXZEcLu_Q0gvrAW3OvZMHeHY__CtXN6JFA";
-
-const client = new GraphQLClient(HYGRAPH_ENDPOINT, {
-  headers: {
-    Authorization: `Bearer ${HYGRAPH_TOKEN}`,
-  },
-});
-
-const GET_ACCOUNT_BY_EMAIL = gql`
-  query GetAccountByEmail($email: String!) {
-    account(where: { email: $email }) {
-      id
-      name
-      username
-      email
-      profilePicture {
-        url
-      }
-      isVerified
-    }
-  }
-`;
-
-const ActivityCompleteButton = ({ activityId, userId }) => {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  const handleActivityCompletion = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/mark-activity-completed", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userId, activityId }),
-      });
-
-      console.log("esponse: ", response);
-      if (response.ok) {
-        setSuccess(true);
-      } else {
-        console.error("Failed to mark activity as complete");
-      }
-    } catch (error) {
-      console.error("Error completing activity:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  return (
-    <Button
-      className={`rounded-2xl w-full text-[10px] lg:text-[12px] flex flex-row gap-1 font-fredoka text-white shadow border-2 border-white ${
-        loading
-          ? "opacity-50 cursor-not-allowed bg-red"
-          : success
-          ? "bg-purple hover:bg-purple"
-          : "bg-red hover:bg-red-600"
-      }`}
-      onClick={handleActivityCompletion}
-      disabled={loading || success}
-    >
-      <Image alt="Kindi" className="flex lg:hidden" src={CompletedMark} />
-
-      {loading ? (
-        <span className="flex items-center">
-          <svg
-            className="animate-spin h-5 w-5 mr-2 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v2a6 6 0 00-6 6H4z"
-            />
-          </svg>
-          Loading...
-        </span>
-      ) : success ? (
-        "Activity Completed"
-      ) : (
-        "Mark as Completed"
-      )}
-    </Button>
-  );
-};
-
-const DynamicMarkActivityCompleteComponent = ({ activityId }) => {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-  const [hygraphUser, setHygraphUser] = useState(null);
-
-  useEffect(() => {
-    if (user && user.email) {
-      getUserDataByEmail(user.email).then((data) => {
-        setHygraphUser(data);
-      });
-    }
-  }, [user, loading, router]);
-
-  useEffect(() => {
-    if (hygraphUser && hygraphUser.partner) {
-      hygraphUser.partner.forEach((partner) => {
-        const partnerAvatarUrl = partner.profileAvatar
-          ? partner.profileAvatar.url
-          : null;
-
-        // Check if the partner has an avatar in myAvatar field
-        const avatarUrl =
-          partner.myAvatar?.profileAvatar?.url || partnerAvatarUrl;
-
-        if (avatarUrl) {
-          console.log("Partner Avatar URL:", avatarUrl);
-        } else {
-          console.log("No avatar for this partner.");
-        }
-        console.log("Partner ID:", partner.id);
-        console.log("Partner Name:", partner.email);
-      });
-    }
-  }, [hygraphUser]);
-
-  if (loading) return null;
-
-  return (
-    <>
-      {user && hygraphUser ? (
-        // <ActivityCompleteButton
-        //   activityId={activityId}
-        //   userId={hygraphUser.id}
-        // />
-        <>
-          <Dialog>
-            <DialogTrigger className="w-full">
-              <Button className="bg-red w-full hover:bg-hoverRed clarabutton">
-                Mark as Completed
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogDescription className="w-full grid grid-cols-2 lg:grid-cols-3 justify-between gap-1 lg:gap-2">
-                  {hygraphUser?.partner.slice(0, 2)?.map((partner) => (
-                    <div key={partner.id} value={`Partner-${partner.id}`}>
-                      {hygraphUser ? (
-                        <div className="w-full flex justify-between items-center">
-                          <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
-                            <Image
-                              width={36}
-                              height={36}
-                              src={
-                                partner.myAvatar?.profileAvatar?.url ||
-                                ProfilePlaceholder01
-                              }
-                              alt={`Avatar of ${partner.name}`}
-                              className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                            />
-                            <div className="font-fredoka text-[12px] lg:text-[16px]">
-                              {partner?.email?.split("@")[0]}
-                            </div>
-                            <ActivityCompleteButton
-                              activityId={activityId}
-                              userId={partner.id}
-                            />
-                          </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-
-                  <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
-                    <Image
-                      width={36}
-                      height={36}
-                      src={
-                        hygraphUser.myAvatar.profileAvatar.url ||
-                        ProfilePlaceholder01
-                      }
-                      className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                    />
-                    <div className="font-fredoka text-[12px] lg:text-[16px]">
-                      {hygraphUser?.email?.split("@")[0]}
-                    </div>
-                    <ActivityCompleteButton
-                      activityId={activityId}
-                      userId={hygraphUser.id}
-                    />
-                  </div>
-                  {hygraphUser?.partner.slice(2, 4)?.map((partner) => (
-                    <div key={partner.id} value={`Partner-${partner.id}`}>
-                      {hygraphUser ? (
-                        <div className="w-full flex justify-between items-center">
-                          <div className="flex flex-col p-2 bg-[#eaeaf5] hover:shadow-lg hover:scale-105 duration-500 cursor-pointer shadow rounded-xl justify-center gap-2 items-center w-full">
-                            <Image
-                              width={36}
-                              height={36}
-                              src={
-                                partner.myAvatar?.profileAvatar?.url ||
-                                ProfilePlaceholder01
-                              }
-                              alt={`Avatar of ${partner.name}`}
-                              className="min-w-9 max-w-9 h-9 cursor-pointer hover:scale-110 ease-in-out duration-200 object-cover overflow-clip rounded-full"
-                            />
-                            <div className="font-fredoka text-[12px] lg:text-[16px]">
-                              {partner?.email?.split("@")[0]}
-                            </div>
-                            <ActivityCompleteButton
-                              activityId={activityId}
-                              userId={partner.id}
-                            />
-                          </div>
-                        </div>
-                      ) : null}
-                    </div>
-                  ))}
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-        </>
-      ) : (
-        <Link
-          href="/auth/sign-up"
-          className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
-          target="_blank"
-        >
-          Login!
-        </Link>
-      )}
-    </>
-  );
-};
-
-const ActivityAttribute = ({
+export const ActivityAttribute = ({
   title = " Event Timeline",
   features = " 18th September 2023",
   image,
 }) => {
   return (
-    <div className="w-full justify-between items-center inline-flex">
+    <div className="w-full cursor-pointer justify-between items-center inline-flex">
       <div className="justify-start w-full items-center gap-2 flex">
         <Image
           alt="Kindi"
@@ -308,250 +53,988 @@ const ActivityAttribute = ({
   );
 };
 
-const IconBadge = ({ icon, backgroundColor = "f05c5c" }) => {
-  return (
-    <div
-      className={`w-[50px] h-[50px] flex justify-center items-center bg-[#${backgroundColor}] rounded-[16px]`}
-    >
-      <Image alt="Kindi" src={icon || KindiHeart} />
-    </div>
-  );
-};
+export default function ActivityDetailClient({ params }) {
+  const { id } = params;
+  const [activity, setActivity] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
+  const [matchedActivityId, setMatchedActivityId] = useState(null);
 
-const handlePrint = () => {
-  window.print();
-};
+  useEffect(() => {
+    if (!id) return; // Avoid fetching if id is undefined/null
+    console.log("useEffect triggered for activity fetch");
 
-const activityIcons = [
-  { key: "speechLanguage", icon: SpeechLanguageActivity },
-  { key: "emotionalSocialStrength", icon: EmotionalSocialStrengthActivity },
-  { key: "confidenceIndependence", icon: ConfidenceIndependenceActivity },
-  { key: "physicalAgility", icon: PhysicalAgilityActivity },
-  { key: "readingWriting", icon: ReadingWritingActivity },
-  { key: "discoveringOurWorld", icon: DiscoveringOurWorldActivity },
-  { key: "creativityImagination", icon: CreativityImaginationActivity },
-  { key: "experimentsMath", icon: ExperimentsMathActivity },
-];
+    const fetchActivityData = async () => {
+      try {
+        setLoading(true);
 
-export default function ActivityDetailClient({ activity }) {
+        // Fetch user details (requires token)
+        const token = localStorage.getItem("jwt");
+        // if (token) {
+        //   const userResponse = await fetchUserDetails(token);
+        //   console.log("User Response:", userResponse);
+        //   setUserData(userResponse.allActivities);
+        //   const allActivities = userResponse.allActivities;
+
+        //   // Find matching activity for userData if available
+        //   if (Array.isArray(allActivities)) {
+        //     const matchedActivity = allActivities.find(
+        //       (activity) => activity.documentId === id
+        //     );
+        //     if (matchedActivity) {
+        //       setMatchedActivityId(matchedActivity.id);
+        //       console.log(
+        //         "Found matching activity in allActivities:",
+        //         matchedActivity.id
+        //       );
+        //     } else {
+        //       console.log("No activity found with the given documentId.");
+        //     }
+        //   } else if (allActivities && allActivities.documentId === id) {
+        //     setMatchedActivityId(allActivities.id);
+        //     console.log("Found matching activity ID:", allActivities.id);
+        //   } else {
+        //     console.log("No activity found with the given documentId.");
+        //   }
+        // } else {
+        //   console.log("User token not found. Skipping user data fetch.");
+        // }
+
+        // Fetch activity details (does not require token)
+        const url = `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${id}?populate=*`;
+        console.log("Fetching activity data from:", url);
+        const response = await fetch(url);
+        console.log("Response status:", response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const json = await response.json();
+        console.log("Activity Details Data:", json);
+        if (json && json.data) {
+          setActivity(json.data);
+        } else {
+          throw new Error("Invalid data structure");
+        }
+      } catch (err) {
+        console.error("Error fetching activity:", err);
+        setError("Failed to load activity data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivityData();
+  }, [id]);
+  // Effect for fetching user details (requires token)
+  useEffect(() => {
+    if (!id) return; // Ensure id exists
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      console.log("User token not found. Skipping user data fetch.");
+      setLoadingUser(false);
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        setLoading(true);
+        const userResponse = await fetchUserDetails(token);
+        console.log("User Response:", userResponse);
+        setUserData(userResponse.allActivities);
+        const allActivities = userResponse.allActivities;
+
+        // Find matching activity in user details
+        if (Array.isArray(allActivities)) {
+          const matchedActivity = allActivities.find(
+            (activity) => activity.documentId === id
+          );
+          if (matchedActivity) {
+            setMatchedActivityId(matchedActivity.id);
+            console.log(
+              "Found matching activity in user data:",
+              matchedActivity.id
+            );
+          } else {
+            console.log("No matching activity found in user data.");
+          }
+        } else if (allActivities && allActivities.documentId === id) {
+          setMatchedActivityId(allActivities.id);
+          console.log(
+            "Found matching activity (single object):",
+            allActivities.id
+          );
+        } else {
+          console.log("User data did not contain a matching activity.");
+        }
+      } catch (err) {
+        console.error("Error fetching user details:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
+
+  console.log("Activity Data", activity);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
   if (!activity) {
-    return (
-      <div>
-        <NotFound />
-      </div>
-    );
+    return <div>Failed to load activity or activity not found.</div>;
   }
+
+  const {
+    Title,
+    Skills,
+    LearningAreaIcons,
+    Theme,
+    FocusAge,
+    ActivityDate,
+    SetUpTime,
+    Gallery,
+    Accordions,
+  } = activity || {};
 
   return (
     <>
-      <NewHeader headerText="Activity" />
-
-      <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-8">
-          <div className="w-full hidden lg:flex text-[#3f3a64] claraheading capitalize">
-            {activity.title}
+      <NewHeader headerText={Title ? Title : "Activity"} />
+      <section className="w-full h-auto -mt-[12px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
+        <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
+          <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
+            {Title}
           </div>
-          {/* Row 1 */}
-          <div className="claracontainer bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col md:flex-col lg:flex-row xl:flow-row justify-between items-start gap-8">
-            {/* Col 1(R1) */}
+          {/* Col 1 (R1) */}
+          <div className="claracontainer lg:min-w-[60%] lg:w-full bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col justify-start items-start gap-4">
+            {/* Row 1 (C1) */}
             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-              <ProductImages
-                images={activity.activityImages.map((img) => img.url)}
-              />
-            </div>
-            {/* Col - 2(R1) */}
-            <div className="claracontainer w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
-              <div className="flex w-full flex-col justify-normal items-center gap-2">
-                <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
-                  {activity.title}
+              {Gallery ? (
+                <ProductMedia gallery={Gallery} />
+              ) : (
+                <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+                  <Image
+                    className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover"
+                    alt="Placeholder Image"
+                    src={ActivityImage}
+                  />
                 </div>
-                <div className="items-center w-full justify-center flex flex-col gap-2">
+              )}
+            </div>
+            {/* Row 1 (R2) */}
+            <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
+              <div className="flex w-full flex-col justify-normal items-center gap-2">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                  {Title || "Activity Title"}
+                </div>
+                <div className="items-center cursor-pointer w-full justify-center flex flex-col gap-2">
                   <ActivityAttribute
                     image={ActivityBlack}
-                    features={activity.eventTimeline}
-                  />
-                  <ActivityAttribute
-                    image={TimerBlack}
-                    features={activity.setUpTime}
-                    title="Set up Time"
+                    features={
+                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+                    }
                   />
                   <ActivityAttribute
                     image={Themes}
                     className="text-[black]"
-                    features={activity.themeName}
+                    features={Theme || "Winter"}
                     title="Theme"
                   />
                   <ActivityAttribute
                     image={KidBlack}
-                    features={activity.focusAge}
-                    title="Focus age"
+                    features={FocusAge || "Toddler"}
+                    title="Difficulty"
+                  />
+                  <ActivityAttribute
+                    image={TimerBlack}
+                    features={SetUpTime || "5 Min"}
+                    title="Set up Time"
                   />
                 </div>
               </div>
+
               <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
                   Learning Areas
                 </div>
 
-                <div className="items-center overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
-                  {activityIcons.map(
-                    (item) =>
-                      activity[item.key] && (
-                        <IconBadge key={item.key} icon={item.icon} />
-                      )
+                <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+                  {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+                    LearningAreaIcons.map((skill, index) => {
+                      const skillTitle = skill.children[0]?.text;
+                      const icon = getIconForSkill(skillTitle);
+                      const iconSrc = icon?.src || SpeechLanguageActivity;
+                      return (
+                        <Image
+                          key={index}
+                          src={iconSrc}
+                          alt={skillTitle}
+                          width={32}
+                          title={skillTitle}
+                          height={32}
+                          className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out"
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No skills available.</p>
                   )}
                 </div>
               </div>
               <div className="flex w-full flex-col justify-star items-start gap-2">
-                <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
-                  Skills{" "}
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                  Skills
                 </div>
-                <ul className="text-[#0a1932] px-4 text-[16px] font-normal font-fredoka list-disc leading-none">
-                  {activity.skills.map((skill, index) => (
-                    <li key={index}>{skill}</li>
-                  ))}
-                </ul>
+                <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+                  <span
+                    className="prose leading-[14px] marker:text-[#0a1932]"
+                    dangerouslySetInnerHTML={{ __html: Skills }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Row Two */}
-          <div className="claracontainer p-0 pb-24 flex flex-col md:flex-col lg:flex-row xl:flow-row justify-between items-start gap-8">
-            {/* Col 1(R2) */}
-            <div className="items-center px-4 lg:px-0 w-full lg:min-w-[600px] justify-center flex flex-col gap-2">
+            {/* Row 2 (C1) */}
+            <div className="items-center px-4 hidden lg:px-0 w-full lg:min-w-[600px] justify-center lg:flex flex-col gap-2">
               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Activity resources{" "}
+                  Check Activity Resources
                 </div>
-                <Button className=" w-full flex md:hidden bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-                  {" "}
-                  Resourses
-                </Button>
+                <Dialog>
+                  <DialogTrigger className="w-full">
+                    <Button
+                      disabled={
+                        !activity.Resources || activity.Resources.length === 0
+                      }
+                      className={`w-full clarabuttton flex md:hidden ${
+                        activity.Resources && activity.Resources.length > 0
+                          ? "bg-[#3f3a64] text-white"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                    >
+                      Resources
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[600px] max-h-[500px] overflow-y-scroll rounded-lg">
+                    <DialogHeader>
+                      <DialogTitle></DialogTitle>
+                      <DialogDescription>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                          {activity.Resources &&
+                          activity.Resources.length > 0 ? (
+                            activity.Resources.map((resource) => (
+                              <ResourceCard
+                                key={resource.id}
+                                resource={resource}
+                              />
+                            ))
+                          ) : (
+                            <p>No resources available.</p>
+                          )}
+                        </div>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
               </div>
-              <Accordian
-                title={activity.accordionOne}
-                description={
-                  activity.bodyOne && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyOne.html,
-                      }}
-                    />
-                  )
-                }
-              />
-              <Accordian
-                title={activity.accordionTwo}
-                description={
-                  activity.bodyTwo && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyTwo.html,
-                      }}
-                    />
-                  )
-                }
-              />
-              <Accordian
-                title={activity.accordionThree}
-                description={
-                  activity.bodyThree && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyThree.html,
-                      }}
-                    />
-                  )
-                }
-              />
-              <Accordian
-                title={activity.accordionFour}
-                description={
-                  activity.bodyFour && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyFour.html,
-                      }}
-                    />
-                  )
-                }
-              />
-              <Accordian
-                title={activity.accordionFive}
-                description={
-                  activity.bodyFive && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: activity.bodyFive.html,
-                      }}
-                    />
-                  )
-                }
-              />
-            </div>
-            {/* Col 2(R2) */}
-            <div className="flex w-full  flex-col py-6 md:py-0 justify-start items-start gap-2">
-              <div className="w-full md:flex hidden justify-between items-center p-6 bg-white rounded-xl shadow">
-                <ChevronLeft />
-                <div className="text-center text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Activity date <br />
-                  {new Date(activity.activityDate).toLocaleDateString()}
-                </div>
-                <ChevronRight />
-              </div>
-              <div className=" px-4 md:flex hidden w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
-                <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Activity resources{" "}
-                </div>
-                <Button className=" w-full md:flex hidden bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white">
-                  {" "}
-                  Resourses
-                </Button>
-              </div>
-              <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
-                <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Print Activity{" "}
-                </div>
-                <Button
-                  onClick={handlePrint}
-                  className="w-full bg-[#3f3a64] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
-                >
-                  {" "}
-                  Print{" "}
-                </Button>
-              </div>
-              <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
-                <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
-                  Mark Activity as Complete{" "}
-                </div>
-                {/* <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-                  Mark as Complete
-                </Button> */}
-                <DynamicMarkActivityCompleteComponent
-                  activityId={activity.id}
+              {Accordions?.map((accordion, index) => (
+                <Accordian
+                  key={index}
+                  title={accordion.Question}
+                  description={accordion.Answer}
                 />
-              </div>
+              ))}
             </div>
           </div>
-          {/* Row 3(C1) */}
 
-          {/* Row 4(C1) */}
-          <div className="flex md:hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-            <Button
-              onClick={handlePrint}
-              className="flex bg-[#3f3a64] gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full"
-            >
-              <Image alt="Kindi" src={Print} />
-              Print
-            </Button>
-            {/* <Button className="clarabutton bg-red flex gap-[4px] py-2 text-center text-white text-xs font-semibold font-fredoka rounded-2xl shadow border-2 border-white flex-row justify-center items-center w-full">
-              Mark as Complete
-            </Button> */}
-            {/* <DynamicMarkActivityCompleteComponent /> */}
-            <DynamicMarkActivityCompleteComponent activityId={activity.id} />
+          {/* Col Two */}
+          <div className="claracontainer p-0 pb-24 flex flex-col justify-start items-start gap-8">
+            {/* Row 1 (R2) */}
+            <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
+              <div className="flex w-full flex-col justify-normal items-center gap-2">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                  {Title}
+                </div>
+                <div className="items-center w-full justify-center flex flex-col gap-2">
+                  <ActivityAttribute
+                    image={ActivityBlack}
+                    features={
+                      new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+                    }
+                  />
+                  <ActivityAttribute
+                    image={Themes}
+                    className="text-[black]"
+                    features={Theme || "Winter"}
+                    title="Theme"
+                  />
+                  <ActivityAttribute
+                    image={KidBlack}
+                    features={FocusAge || "Toddler"}
+                    title="Difficulty"
+                  />
+                  <ActivityAttribute
+                    image={TimerBlack}
+                    features={SetUpTime || "5 Min"}
+                    title="Set up Time"
+                  />
+                </div>
+              </div>
+              <div className="flex w-full flex-col justify-star items-start gap-2">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                  Learning Areas
+                </div>
+                <div className="items-center overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+                  {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+                    LearningAreaIcons.map((skill, index) => {
+                      const skillTitle = skill.children[0]?.text;
+                      const icon = getIconForSkill(skillTitle);
+                      const iconSrc = icon?.src || SpeechLanguageActivity;
+                      return (
+                        <Image
+                          key={index}
+                          src={iconSrc}
+                          alt={skillTitle}
+                          width={32}
+                          title={skillTitle}
+                          height={32}
+                          className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out"
+                        />
+                      );
+                    })
+                  ) : (
+                    <p>No skills available.</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex w-full flex-col justify-star items-start gap-2">
+                <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+                  Skills
+                </div>
+                <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+                  <span
+                    className="prose leading-[14px] marker:text-[#0a1932]"
+                    dangerouslySetInnerHTML={{ __html: Skills }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="items-center px-4 lg:hidden lg:px-0 w-full lg:min-w-[600px] justify-center flex flex-col gap-2">
+              <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+                <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+                  Check Activity Resources
+                </div>
+                <Dialog>
+                  <DialogTrigger className="w-full">
+                    <Button
+                      disabled={
+                        !activity.Resources || activity.Resources.length === 0
+                      }
+                      className={`w-full clarabuttton flex md:hidden ${
+                        activity.Resources && activity.Resources.length > 0
+                          ? "bg-[#3f3a64] text-white"
+                          : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                      } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                    >
+                      Resources
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
+                    <DialogHeader>
+                      <DialogTitle></DialogTitle>
+                      <DialogDescription>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                          {activity.Resources &&
+                          activity.Resources.length > 0 ? (
+                            activity.Resources.map((resource) => (
+                              <ResourceCard
+                                key={resource.id}
+                                resource={resource}
+                              />
+                            ))
+                          ) : (
+                            <p>No resources available.</p>
+                          )}
+                        </div>
+                      </DialogDescription>
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              {Accordions?.map((accordion, index) => (
+                <Accordian
+                  key={index}
+                  title={accordion.Question}
+                  description={accordion.Answer}
+                />
+              ))}
+              {/* Row 2 (R2) */}
+              <div className="flex w-full flex-col py-6 md:py-0 justify-start items-start gap-2">
+                <div className="w-full md:flex hidden justify-between items-center p-6 bg-white rounded-xl shadow">
+                  <ChevronLeft />
+                  <div className="text-center text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+                    Activity date <br />
+                    {new Date(ActivityDate).toLocaleDateString("en-GB")}
+                  </div>
+                  <ChevronRight />
+                </div>
+                <div className="px-4 md:flex hidden w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+                  <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+                    Check Activity Resources
+                  </div>
+                  <Dialog>
+                    <DialogTrigger className="w-full">
+                      <Button
+                        disabled={
+                          !activity.Resources || activity.Resources.length === 0
+                        }
+                        className={`w-full clarabuttton flex ${
+                          activity.Resources && activity.Resources.length > 0
+                            ? "bg-[#3f3a64] text-white"
+                            : "bg-gray-400 text-gray-600 cursor-not-allowed"
+                        } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+                      >
+                        Resources
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-[#EAEAF5] max-w-[600px] flex flex-col justify-between max-h-[600px] lg:max-w-[800px] lg:max-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+                      <DialogHeader>
+                        <div className="flex flex-row justify-center items-center w-full">
+                          <DialogTitle>
+                            <div className="text-center">
+                              <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                                Check Resources for
+                              </span>{" "}
+                              <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                                {Title}
+                              </span>
+                            </div>
+                          </DialogTitle>
+                        </div>
+                        <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                            {activity.Resources &&
+                            activity.Resources.length > 0 ? (
+                              activity.Resources.map((resource) => (
+                                <ResourceCard
+                                  key={resource.id}
+                                  resource={resource}
+                                />
+                              ))
+                            ) : (
+                              <p>No resources available.</p>
+                            )}
+                          </div>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+
+                <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+                  <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+                    Print Activity
+                  </div>
+                  <PrintDocument activityid={activity.documentId} />
+                </div>
+
+                <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+                  <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+                    Mark Activity as Complete
+                  </div>
+                  <MarkActivityCompleteForm
+                    passactivityId={matchedActivityId}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Specific Row */}
+            <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
+              <PrintDocument activityid={activity.documentId} />
+              <MarkActivityCompleteForm passactivityId={matchedActivityId} />
+            </div>
           </div>
-        </div>{" "}
+        </div>
       </section>
     </>
   );
 }
+
+// export default function ActivityDetailClient({ params }) {
+//   const { id } = params;
+//   const [activity, setActivity] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [userData, setUserData] = useState(null);
+//   const [error, setError] = useState(null);
+//   const [matchedActivityId, setMatchedActivityId] = useState(null);
+
+//   useEffect(() => {
+//     if (!id) return; // Avoid fetching if id is undefined/null
+
+//     const fetchActivity = async () => {
+//       const token = localStorage.getItem("jwt");
+
+//       if (!token) {
+//         console.log("Token not found, redirecting...");
+//         setLoading(false); // Set loading to false if there's no token
+//         return;
+//       }
+//       try {
+//         setLoading(true);
+
+//         // Fetch user details
+//         const userResponse = await fetchUserDetails(token);
+//         setUserData(userResponse.allActivities); // Store the fetched user data
+//         const allActivities = userResponse.allActivities;
+
+//         // Handle if it's an array of activities
+//         if (Array.isArray(allActivities)) {
+//           const matchedActivity = allActivities.find(
+//             (activity) => activity.documentId === id
+//           );
+
+//           if (matchedActivity) {
+//             setMatchedActivityId(matchedActivity.id); // Set match
+//             console.log(
+//               "Found matching activity in allActivities:",
+//               matchedActivity.id
+//             );
+//           } else {
+//             console.log("No activity found with the given documentId.");
+//           }
+//         }
+
+//         // Handle if it's a single activity object (in case userResponse.allActivities is a single object)
+//         else if (allActivities && allActivities.documentId === id) {
+//           setMatchedActivityId(allActivities.id); // Set matched activity ID in state
+//           console.log("Found matching activity ID:", allActivities.id);
+//         } else {
+//           console.log("No activity found with the given documentId.");
+//         }
+
+//         const response = await fetch(
+//           `https://lionfish-app-98urn.ondigitalocean.app/api/activities/${id}?populate=*`
+//         );
+
+//         if (!response.ok) {
+//           throw new Error(`HTTP error! Status: ${response.status}`);
+//         }
+
+//         const json = await response.json(); // ✅ Parse JSON
+//         if (json?.data) {
+//           setActivity(json.data); //
+//         } else {
+//           throw new Error("Invalid data structure");
+//         }
+//       } catch (err) {
+//         console.error("Error fetching activity:", err);
+//         setError("Failed to load activity data.");
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchActivity();
+//   }, [id]); // Re-run effect when `id` changes
+
+//   console.log("Activity Data", activity);
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p className="text-red-500">{error}</p>;
+//   if (!userData || !activity) {
+//     return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
+//   }
+
+//   const {
+//     Title,
+//     Skills,
+//     LearningAreaIcons,
+//     Theme,
+//     FocusAge,
+//     ActivityDate,
+//     SetUpTime,
+//     Gallery,
+//     Accordions,
+//   } = activity;
+//   return (
+//     <>
+//       <NewHeader headerText="Activity" />
+
+//       <section className="w-full h-auto bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
+//         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
+//           <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
+//             {Title}
+//           </div>
+//           {/* Col 1(R1) */}
+//           <div className="claracontainer lg:min-w-[60%] lg:w-full bg-[#ffffff] md:bg-[#ffffff] pb-4 lg:bg-[#eaeaf5] py-0 flex flex-col justify-start items-start gap-4">
+//             {/* Row 1(C1) */}
+//             <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
+//               {Gallery ? (
+//                 <ProductMedia gallery={Gallery} />
+//               ) : (
+//                 <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+//                   <Image
+//                     className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px object-cover rounded-lg"
+//                     alt="Placholder Image"
+//                     src={ActivityImage}
+//                   />
+//                 </div>
+//               )}
+//             </div>
+//             {/* Row 1(R2) */}
+//             <div className="claracontainer lg:hidden w-full flex flex-col px-4 lg:px-0 justify-start items-start gap-4">
+//               <div className="flex w-full flex-col justify-normal items-center gap-2">
+//                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   {Title || "Activity Title"}
+//                 </div>
+//                 <div className="items-center cursor-pointer w-full justify-center flex flex-col gap-2">
+//                   <ActivityAttribute
+//                     image={ActivityBlack}
+//                     features={
+//                       new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+//                     }
+//                   />
+//                   <ActivityAttribute
+//                     image={Themes}
+//                     className="text-[black]"
+//                     features={Theme || "Winter"}
+//                     title="Theme"
+//                   />
+//                   <ActivityAttribute
+//                     image={KidBlack}
+//                     features={FocusAge || "Toddler"}
+//                     title="Difficulty"
+//                   />
+//                   <ActivityAttribute
+//                     image={TimerBlack}
+//                     features={SetUpTime || "5 Min"}
+//                     title="Set up Time"
+//                   />
+//                 </div>
+//               </div>
+
+//               <div className="flex w-full flex-col justify-star items-start gap-2">
+//                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   Learning Areas
+//                 </div>
+
+//                 <div className="items-center h-fit hover:h-full overflow-y-hidden overflow-x-scroll scrollbar-hidden w-full justify-start flex flex-row gap-1">
+//                   {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+//                     LearningAreaIcons.map((skill, index) => {
+//                       // Extract the skill title
+//                       const skillTitle = skill.children[0]?.text;
+//                       const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
+//                       const iconSrc = icon?.src || SpeechLanguageActivity; // Replace with your fallback icon path
+
+//                       return (
+//                         <Image
+//                           key={index}
+//                           src={iconSrc} // Using the icon image URL here
+//                           alt={skillTitle}
+//                           width={32}
+//                           title={skillTitle}
+//                           height={32}
+//                           className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
+//                         />
+//                       );
+//                     })
+//                   ) : (
+//                     <p>No skills available.</p> // Fallback message if no skills are found
+//                   )}
+//                 </div>
+//               </div>
+//               <div className="flex w-full flex-col justify-star items-start gap-2">
+//                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   Skills{" "}
+//                 </div>
+//                 <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+//                   {/* {Skills.map((skill, index) => (
+//                     <li key={index}>{skill.children[0]?.text}</li>
+//                   ))} */}
+//                   <span
+//                     className="prose leading-[14px] marker:text-[#0a1932]"
+//                     dangerouslySetInnerHTML={{ __html: Skills }}
+//                   />
+//                 </div>
+//               </div>
+//             </div>
+//             {/* Row - 2(C1) */}
+//             <div className="items-center px-4 hidden lg:px-0 w-full lg:min-w-[600px] justify-center lg:flex flex-col gap-2">
+//               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+//                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Check Activity Resources
+//                 </div>
+//                 <Dialog>
+//                   <DialogTrigger className="w-full">
+//                     <Button
+//                       disabled={
+//                         !activity.Resources ||
+//                         activity.Resources.length === 0
+//                       }
+//                       className={`w-full clarabuttton flex md:hidden ${
+//                         activity.Resources &&
+//                         activity.Resources.length > 0
+//                           ? "bg-[#3f3a64] text-white"
+//                           : "bg-gray-400 text-gray-600 cursor-not-allowed"
+//                       } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+//                     >
+//                       Resources
+//                     </Button>
+//                   </DialogTrigger>
+//                   <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[600px] max-h-[500px] overflow-y-scroll rounded-lg">
+//                     <DialogHeader>
+//                       <DialogTitle></DialogTitle>
+//                       <DialogDescription>
+//                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+//                           {activity.Resources &&
+//                           activity.Resources.length > 0 ? (
+//                             activity.Resources.map((resource) => {
+//                               return (
+//                                 <ResourceCard
+//                                   key={resource.id}
+//                                   resource={resource}
+//                                 />
+//                               );
+//                             })
+//                           ) : (
+//                             <p>No resources available.</p>
+//                           )}
+//                         </div>{" "}
+//                       </DialogDescription>
+//                     </DialogHeader>
+//                   </DialogContent>
+//                 </Dialog>
+//               </div>
+//               {Accordions.map((accordion, index) => (
+//                 <Accordian
+//                   key={index}
+//                   title={accordion.Question}
+//                   description={accordion.Answer}
+//                 />
+//               ))}
+//             </div>
+//           </div>
+
+//           {/* Col Two */}
+//           <div className="claracontainer p-0 pb-24 flex flex-col justify-start items-start gap-8">
+//             {/* Row 1(R2) */}
+//             <div className="claracontainer hidden lg:flex w-full flex-col px-4 lg:px-0 justify-start items-start gap-4">
+//               <div className="flex w-full flex-col justify-normal items-center gap-2">
+//                 <div className="text-[#0a1932] text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   {Title}
+//                   {/* | {activity.id} | */}
+//                 </div>
+//                 <div className="items-center w-full justify-center flex flex-col gap-2">
+//                   <ActivityAttribute
+//                     image={ActivityBlack}
+//                     features={
+//                       new Date(ActivityDate).toDateString() || "Thu Dec 26 2024"
+//                     }
+//                   />{" "}
+//                   <ActivityAttribute
+//                     image={Themes}
+//                     className="text-[black]"
+//                     features={Theme || "Winter"}
+//                     title="Theme"
+//                   />
+//                   <ActivityAttribute
+//                     image={KidBlack}
+//                     features={FocusAge || "Toddler"}
+//                     title="Difficulty"
+//                   />{" "}
+//                   <ActivityAttribute
+//                     image={TimerBlack}
+//                     features={SetUpTime || "5 Min"}
+//                     title="Set up Time"
+//                   />
+//                 </div>
+//               </div>
+//               <div className="flex w-full flex-col justify-star items-start gap-2">
+//                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   Learning Areas
+//                 </div>
+
+//                 <div className="items-center overflow-x-scroll  scrollbar-hidden w-full justify-start flex flex-row gap-1">
+//                   {LearningAreaIcons && LearningAreaIcons.length > 0 ? (
+//                     LearningAreaIcons.map((skill, index) => {
+//                       // Extract the skill title
+//                       const skillTitle = skill.children[0]?.text;
+//                       const icon = getIconForSkill(skillTitle); // Get the icon URL dynamically
+//                       const iconSrc = icon?.src || SpeechLanguageActivity; // Replace with your fallback icon path
+
+//                       return (
+//                         <Image
+//                           key={index}
+//                           src={iconSrc} // Using the icon image URL here
+//                           alt={skillTitle}
+//                           width={32}
+//                           title={skillTitle}
+//                           height={32}
+//                           className="w-8 h-8 cursor-pointer text-opacity-50 hover:opacity-100 duration-150 ease-out" // Set the size for the image
+//                         />
+//                       );
+//                     })
+//                   ) : (
+//                     <p>No skills available.</p> // Fallback message if no skills are found
+//                   )}
+//                 </div>
+//               </div>
+//               <div className="flex w-full flex-col justify-star items-start gap-2">
+//                 <div className="text-[#0a1932]  text-start justify-start items-start w-full font-fredoka font-semibold text-[24px] md:text-[28px] lg:text-[28px]">
+//                   Skills{" "}
+//                 </div>
+
+//                 <div className="text-[#0a1932] px-0 text-[16px] font-normal font-fredoka list-disc leading-none">
+//                   <span
+//                     className="prose leading-[14px] marker:text-[#0a1932]"
+//                     dangerouslySetInnerHTML={{ __html: Skills }}
+//                   />
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="items-center px-4 lg:hidden lg:px-0 w-full lg:min-w-[600px] justify-center flex flex-col gap-2">
+//               <div className="px-4 mb-6 md:hidden flex w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+//                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Check Activity Resources
+//                 </div>
+//                 <Dialog>
+//                   <DialogTrigger className="w-full">
+//                     <Button
+//                       disabled={
+//                         !activity.Resources ||
+//                         activity.Resources.length === 0
+//                       }
+//                       className={`w-full clarabuttton flex md:hidden ${
+//                         activity.Resources &&
+//                         activity.Resources.length > 0
+//                           ? "bg-[#3f3a64] text-white"
+//                           : "bg-gray-400 text-gray-600 cursor-not-allowed"
+//                       } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+//                     >
+//                       Resources
+//                     </Button>
+//                   </DialogTrigger>
+//                   <DialogContent className="w-full max-w-[96%] p-0 lg:max-w-[800px] max-h-[500px] overflow-y-scroll rounded-lg">
+//                     <DialogHeader>
+//                       <DialogTitle></DialogTitle>
+//                       <DialogDescription>
+//                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+//                           {activity.Resources &&
+//                           activity.Resources.length > 0 ? (
+//                             activity.Resources.map((resource) => {
+//                               return (
+//                                 <ResourceCard
+//                                   key={resource.id}
+//                                   resource={resource}
+//                                 />
+//                               );
+//                             })
+//                           ) : (
+//                             <p>No resources available.</p>
+//                           )}
+//                         </div>
+//                       </DialogDescription>
+//                     </DialogHeader>
+//                   </DialogContent>
+//                 </Dialog>
+//               </div>
+//               {Accordions.map((accordion, index) => (
+//                 <Accordian
+//                   key={index}
+//                   title={accordion.Question}
+//                   description={accordion.Answer}
+//                 />
+//               ))}
+//             </div>
+
+//             {/* Row 2(R2) */}
+//             <div className="flex w-full flex-col py-6 md:py-0 justify-start items-start gap-2">
+//               <div className="w-full md:flex hidden justify-between items-center p-6 bg-white rounded-xl shadow">
+//                 <ChevronLeft />
+//                 <div className="text-center text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Activity date <br />
+//                   {new Date(ActivityDate).toLocaleDateString("en-GB")}
+//                 </div>
+//                 <ChevronRight />
+//               </div>
+//               <div className="px-4 md:flex hidden w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+//                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Check Activity Resources
+//                 </div>
+//                 <Dialog>
+//                   <DialogTrigger className="w-full">
+//                     <Button
+//                       disabled={
+//                         !activity.Resources ||
+//                         activity.Resources.length === 0
+//                       }
+//                       className={`w-full clarabuttton flex ${
+//                         activity.Resources &&
+//                         activity.Resources.length > 0
+//                           ? "bg-[#3f3a64] text-white"
+//                           : "bg-gray-400 text-gray-600 cursor-not-allowed"
+//                       } text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white`}
+//                     >
+//                       Resources
+//                     </Button>
+//                   </DialogTrigger>
+//                   <DialogContent className="bg-[#EAEAF5] max-w-[600px] flex flex-col justify-between max-h-[600px] lg:max-w-[800px] lg:max-h-[600px] min-h-[400px] overflow-y-scroll p-0 overflow-x-hidden rounded-[16px] w-full claracontainer">
+//                     <DialogHeader>
+//                       <div className="flex flex-row justify-center items-center w-full">
+//                         <DialogTitle>
+//                           <div className="text-center">
+//                             <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+//                               Check Resources for
+//                             </span>{" "}
+//                             <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+//                               {Title}
+//                             </span>
+//                           </div>
+//                         </DialogTitle>
+//                       </div>
+//                       <DialogDescription className="flex w-full px-4 claracontainer flex-col justify-start items-center">
+//                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+//                           {activity.Resources &&
+//                           activity.Resources.length > 0 ? (
+//                             activity.Resources.map((resource) => {
+//                               return (
+//                                 <ResourceCard
+//                                   key={resource.id}
+//                                   resource={resource}
+//                                 />
+//                               );
+//                             })
+//                           ) : (
+//                             <p>No resources available.</p>
+//                           )}
+//                         </div>
+//                       </DialogDescription>
+//                     </DialogHeader>
+//                   </DialogContent>
+//                 </Dialog>
+//               </div>
+
+//               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+//                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Print Activity{" "}
+//                 </div>
+//                 <PrintDocument activityid={activity.documentId} />{" "}
+//               </div>
+
+//               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
+//                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
+//                   Mark Activity as Complete{" "}
+//                 </div>
+//                 <MarkActivityCompleteForm passactivityId={matchedActivityId} />
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Mobile Specific Row */}
+//           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
+//             <PrintDocument activityid={activity.documentId} />
+//             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
+//           </div>
+//         </div>{" "}
+//       </section>
+//     </>
+//   );
+// }

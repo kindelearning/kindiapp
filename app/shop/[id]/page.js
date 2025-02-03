@@ -8,6 +8,8 @@ export async function generateStaticParams() {
   }));
 }
 
+
+
 export default async function ProductDetailPage({ params }) {
   const { id } = params;
   const fetchedProduct = await getProductById(id);

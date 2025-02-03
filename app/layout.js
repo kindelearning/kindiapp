@@ -38,13 +38,14 @@ export default function RootLayout({ children }) {
         )} */}
         <StatusBarManager />
         {/* <SplashScreenHandler /> */}
-
-        <UserProvider>
-          <CartProvider>
-            {children}
-            {/* {!isVideoVisible && children} Render the rest of your app */}
-          </CartProvider>
-        </UserProvider>
+        <GoogleOAuthProvider clientId="1055268493431-9l6ee7s7d7o14dfg5vhh9pr0jgq7rlh7.apps.googleusercontent.com">
+          <UserProvider>
+            <CartProvider>
+              {children}
+              {/* {!isVideoVisible && children} Render the rest of your app */}
+            </CartProvider>
+          </UserProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

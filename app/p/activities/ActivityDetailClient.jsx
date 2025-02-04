@@ -51,11 +51,10 @@ export const ActivityAttribute = ({
       </div>
     </div>
   );
-};
+}; 
  
 export default function ActivityDetailClient({ params }) {
   const id = params?.id; // Safer way to avoid "undefined" issues
-
   const [activity, setActivity] = useState(null);
   const [loadingActivity, setLoadingActivity] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);

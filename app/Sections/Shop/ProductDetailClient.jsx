@@ -483,7 +483,7 @@ export function QuantityControl({
     </div>
   );
 }
-
+ 
 export default function ProductDetailPage({ params }) {
   const { id } = params;
   const [product, setProduct] = useState(null);

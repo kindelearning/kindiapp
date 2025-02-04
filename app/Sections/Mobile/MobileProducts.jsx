@@ -39,7 +39,7 @@ export function LocalProductCard({ image, productUrl, title, price }) {
       <div className="claracontainer flex flex-col justify-start min-h-[80px] pb-2 md:min-h-[100px] items-start w-full gap-2">
         <div className="flex items-center px-2 w-full justify-between gap-2">
           <h1 className="flex text-[24px] leading-tight font-semibold text-[#0A1932] font-fredoka">
-          £  {price || "29"}
+            £ {price || "29"}
           </h1>
           <div className="flex flex-row justify-center gap-[2px] items-center">
             <Image
@@ -96,7 +96,7 @@ export default function MobileProducts({}) {
               products.map((product) => (
                 <Link
                   key={product.documentId}
-                  href={`/shop/${product.documentId}`}
+                  href={`/shop/${product.documentId}` || "#"}
                 >
                   <LocalProductCard
                     image={

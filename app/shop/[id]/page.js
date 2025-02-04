@@ -8,7 +8,7 @@ export async function generateStaticParams() {
       "https://lionfish-app-98urn.ondigitalocean.app/api/products"
     );
     const { data } = await response.json();
-
+ 
     // Ensure data exists
     if (!Array.isArray(data) || data.length === 0) {
       console.error("⚠️ No product found or API response is empty");

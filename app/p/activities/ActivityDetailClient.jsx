@@ -54,10 +54,10 @@ export const ActivityAttribute = ({
 }; 
  
 export default function ActivityDetailClient({ params }) {
-  const id = params?.id; // Safer way to avoid "undefined" issues
+  const { id } = params; // Safer way to avoid "undefined" issues
   const [activity, setActivity] = useState(null);
   const [loadingActivity, setLoadingActivity] = useState(true);
-  const [loadingUser, setLoadingUser] = useState(true);
+  // const [loadingUser, setLoadingUser] = useState(true);
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [matchedActivityId, setMatchedActivityId] = useState(null);
@@ -94,50 +94,50 @@ export default function ActivityDetailClient({ params }) {
   }, [id]);
 
   // Effect for fetching user details (requires token)
-  useEffect(() => {
-    if (!id) return; // Ensure id exists
-    const token = localStorage.getItem("jwt");
-    if (!token) {
-      console.log("User token not found. Skipping user data fetch.");
-      setLoadingUser(false);
-      return;
-    }
-    const fetchUserData = async () => {
-      try {
-        setLoadingUser(true);
-        const userResponse = await fetchUserDetails(token);
-        console.log("User Response:", userResponse);
-        setUserData(userResponse.allActivities);
-        const allActivities = userResponse.allActivities;
-        // Find matching activity in user details
-        if (Array.isArray(allActivities)) {
-          const matchedActivity = allActivities.find(
-            (activity) => activity.documentId === id
-          );
-          if (matchedActivity) {
-            setMatchedActivityId(matchedActivity.id);
-            console.log("Found matching activity in user data:", matchedActivity.id);
-          } else {
-            console.log("No matching activity found in user data.");
-          }
-        } else if (allActivities && allActivities.documentId === id) {
-          setMatchedActivityId(allActivities.id);
-          console.log("Found matching activity (single object):", allActivities.id);
-        } else {
-          console.log("User data did not contain a matching activity.");
-        }
-      } catch (err) {
-        console.error("Error fetching user details:", err);
-      } finally {
-        setLoadingUser(false);
-      }
-    };
-    fetchUserData();
-  }, [id]);
+  // useEffect(() => {
+  //   if (!id) return; // Ensure id exists
+  //   const token = localStorage.getItem("jwt");
+  //   if (!token) {
+  //     console.log("User token not found. Skipping user data fetch.");
+  //     setLoadingUser(false);
+  //     return;
+  //   }
+  //   const fetchUserData = async () => {
+  //     try {
+  //       setLoadingUser(true);
+  //       const userResponse = await fetchUserDetails(token);
+  //       console.log("User Response:", userResponse);
+  //       setUserData(userResponse.allActivities);
+  //       const allActivities = userResponse.allActivities;
+  //       // Find matching activity in user details
+  //       if (Array.isArray(allActivities)) {
+  //         const matchedActivity = allActivities.find(
+  //           (activity) => activity.documentId === id
+  //         );
+  //         if (matchedActivity) {
+  //           setMatchedActivityId(matchedActivity.id);
+  //           console.log("Found matching activity in user data:", matchedActivity.id);
+  //         } else {
+  //           console.log("No matching activity found in user data.");
+  //         }
+  //       } else if (allActivities && allActivities.documentId === id) {
+  //         setMatchedActivityId(allActivities.id);
+  //         console.log("Found matching activity (single object):", allActivities.id);
+  //       } else {
+  //         console.log("User data did not contain a matching activity.");
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching user details:", err);
+  //     } finally {
+  //       setLoadingUser(false);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, [id]);
 
-  const loading = loadingActivity || loadingUser;
+  // const loading = loadingActivity || loadingUser;
   console.log("Activity Data:", activity);
-  if (loading) return <p>Loading...</p>;
+  // if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!activity) {
     return <div>Failed to load activity or activity not found.</div>;

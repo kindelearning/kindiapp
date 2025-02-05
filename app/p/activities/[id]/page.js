@@ -1,4 +1,5 @@
 import BlogDetailPage from "../../community/[id]/BlogDetailClient";
+import ActivityDetailPage from "./ActivityDetailPage";
 
 export async function generateStaticParams() {
   try {
@@ -28,5 +29,5 @@ export async function generateStaticParams() {
 }
 
 export default function BlogDetail({ params }) {
-  return <BlogDetailPage params={params} />;
+  return <ActivityDetailPage params={params} />;
 }

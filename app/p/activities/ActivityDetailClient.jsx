@@ -543,30 +543,23 @@ export default function ActivityDetailClient({ params }) {
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  
+
   useEffect(() => {
-    // if (!id) return; // Avoid fetching if id is undefined/null
+    // Avoid fetching if `id` is undefined or null
+    if (!id) {
+      setError('Invalid or missing activity ID.');
+      setLoading(false);
+      return;
+    }
 
     const fetchActivity = async () => {
       try {
         setLoading(true);
-
-        const response = await fetchActivityByDocumentId(id)
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const json = await response.json(); // ✅ Parse JSON
-        if (json?.data) {
-          setActivity(json.data); //
-        } else {
-          throw new Error("Invalid data structure");
-        }
+        const response = await fetchActivityByDocumentId(id); // Ensure this function is defined
+        setActivity(response);
       } catch (err) {
         console.error("Error fetching activity:", err);
-        setError("Failed to load activity data.");
+        setError('Failed to load activity data.');
       } finally {
         setLoading(false);
       }
@@ -574,27 +567,41 @@ export default function ActivityDetailClient({ params }) {
 
     fetchActivity();
   }, [id]);
- 
- 
+
   console.log("Activity Data", activity);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!activity) {
     return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
   }
 
-  const {
-    Title,
-   
-  } = activity;
+  const { Title, Gallery } = activity;
 
   return (
     <>
       <NewHeader headerText="Activity" />
       <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
-            {Title}
+        {Title}
+      </div>
+      <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
+        {Gallery && Gallery.length > 0 ? (
+          <ProductMedia gallery={Gallery} />
+        ) : (
+          <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+            <Image
+              className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover"
+              alt="Placeholder Image"
+              src={ActivityImage}
+            />
           </div>
-      {/* <section className="w-full h-auto -my-[16px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
+        )}
+      </div>
+    </>
+  );
+}
+{
+  /* <section className="w-full h-auto -my-[16px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
           <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
             {Title}
@@ -952,7 +959,5 @@ export default function ActivityDetailClient({ params }) {
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>
-      </section> */}
-    </>
-  );
+      </section> */
 }

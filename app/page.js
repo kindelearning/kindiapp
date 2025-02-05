@@ -1,17 +1,12 @@
-import {
-  getAllActivities,
-  getHomeData,
-  getThemes,
-} from "@/lib/hygraph";
+import { getHomeData, getThemes } from "@/lib/hygraph";
 import {
   BottomNavigation,
   Footer,
-  LocalHeader, 
+  LocalHeader,
   MobileActivity,
   MobileCommunity,
   MobileHero,
   MobileProducts,
-  MobileThemes,
   NewsLetter,
 } from "./Sections";
 
@@ -31,8 +26,8 @@ export default async function Home() {
         <LocalHeader />
         <div className="w-full -mt-[8px] z-50 rounded-t-[12px] pb-12 flex flex-col overflow-hidden gap-0">
           <MobileHero />
-          {/* <MobileActivity activities={activitieData} homeData={homeData} /> */}
-          {/* <MobileProducts /> */}
+          {/* <MobileActivity  /> */}
+          <MobileProducts />
           {/* <MobileThemes themes={themesData} homeData={homeData} /> */}
           <MobileCommunity />
         </div>

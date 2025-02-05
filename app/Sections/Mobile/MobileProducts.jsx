@@ -1,13 +1,12 @@
 "use client";
 
 import { fetchShopProducts } from "@/app/data/p/Dynamic/Shop";
-import { getProducts } from "@/lib/hygraph";
 import { Ratings } from "@/public/Images";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-export function LocalProductCard({ image, productUrl, title, price }) {
+export function LocalProductCard({ image, productUrl = "#", title, price }) {
   const [rating, setRating] = useState(0);
   useEffect(() => {
     const generateRandomRating = () => {
@@ -77,7 +76,7 @@ export default function MobileProducts({}) {
   }, []);
   return (
     <>
-      <section className="w-full h-auto bg- [#F5F5F5] items-center justify-center py-4 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
+      <section className="w-full h-auto bg-[#F5F5F5] items-center justify-center py-4 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
         <div className="claracontainer w-full flex-col justify-start gap-4 items-center script inline-flex">
           <div className="flex justify-between px-4  items-center w-full">
             <h1 className="clarabodyTwo text-[#0A1932] w-full justify-start items-center text-start">
@@ -94,21 +93,18 @@ export default function MobileProducts({}) {
           <div className="grid claracontainer w-full pl-4 flex-row  justify-between gap-4 grid-cols-2">
             {Array.isArray(products) && products.length > 0 ? (
               products.map((product) => (
-                <Link
+                <LocalProductCard
                   key={product.documentId}
-                  href={`/shop/${product.documentId}` || "#"}
-                >
-                  <LocalProductCard
-                    image={
-                      Array.isArray(product?.FeaturedImage) &&
-                      product?.FeaturedImage.length > 0
-                        ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`
-                        : "/Images/shop/ProductImage.png"
-                    }
-                    title={product?.Name || "Unnamed Product"}
-                    price={product?.DiscountPrice || "N/A"}
-                  />
-                </Link>
+                  productUrl={`/shop/${product.documentId}` || "#"}
+                  image={
+                    Array.isArray(product?.FeaturedImage) &&
+                    product?.FeaturedImage.length > 0
+                      ? `https://lionfish-app-98urn.ondigitalocean.app${product?.FeaturedImage[0]?.url}`
+                      : "/Images/shop/ProductImage.png"
+                  }
+                  title={product?.Name || "Unnamed Product"}
+                  price={product?.DiscountPrice || "N/A"}
+                />
               ))
             ) : (
               <p className="text-gray-500">No products available.</p>

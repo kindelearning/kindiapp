@@ -10,13 +10,13 @@ import {
   TimerBlack,
 } from "@/public/Images";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import ResourceCard from "../ActivityResource";
@@ -130,7 +130,7 @@ export default function ActivityDetailPage({ params }) {
           </div>
         )}
       </div> */}
-       <NewHeader headerText= {Title || "Activity"} />
+      <NewHeader headerText={Title || "Activity"} />
       <section className="w-full h-auto -my-[16px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
           <div className="w-full hidden text-[#3f3a64] claraheading capitalize">

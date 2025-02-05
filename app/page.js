@@ -18,7 +18,7 @@ export default function Home() {
       <LocalHeader />
       <div className="w-full -mt-[8px]  rounded-t-[12px] pb-12 flex flex-col overflow-hidden gap-0">
         <MobileHero />
-        {/* <MobileActivity  /> */}
+        <MobileActivity  />
         <MobileProducts />
         <MobileThemes />
         <MobileCommunity />

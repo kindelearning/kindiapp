@@ -39,8 +39,12 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
     ? Gallery[0]?.url // If it's an array, use the first image
     : Gallery?.url || "/Images/ActivityImage.png";
   return (
-    <Link target="_blank" href={activityUrl}>
-      <div className="md:w-full hover:shadow-md duration-200 min-w-full max-w-[160px] w-fit min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+    <>
+      <Link
+        target="_blank"
+        href={activityUrl}
+        className="md:w-full hover:shadow-md duration-200 min-w-full max-w-[160px] w-fit min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4"
+      >
         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
           <div className="w-full max-w-[240px] lg:max-w-full h-auto">
             {/* Image Container */}
@@ -112,8 +116,8 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
             </div>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </>
   );
 };
 
@@ -254,7 +258,10 @@ export default function MobileActivity() {
                     .sort(() => Math.random() - 0.5) // Shuffle activities randomly
                     .slice(0, 9) // Limit to 9 activities
                     .map((activity) => (
-                      <div key={activity.id} className="flex min-w-[200px] max-w-[200px]  w-full">
+                      <div
+                        key={activity.id}
+                        className="flex min-w-[200px] max-w-[200px]  w-full"
+                      >
                         <LocalActivityCard
                           activityUrl={`/p/activities/${
                             activity.documentId || "#"

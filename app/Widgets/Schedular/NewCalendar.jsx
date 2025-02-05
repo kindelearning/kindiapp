@@ -183,28 +183,33 @@ function CalendarDay({
   handleDragStart,
   handleDragEnd,
   handleDragOver,
+  handleTouchStart,
+  handleTouchMove,
+  handleTouchEnd,  // <-- Add this prop
 }) {
   return (
     <div
-      key={date}
-      className={`flex flex-col justify-between items-center p-2  relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer gap-2 h-[140px] ${
+      key={date.toISOString()}
+      className={`flex flex-col justify-between items-center p-2 relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer gap-2 h-[140px] ${
         isSameMonth(date, currentDate)
-          ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200  "
+          ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
           : "bg-[#EaEaf5] text-[#8C8C8C] cursor-not-allowed"
       }`}
       onDrop={(event) => handleDrop(event, date)}
       onDragOver={handleDragOver}
+      onTouchEnd={(event) => handleTouchEnd(event, date)}  {/* Added */}
     >
-      <span className=" flex w-full text-[#000000] justify-between left-0 right-0 text-xs font-semibold p-1 rounded-t-md">
+      <span className="flex w-full text-[#000000] justify-between text-xs font-semibold p-1 rounded-t-md">
         {format(date, "d")}
       </span>
-
       {activitiesForThisDate.map((activity) => (
         <div
           key={activity.id}
           draggable
           onDragStart={(event) => handleDragStart(event, activity)}
           onDragEnd={handleDragEnd}
+          onTouchStart={(event) => handleTouchStart(event, activity)}
+          onTouchMove={handleTouchMove}
           className="max-w-full text-white h-full w-full rounded-md cursor-pointer"
         >
           <ActivityCard activityData={activity} />
@@ -214,10 +219,12 @@ function CalendarDay({
   );
 }
 
+
 export default function NewCalendar({ activities }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updatedActivities, setUpdatedActivities] = useState(activities);
   const touchStartPositionRef = useRef({ x: 0, y: 0 });
+  const draggedActivityIdRef = useRef(null);
 
   const currentYear = new Date().getFullYear();
   const availableYears = useMemo(
@@ -304,11 +311,8 @@ export default function NewCalendar({ activities }) {
   const handleTouchStart = useCallback((event, activity) => {
     const touch = event.touches[0];
     event.target.style.opacity = 0.5;
-    // In case dataTransfer is not available in touch events, create a simple polyfill object:
-    if (!event.dataTransfer) {
-      event.dataTransfer = { setData: () => {}, getData: () => null };
-    }
-    event.dataTransfer.setData("activityId", activity.id);
+    // Store the activity id in our ref
+    draggedActivityIdRef.current = activity.id;
     touchStartPositionRef.current = { x: touch.clientX, y: touch.clientY };
   }, []);
 
@@ -321,15 +325,23 @@ export default function NewCalendar({ activities }) {
 
   const handleTouchEnd = useCallback(
     async (event, date) => {
-      // Reset any inline styles
+      // Reset styles on drop
       event.target.style.transform = "";
       event.target.style.opacity = 1;
-      const activityId = event.dataTransfer.getData("activityId");
-      console.log("Dropped on date:", format(date, "yyyy-MM-dd"));
-      updateActivityDate(activityId, date);
+      const activityId = draggedActivityIdRef.current;
+      console.log("Dropped on date:", format(date, "yyyy-MM-dd"), "for activity id:", activityId);
+      if (activityId) {
+        // Update the activity date using your existing updateActivityDate function
+        updateActivityDate(activityId, date);
+      } else {
+        console.error("No activity id found in touch event.");
+      }
+      // Clear the ref after drop
+      draggedActivityIdRef.current = null;
     },
     [updateActivityDate]
   );
+
 
   const getActivitiesForDate = useCallback(
     (date) => {

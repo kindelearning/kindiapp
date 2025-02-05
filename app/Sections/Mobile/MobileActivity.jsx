@@ -40,7 +40,7 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
     : Gallery?.url || "/Images/ActivityImage.png";
   return (
     <Link target="_blank" href={activityUrl}>
-      <div className="md:w-full hover:shadow-md duration-200 min-w-[160px] w-fit min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+      <div className="md:w-full hover:shadow-md duration-200 min-w-full max-w-[160px] w-fit min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
           <div className="w-full max-w-[240px] lg:max-w-full h-auto">
             {/* Image Container */}
@@ -116,7 +116,6 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
     </Link>
   );
 };
-
 
 export default function MobileActivity() {
   const [activities, setActivities] = useState([]);
@@ -229,8 +228,8 @@ export default function MobileActivity() {
                           onClick={() => handlePageChange(index + 1)}
                           className={`px-4 py-2 mx-2 rounded-lg ${
                             currentPage === index + 1
-                              ? 'bg-red-500 text-white'
-                              : 'bg-gray-300'
+                              ? "bg-red-500 text-white"
+                              : "bg-gray-300"
                           }`}
                         >
                           {index + 1}
@@ -255,13 +254,14 @@ export default function MobileActivity() {
                     .sort(() => Math.random() - 0.5) // Shuffle activities randomly
                     .slice(0, 9) // Limit to 9 activities
                     .map((activity) => (
-                      <LocalActivityCard
-                        key={activity.id}
-                        activityUrl={`/p/activities/${
-                          activity.documentId || "#"
-                        }`} // Fallback for missing documentId
-                        activity={activity}
-                      />
+                      <div key={activity.id} className="flex min-w-[200px] max-w-[200px]  w-full">
+                        <LocalActivityCard
+                          activityUrl={`/p/activities/${
+                            activity.documentId || "#"
+                          }`} // Fallback for missing documentId
+                          activity={activity}
+                        />
+                      </div>
                     ))
                 ) : (
                   <p className="text-gray-500">
@@ -278,4 +278,3 @@ export default function MobileActivity() {
     </section>
   );
 }
-

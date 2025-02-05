@@ -1,0 +1,10 @@
+{
+  "appId": "com.kindilearning.app",
+  "appName": "Kindi Learning",
+  "webDir": "public",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://kindiapp.vercel.app",
+    "cleartext": false
+  }
+}

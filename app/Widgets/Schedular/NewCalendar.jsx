@@ -266,194 +266,6 @@ function CalendarDay({
   );
 }
 
-// export default function NewCalendar({ activities }) {
-//   const [currentDate, setCurrentDate] = useState(new Date());
-//   const [updatedActivities, setUpdatedActivities] = useState(activities);
-//   const touchStartPositionRef = useRef({ x: 0, y: 0 });
-//   const draggedActivityIdRef = useRef(null);
-
-//   const currentYear = new Date().getFullYear();
-//   const availableYears = useMemo(
-//     () => Array.from({ length: 8 }, (_, index) => currentYear - 2 + index),
-//     [currentYear]
-//   );
-
-//   const calendarDays = useMemo(() => {
-//     const startOfMonthDate = startOfMonth(currentDate);
-//     const endOfMonthDate = endOfMonth(currentDate);
-//     const startOfCalendar = startOfWeek(startOfMonthDate);
-//     const endOfCalendar = endOfWeek(endOfMonthDate);
-//     return eachDayOfInterval({ start: startOfCalendar, end: endOfCalendar });
-//   }, [currentDate]);
-
-//   // Function to update an activity's date (shared by drop and touch end handlers)
-//   const updateActivityDate = useCallback(
-//     async (activityId, date) => {
-//       // Update local state
-//       const updatedList = updatedActivities.map((activity) =>
-//         activity.id === parseInt(activityId)
-//           ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
-//           : activity
-//       );
-//       setUpdatedActivities(updatedList);
-
-//       const updatedEvent = updatedList.find(
-//         (activity) => activity.id === parseInt(activityId)
-//       );
-//       if (updatedEvent?.documentId) {
-//         const payload = {
-//           data: { newDate: format(date, "yyyy-MM-dd") },
-//         };
-
-//         try {
-//           const response = await fetch(
-//             `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
-//             {
-//               method: "PUT",
-//               headers: { "Content-Type": "application/json" },
-//               body: JSON.stringify(payload),
-//             }
-//           );
-
-//           if (!response.ok) {
-//             const data = await response.json();
-//             console.error("Error updating event:", data);
-//           } else {
-//             console.log("Event updated successfully!");
-//           }
-//         } catch (error) {
-//           console.error("Error during API request:", error);
-//         }
-//       } else {
-//         console.error("No documentId found for the event.");
-//       }
-//     },
-//     [updatedActivities]
-//   );
-
-//   const handleDrop = useCallback(
-//     (event, date) => {
-//       event.preventDefault();
-//       const activityId = event.dataTransfer.getData("activityId");
-//       console.log("Dropped on date:", format(date, "yyyy-MM-dd"));
-//       updateActivityDate(activityId, date);
-//     },
-//     [updateActivityDate]
-//   );
-
-//   const handleDragStart = useCallback((event, activity) => {
-//     event.dataTransfer.setData("activityId", activity.id);
-//     event.target.style.opacity = 0.5;
-//   }, []);
-
-//   const handleDragEnd = useCallback((event) => {
-//     event.target.style.opacity = 1;
-//   }, []);
-
-//   const handleDragOver = useCallback((event) => {
-//     event.preventDefault();
-//   }, []);
-
-//   const handleTouchStart = useCallback((event, activity) => {
-//     const touch = event.touches[0];
-//     event.target.style.opacity = 0.5;
-//     // Store the activity id in our ref
-//     draggedActivityIdRef.current = activity.id;
-//     touchStartPositionRef.current = { x: touch.clientX, y: touch.clientY };
-//   }, []);
-
-//   const handleTouchMove = useCallback((event) => {
-//     const touch = event.touches[0];
-//     const dx = touch.clientX - touchStartPositionRef.current.x;
-//     const dy = touch.clientY - touchStartPositionRef.current.y;
-//     event.target.style.transform = `translate(${dx}px, ${dy}px)`;
-//   }, []);
-
-//   const handleTouchEnd = useCallback(
-//     async (event, date) => {
-//       // Reset styles on drop
-//       event.target.style.transform = "";
-//       event.target.style.opacity = 1;
-//       const activityId = draggedActivityIdRef.current;
-//       console.log(
-//         "Dropped on date:",
-//         format(date, "yyyy-MM-dd"),
-//         "for activity id:",
-//         activityId
-//       );
-//       if (activityId) {
-//         // Update the activity date using your existing updateActivityDate function
-//         updateActivityDate(activityId, date);
-//       } else {
-//         console.error("No activity id found in touch event.");
-//       }
-//       // Clear the ref after drop
-//       draggedActivityIdRef.current = null;
-//     },
-//     [updateActivityDate]
-//   );
-
-//   const getActivitiesForDate = useCallback(
-//     (date) => {
-//       const dateString = format(date, "yyyy-MM-dd");
-//       return updatedActivities.filter((activity) => {
-//         try {
-//           return (
-//             format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString
-//           );
-//         } catch (error) {
-//           // In case newDate is missing or malformed
-//           return false;
-//         }
-//       });
-//     },
-//     [updatedActivities]
-//   );
-
-//   return (
-//     <div className="w-full max-w-full mx-auto my-6">
-//       <CalendarNavigation
-//         currentDate={currentDate}
-//         onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
-//         onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
-//       />
-//       <YearMonthSelector
-//         currentDate={currentDate}
-//         availableYears={availableYears}
-//         onYearChange={(e) =>
-//           setCurrentDate(new Date(e.target.value, currentDate.getMonth()))
-//         }
-//         onMonthChange={(e) =>
-//           setCurrentDate(new Date(currentDate.getFullYear(), e.target.value))
-//         }
-//       />
-//       <div className="flex w-full bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] flex-col">
-//         <Weekdays />
-//         <div className="flex-col flex lg:grid grid-cols-7 font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full gap-0 text-center">
-//           {calendarDays.map((date) => {
-//             const activitiesForThisDate = getActivitiesForDate(date);
-//             return (
-//               <CalendarDay
-//                 key={date.toISOString()}
-//                 date={date}
-//                 currentDate={currentDate}
-//                 activitiesForThisDate={activitiesForThisDate}
-//                 handleDrop={handleDrop}
-//                 handleDragStart={handleDragStart}
-//                 handleDragEnd={handleDragEnd}
-//                 handleDragOver={handleDragOver}
-//                 handleTouchStart={handleTouchStart}
-//                 handleTouchMove={handleTouchMove}
-//                 handleTouchEnd={handleTouchEnd}
-//               />
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 export default function NewCalendar({ activities }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [updatedActivities, setUpdatedActivities] = useState(activities);
@@ -474,9 +286,10 @@ export default function NewCalendar({ activities }) {
     return eachDayOfInterval({ start: startOfCalendar, end: endOfCalendar });
   }, [currentDate]);
 
-  // Function to update an activity's date (for both drop and touch drop)
+  // Function to update an activity's date (shared by drop and touch end handlers)
   const updateActivityDate = useCallback(
     async (activityId, date) => {
+      // Update local state
       const updatedList = updatedActivities.map((activity) =>
         activity.id === parseInt(activityId)
           ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
@@ -488,7 +301,10 @@ export default function NewCalendar({ activities }) {
         (activity) => activity.id === parseInt(activityId)
       );
       if (updatedEvent?.documentId) {
-        const payload = { data: { newDate: format(date, "yyyy-MM-dd") } };
+        const payload = {
+          data: { newDate: format(date, "yyyy-MM-dd") },
+        };
+
         try {
           const response = await fetch(
             `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
@@ -498,6 +314,7 @@ export default function NewCalendar({ activities }) {
               body: JSON.stringify(payload),
             }
           );
+
           if (!response.ok) {
             const data = await response.json();
             console.error("Error updating event:", data);
@@ -537,7 +354,6 @@ export default function NewCalendar({ activities }) {
     event.preventDefault();
   }, []);
 
-  // --- Touch Handlers for Mobile ---
   const handleTouchStart = useCallback((event, activity) => {
     const touch = event.touches[0];
     event.target.style.opacity = 0.5;
@@ -553,38 +369,23 @@ export default function NewCalendar({ activities }) {
     event.target.style.transform = `translate(${dx}px, ${dy}px)`;
   }, []);
 
-  // New handler for touch end on the draggable element
-  const handleDraggableTouchEnd = useCallback(
-    async (event) => {
-      // Reset draggable element styles
+  const handleTouchEnd = useCallback(
+    async (event, date) => {
+      // Reset styles on drop
       event.target.style.transform = "";
       event.target.style.opacity = 1;
-      const touch = event.changedTouches[0];
-      // Determine the drop target element at the touch end coordinates
-      const dropElem = document.elementFromPoint(touch.clientX, touch.clientY);
-      // Look for the closest CalendarDay element (using the data-date attribute)
-      const dropZone = dropElem?.closest("[data-date]");
-      if (dropZone) {
-        const dateString = dropZone.getAttribute("data-date");
-        if (dateString) {
-          const dropDate = new Date(dateString);
-          const activityId = draggedActivityIdRef.current;
-          console.log(
-            "Dropped on date:",
-            format(dropDate, "yyyy-MM-dd"),
-            "for activity id:",
-            activityId
-          );
-          if (activityId) {
-            await updateActivityDate(activityId, dropDate);
-          } else {
-            console.error("No activity id found in touch event.");
-          }
-        } else {
-          console.error("Drop zone does not have a valid date attribute.");
-        }
+      const activityId = draggedActivityIdRef.current;
+      console.log(
+        "Dropped on date:",
+        format(date, "yyyy-MM-dd"),
+        "for activity id:",
+        activityId
+      );
+      if (activityId) {
+        // Update the activity date using your existing updateActivityDate function
+        updateActivityDate(activityId, date);
       } else {
-        console.error("No valid drop zone found at touch end.");
+        console.error("No activity id found in touch event.");
       }
       // Clear the ref after drop
       draggedActivityIdRef.current = null;
@@ -601,7 +402,7 @@ export default function NewCalendar({ activities }) {
             format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString
           );
         } catch (error) {
-          // In case newDate is missing or malformed, ignore the activity
+          // In case newDate is missing or malformed
           return false;
         }
       });
@@ -643,8 +444,7 @@ export default function NewCalendar({ activities }) {
                 handleDragOver={handleDragOver}
                 handleTouchStart={handleTouchStart}
                 handleTouchMove={handleTouchMove}
-                // Note: We removed onTouchEnd here; it is handled on the draggable element.
-                // handleTouchEnd={handleTouchEnd}
+                handleTouchEnd={handleTouchEnd}
               />
             );
           })}
@@ -653,3 +453,203 @@ export default function NewCalendar({ activities }) {
     </div>
   );
 }
+
+// export default function NewCalendar({ activities }) {
+//   const [currentDate, setCurrentDate] = useState(new Date());
+//   const [updatedActivities, setUpdatedActivities] = useState(activities);
+//   const touchStartPositionRef = useRef({ x: 0, y: 0 });
+//   const draggedActivityIdRef = useRef(null);
+
+//   const currentYear = new Date().getFullYear();
+//   const availableYears = useMemo(
+//     () => Array.from({ length: 8 }, (_, index) => currentYear - 2 + index),
+//     [currentYear]
+//   );
+
+//   const calendarDays = useMemo(() => {
+//     const startOfMonthDate = startOfMonth(currentDate);
+//     const endOfMonthDate = endOfMonth(currentDate);
+//     const startOfCalendar = startOfWeek(startOfMonthDate);
+//     const endOfCalendar = endOfWeek(endOfMonthDate);
+//     return eachDayOfInterval({ start: startOfCalendar, end: endOfCalendar });
+//   }, [currentDate]);
+
+//   // Function to update an activity's date (for both drop and touch drop)
+//   const updateActivityDate = useCallback(
+//     async (activityId, date) => {
+//       const updatedList = updatedActivities.map((activity) =>
+//         activity.id === parseInt(activityId)
+//           ? { ...activity, newDate: format(date, "yyyy-MM-dd") }
+//           : activity
+//       );
+//       setUpdatedActivities(updatedList);
+
+//       const updatedEvent = updatedList.find(
+//         (activity) => activity.id === parseInt(activityId)
+//       );
+//       if (updatedEvent?.documentId) {
+//         const payload = { data: { newDate: format(date, "yyyy-MM-dd") } };
+//         try {
+//           const response = await fetch(
+//             `https://lionfish-app-98urn.ondigitalocean.app/api/rescheduled-events/${updatedEvent.documentId}`,
+//             {
+//               method: "PUT",
+//               headers: { "Content-Type": "application/json" },
+//               body: JSON.stringify(payload),
+//             }
+//           );
+//           if (!response.ok) {
+//             const data = await response.json();
+//             console.error("Error updating event:", data);
+//           } else {
+//             console.log("Event updated successfully!");
+//           }
+//         } catch (error) {
+//           console.error("Error during API request:", error);
+//         }
+//       } else {
+//         console.error("No documentId found for the event.");
+//       }
+//     },
+//     [updatedActivities]
+//   );
+
+//   const handleDrop = useCallback(
+//     (event, date) => {
+//       event.preventDefault();
+//       const activityId = event.dataTransfer.getData("activityId");
+//       console.log("Dropped on date:", format(date, "yyyy-MM-dd"));
+//       updateActivityDate(activityId, date);
+//     },
+//     [updateActivityDate]
+//   );
+
+//   const handleDragStart = useCallback((event, activity) => {
+//     event.dataTransfer.setData("activityId", activity.id);
+//     event.target.style.opacity = 0.5;
+//   }, []);
+
+//   const handleDragEnd = useCallback((event) => {
+//     event.target.style.opacity = 1;
+//   }, []);
+
+//   const handleDragOver = useCallback((event) => {
+//     event.preventDefault();
+//   }, []);
+
+//   // --- Touch Handlers for Mobile ---
+//   const handleTouchStart = useCallback((event, activity) => {
+//     const touch = event.touches[0];
+//     event.target.style.opacity = 0.5;
+//     // Store the activity id in our ref
+//     draggedActivityIdRef.current = activity.id;
+//     touchStartPositionRef.current = { x: touch.clientX, y: touch.clientY };
+//   }, []);
+
+//   const handleTouchMove = useCallback((event) => {
+//     const touch = event.touches[0];
+//     const dx = touch.clientX - touchStartPositionRef.current.x;
+//     const dy = touch.clientY - touchStartPositionRef.current.y;
+//     event.target.style.transform = `translate(${dx}px, ${dy}px)`;
+//   }, []);
+
+//   // New handler for touch end on the draggable element
+//   const handleDraggableTouchEnd = useCallback(
+//     async (event) => {
+//       // Reset draggable element styles
+//       event.target.style.transform = "";
+//       event.target.style.opacity = 1;
+//       const touch = event.changedTouches[0];
+//       // Determine the drop target element at the touch end coordinates
+//       const dropElem = document.elementFromPoint(touch.clientX, touch.clientY);
+//       // Look for the closest CalendarDay element (using the data-date attribute)
+//       const dropZone = dropElem?.closest("[data-date]");
+//       if (dropZone) {
+//         const dateString = dropZone.getAttribute("data-date");
+//         if (dateString) {
+//           const dropDate = new Date(dateString);
+//           const activityId = draggedActivityIdRef.current;
+//           console.log(
+//             "Dropped on date:",
+//             format(dropDate, "yyyy-MM-dd"),
+//             "for activity id:",
+//             activityId
+//           );
+//           if (activityId) {
+//             await updateActivityDate(activityId, dropDate);
+//           } else {
+//             console.error("No activity id found in touch event.");
+//           }
+//         } else {
+//           console.error("Drop zone does not have a valid date attribute.");
+//         }
+//       } else {
+//         console.error("No valid drop zone found at touch end.");
+//       }
+//       // Clear the ref after drop
+//       draggedActivityIdRef.current = null;
+//     },
+//     [updateActivityDate]
+//   );
+
+//   const getActivitiesForDate = useCallback(
+//     (date) => {
+//       const dateString = format(date, "yyyy-MM-dd");
+//       return updatedActivities.filter((activity) => {
+//         try {
+//           return (
+//             format(parseISO(activity.newDate), "yyyy-MM-dd") === dateString
+//           );
+//         } catch (error) {
+//           // In case newDate is missing or malformed, ignore the activity
+//           return false;
+//         }
+//       });
+//     },
+//     [updatedActivities]
+//   );
+
+//   return (
+//     <div className="w-full max-w-full mx-auto my-6">
+//       <CalendarNavigation
+//         currentDate={currentDate}
+//         onPrevMonth={() => setCurrentDate(subMonths(currentDate, 1))}
+//         onNextMonth={() => setCurrentDate(addMonths(currentDate, 1))}
+//       />
+//       <YearMonthSelector
+//         currentDate={currentDate}
+//         availableYears={availableYears}
+//         onYearChange={(e) =>
+//           setCurrentDate(new Date(e.target.value, currentDate.getMonth()))
+//         }
+//         onMonthChange={(e) =>
+//           setCurrentDate(new Date(currentDate.getFullYear(), e.target.value))
+//         }
+//       />
+//       <div className="flex w-full bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] flex-col">
+//         <Weekdays />
+//         <div className="flex-col flex lg:grid grid-cols-7 font-fredoka p-0 lg:p-4 bg-[#eaeaf5] lg:bg-[#DCDCE8] rounded-[20px] w-full gap-0 text-center">
+//           {calendarDays.map((date) => {
+//             const activitiesForThisDate = getActivitiesForDate(date);
+//             return (
+//               <CalendarDay
+//                 key={date.toISOString()}
+//                 date={date}
+//                 currentDate={currentDate}
+//                 activitiesForThisDate={activitiesForThisDate}
+//                 handleDrop={handleDrop}
+//                 handleDragStart={handleDragStart}
+//                 handleDragEnd={handleDragEnd}
+//                 handleDragOver={handleDragOver}
+//                 handleTouchStart={handleTouchStart}
+//                 handleTouchMove={handleTouchMove}
+//                 // Note: We removed onTouchEnd here; it is handled on the draggable element.
+//                 // handleTouchEnd={handleTouchEnd}
+//               />
+//             );
+//           })}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

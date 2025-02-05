@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Accordian } from "@/app/Widgets";
 import { getIconForSkill } from "@/app/Sections/Activity/ActivityCard";
+import PrintDocument from "../Prinables/MyDocument";
 
 export async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(
@@ -129,6 +130,7 @@ export default function ActivityDetailPage({ params }) {
           </div>
         )}
       </div> */}
+       <NewHeader headerText= {Title || "Activity"} />
       <section className="w-full h-auto -my-[16px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">
           <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
@@ -470,7 +472,7 @@ export default function ActivityDetailPage({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
                 </div>
-                {/* <PrintDocument activityid={activity.documentId} />{" "} */}
+                <PrintDocument activityid={activity.documentId} />{" "}
               </div>
 
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
@@ -483,7 +485,7 @@ export default function ActivityDetailPage({ params }) {
           </div>
 
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-            {/* <PrintDocument activityid={activity.documentId} /> */}
+            <PrintDocument activityid={activity.documentId} />
             {/* <MarkActivityCompleteForm passactivityId={matchedActivityId} /> */}
           </div>
         </div>

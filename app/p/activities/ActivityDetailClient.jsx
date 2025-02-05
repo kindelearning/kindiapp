@@ -25,7 +25,7 @@ import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import ProductMedia from "@/app/shop/section/ProductMedia";
 import { getIconForSkill } from "@/app/Sections/Activity/ActivityCard";
 import ResourceCard from "./ActivityResource";
-import PrintDocument from "./Prinables/MyDocument";
+// import PrintDocument from "./Prinables/MyDocument";
 import MarkActivityCompleteForm from "./ActivityCompleteButton";
 import { fetchUserDetails } from "@/app/profile/api";
 
@@ -53,7 +53,7 @@ export const ActivityAttribute = ({
   );
 };
 
-export function ActivityDetailClient2({ params }) {
+export default function ActivityDetailClient({ params }) {
   const { id } = params;
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -504,7 +504,7 @@ export function ActivityDetailClient2({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
                 </div>
-                <PrintDocument activityid={activity.documentId} />{" "}
+                {/* <PrintDocument activityid={activity.documentId} />{" "} */}
               </div>
 
               <div className="md:flex hidden px-4 w-full py-6 bg-white rounded-xl shadow gap-3 flex-col justify-center items-center">
@@ -518,7 +518,7 @@ export function ActivityDetailClient2({ params }) {
 
           {/* Mobile Specific Row */}
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
-            <PrintDocument activityid={activity.documentId} />
+            {/* <PrintDocument activityid={activity.documentId} /> */}
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}
@@ -538,68 +538,68 @@ export async function fetchActivityByDocumentId(documentId) {
   return data.data;
 }
 
-export default function ActivityDetailClient({ params }) {
-  const { id } = params;
-  const [activity, setActivity] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// export default function ActivityDetailClient({ params }) {
+//   const { id } = params;
+//   const [activity, setActivity] = useState(null);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Avoid fetching if `id` is undefined or null
-    if (!id) {
-      setError('Invalid or missing activity ID.');
-      setLoading(false);
-      return;
-    }
+//   useEffect(() => {
+//     // Avoid fetching if `id` is undefined or null
+//     if (!id) {
+//       setError('Invalid or missing activity ID.');
+//       setLoading(false);
+//       return;
+//     }
 
-    const fetchActivity = async () => {
-      try {
-        setLoading(true);
-        const response = await fetchActivityByDocumentId(id); // Ensure this function is defined
-        setActivity(response);
-      } catch (err) {
-        console.error("Error fetching activity:", err);
-        setError('Failed to load activity data.');
-      } finally {
-        setLoading(false);
-      }
-    };
+//     const fetchActivity = async () => {
+//       try {
+//         setLoading(true);
+//         const response = await fetchActivityByDocumentId(id); // Ensure this function is defined
+//         setActivity(response);
+//       } catch (err) {
+//         console.error("Error fetching activity:", err);
+//         setError('Failed to load activity data.');
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-    fetchActivity();
-  }, [id]);
+//     fetchActivity();
+//   }, [id]);
 
-  console.log("Activity Data", activity);
+//   console.log("Activity Data", activity);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!activity) {
-    return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
-  }
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p className="text-red-500">{error}</p>;
+//   if (!activity) {
+//     return <div>Failed to load data or activity not found.</div>; // Fallback message if data is not found
+//   }
 
-  const { Title, Gallery } = activity;
+//   const { Title, Gallery } = activity;
 
-  return (
-    <>
-      <NewHeader headerText="Activity" />
-      <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
-        {Title}
-      </div>
-      <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
-        {Gallery && Gallery.length > 0 ? (
-          <ProductMedia gallery={Gallery} />
-        ) : (
-          <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
-            <Image
-              className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover"
-              alt="Placeholder Image"
-              src={ActivityImage}
-            />
-          </div>
-        )}
-      </div>
-    </>
-  );
-}
+//   return (
+//     <>
+//       <NewHeader headerText="Activity" />
+//       <div className="w-full hidden text-[#3f3a64] claraheading capitalize">
+//         {Title}
+//       </div>
+//       <div className="claracontainer py-0 flex flex-col justify-between items-start gap-8">
+//         {Gallery && Gallery.length > 0 ? (
+//           <ProductMedia gallery={Gallery} />
+//         ) : (
+//           <div className="w-full overflow-clip rounded-lg h-[300px] max-h-[300px] lg:h-[400px] lg:max-h-[400px] mb-4">
+//             <Image
+//               className="w-full h-full rounded-lg max-h-[300px] lg:h-[400px] lg:max-h-[400px] object-cover"
+//               alt="Placeholder Image"
+//               src={ActivityImage}
+//             />
+//           </div>
+//         )}
+//       </div>
+//     </>
+//   );
+// }
 {
   /* <section className="w-full h-auto -my-[16px] bg-[#EAEAF5] items-center justify-center py-0 px-0 flex flex-col md:flex-row gap-[20px]">
         <div className="claracontainer p-0 lg:p-8 xl:p-12 w-full flex flex-col md:flex-row overflow-hidden gap-8">

@@ -40,7 +40,7 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
     : Gallery?.url || "/Images/ActivityImage.png";
   return (
     <Link target="_blank" href={activityUrl}>
-      <div className="md:w-full hover:shadow-md duration-200 min-w-[200px] w-[200px] min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
+      <div className="md:w-full hover:shadow-md duration-200 min-w-[160px] w-fit min-h-[250px] h-full bg-white items-start justify-start border rounded-3xl flex flex-col md:flex-row gap-4">
         <div className="claracontainer w-full flex-col justify-start items-center gap-7 inline-flex">
           <div className="w-full max-w-[240px] lg:max-w-full h-auto">
             {/* Image Container */}
@@ -67,7 +67,7 @@ const LocalActivityCard = ({ activity, activityUrl }) => {
             {/* Text Content */}
             <div className="w-full p-2 flex-col justify-start lg:p-4 items-start flex gap-2 md:gap-2 lg:gap-4">
               <div className="flex-col w-full gap-[6px] justify-start items-start">
-                <div className="text-[#0a1932] text-[12px] md:text-[16px] font-semibold font-fredoka leading-[20px]">
+                <div className="text-[#0a1932] text-[12px] md:text-[16px] text-start w-full font-semibold font-fredoka leading-[20px]">
                   {Title?.length > 24
                     ? `${Title.slice(0, 24)}...`
                     : Title || "Untitled"}

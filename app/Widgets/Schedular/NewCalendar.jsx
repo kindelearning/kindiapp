@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   format,
   startOfMonth,
@@ -9,15 +9,12 @@ import {
   startOfWeek,
   endOfWeek,
   eachDayOfInterval,
-  isToday,
   isSameMonth,
   parseISO,
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { KindiHeart, ThemeThumb } from "@/public/Images";
 import Image from "next/image";
-// import { getIconForSkill } from "./ActivityCard";
-import Link from "next/link";
 import { getIconForSkill } from "@/app/Sections/Activity/ActivityCard";
 
 function CalendarNavigation({ currentDate, onPrevMonth, onNextMonth }) {

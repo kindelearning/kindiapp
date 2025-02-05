@@ -185,7 +185,7 @@ function CalendarDay({
   handleDragOver,
   handleTouchStart,
   handleTouchMove,
-  handleTouchEnd,  // <-- Add this prop
+  handleTouchEnd,  
 }) {
   return (
     <div
@@ -197,7 +197,7 @@ function CalendarDay({
       }`}
       onDrop={(event) => handleDrop(event, date)}
       onDragOver={handleDragOver}
-      onTouchEnd={(event) => handleTouchEnd(event, date)}  {/* Added */}
+      onTouchEnd={(event) => handleTouchEnd(event, date)} 
     >
       <span className="flex w-full text-[#000000] justify-between text-xs font-semibold p-1 rounded-t-md">
         {format(date, "d")}

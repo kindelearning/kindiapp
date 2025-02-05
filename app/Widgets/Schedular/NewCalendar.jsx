@@ -175,50 +175,6 @@ function ActivityCard({ activityData }) {
   );
 }
 
-// function CalendarDay({
-//   date,
-//   currentDate,
-//   activitiesForThisDate,
-//   handleDrop,
-//   handleDragStart,
-//   handleDragEnd,
-//   handleDragOver,
-//   handleTouchStart,
-//   handleTouchMove,
-//   handleTouchEnd,
-// }) {
-//   return (
-//     <div
-//       key={date.toISOString()}
-//       className={`flex flex-col justify-between items-center p-2 relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer gap-2 h-[140px] ${
-//         isSameMonth(date, currentDate)
-//           ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
-//           : "bg-[#EaEaf5] text-[#8C8C8C] cursor-not-allowed"
-//       }`}
-//       onDrop={(event) => handleDrop(event, date)}
-//       onDragOver={handleDragOver}
-//       onTouchEnd={(event) => handleTouchEnd(event, date)}
-//     >
-//       <span className="flex w-full text-[#000000] justify-between text-xs font-semibold p-1 rounded-t-md">
-//         {format(date, "d")}
-//       </span>
-//       {activitiesForThisDate.map((activity) => (
-//         <div
-//           key={activity.id}
-//           draggable
-//           onDragStart={(event) => handleDragStart(event, activity)}
-//           onDragEnd={handleDragEnd}
-//           onTouchStart={(event) => handleTouchStart(event, activity)}
-//           onTouchMove={handleTouchMove}
-//           className="max-w-full text-white h-full w-full rounded-md cursor-pointer"
-//         >
-//           <ActivityCard activityData={activity} />
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
 function CalendarDay({
   date,
   currentDate,
@@ -227,14 +183,12 @@ function CalendarDay({
   handleDragStart,
   handleDragEnd,
   handleDragOver,
-  // We no longer attach onTouchEnd here since the draggable element will handle it.
   handleTouchStart,
   handleTouchMove,
-  // handleTouchEnd is removed from drop zone.
+  handleTouchEnd,
 }) {
   return (
     <div
-      data-date={date.toISOString()} // Add data attribute for drop target identification
       key={date.toISOString()}
       className={`flex flex-col justify-between items-center p-2 relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer gap-2 h-[140px] ${
         isSameMonth(date, currentDate)
@@ -243,6 +197,7 @@ function CalendarDay({
       }`}
       onDrop={(event) => handleDrop(event, date)}
       onDragOver={handleDragOver}
+      onTouchEnd={(event) => handleTouchEnd(event, date)}
     >
       <span className="flex w-full text-[#000000] justify-between text-xs font-semibold p-1 rounded-t-md">
         {format(date, "d")}
@@ -254,9 +209,7 @@ function CalendarDay({
           onDragStart={(event) => handleDragStart(event, activity)}
           onDragEnd={handleDragEnd}
           onTouchStart={(event) => handleTouchStart(event, activity)}
-          onTouchMove={(event) => handleTouchMove(event)}
-          // Attach the new touch end handler to the draggable element:
-          onTouchEnd={(event) => handleDraggableTouchEnd(event)}
+          onTouchMove={handleTouchMove}
           className="max-w-full text-white h-full w-full rounded-md cursor-pointer"
         >
           <ActivityCard activityData={activity} />
@@ -265,6 +218,53 @@ function CalendarDay({
     </div>
   );
 }
+
+// function CalendarDay({
+//   date,
+//   currentDate,
+//   activitiesForThisDate,
+//   handleDrop,
+//   handleDragStart,
+//   handleDragEnd,
+//   handleDragOver,
+//   // We no longer attach onTouchEnd here since the draggable element will handle it.
+//   handleTouchStart,
+//   handleTouchMove,
+//   // handleTouchEnd is removed from drop zone.
+// }) {
+//   return (
+//     <div
+//       data-date={date.toISOString()} // Add data attribute for drop target identification
+//       key={date.toISOString()}
+//       className={`flex flex-col justify-between items-center p-2 relative py-2 bg-[#EaEaf5] border-[1.2px] border-[white] w-full rounded-md overflow-clip cursor-pointer gap-2 h-[140px] ${
+//         isSameMonth(date, currentDate)
+//           ? "bg-[#eaeaf5] text-gray-700 hover:bg-gray-200"
+//           : "bg-[#EaEaf5] text-[#8C8C8C] cursor-not-allowed"
+//       }`}
+//       onDrop={(event) => handleDrop(event, date)}
+//       onDragOver={handleDragOver}
+//     >
+//       <span className="flex w-full text-[#000000] justify-between text-xs font-semibold p-1 rounded-t-md">
+//         {format(date, "d")}
+//       </span>
+//       {activitiesForThisDate.map((activity) => (
+//         <div
+//           key={activity.id}
+//           draggable
+//           onDragStart={(event) => handleDragStart(event, activity)}
+//           onDragEnd={handleDragEnd}
+//           onTouchStart={(event) => handleTouchStart(event, activity)}
+//           onTouchMove={(event) => handleTouchMove(event)}
+//           // Attach the new touch end handler to the draggable element:
+//           onTouchEnd={(event) => handleDraggableTouchEnd(event)}
+//           className="max-w-full text-white h-full w-full rounded-md cursor-pointer"
+//         >
+//           <ActivityCard activityData={activity} />
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
 export default function NewCalendar({ activities }) {
   const [currentDate, setCurrentDate] = useState(new Date());

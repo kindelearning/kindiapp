@@ -3,7 +3,7 @@
 import NewHeader from "@/app/Sections/Mobile/NewHeader";
 import { BlogCard } from "@/app/Widgets";
 import { useEffect, useState } from "react";
-
+ 
 // function SearchInput({ value, onChange }) {
 //   return (
 //     <div className="flex w-full items-center bg-white rounded-full border border-gray-200">

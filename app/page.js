@@ -6,7 +6,7 @@ import {
 import {
   BottomNavigation,
   Footer,
-  LocalHeader,
+  LocalHeader, 
   MobileActivity,
   MobileCommunity,
   MobileHero,

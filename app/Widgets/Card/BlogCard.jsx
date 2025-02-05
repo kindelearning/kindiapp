@@ -185,7 +185,7 @@ export default function BlogCard({
             {title.slice(0, 24)}...
           </h2>
           <p className="text-[#757575] clarabodyTwo min-h-[58px]">
-            {metsDesc.slice(0, 200)}..
+            {metsDesc.slice(0, 100)}..
           </p>
         </Link>
         <div className="p-4 border-t flex justify-between items-center end-0">

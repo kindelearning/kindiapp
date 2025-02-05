@@ -1,90 +1,106 @@
 "use client";
 
-import { getPublishedPosts } from "@/lib/hygraph";
-import { BlogThumb } from "@/public/Images";
-import Image from "next/image";
+import { BlogCard } from "@/app/Widgets";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-function LocalBlogCard({
-  image,
-  title = "Blog Title",
-  metsDesc = "Blog metsDesc",
-}) {
-  return (
-    <>
-      <div className="bg-white min-w-[300px] shadow-md cursor-pointer rounded-2xl overflow-hidden">
-        <div className="flex overflow-clip">
-          <Image
-            width={400}
-            height={300}
-            src={image || BlogThumb}
-            alt={title}
-            className="w-full hover:scale-110 duration-500 rounded-t-2xl ease-out h-48 object-cover"
-          />
-        </div>
-        <div className="p-4">
-          <h2 className="text-[24px] font-bold text-[#3F3A64] font-fredoka">
-            {title.slice(0, 20)}...
-          </h2>
-          <p className="text-[#757575] clarabodyTwo ">
-            {metsDesc.length > 100 ? metsDesc.slice(0, 100) + "..." : metsDesc}
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
+export default function MobileCommunity() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default function MobileCommunity({}) {
-  const [blogs, setBlogs] = useState([]); // Initialize as an empty array
+  // Fetch Blogs with Error Handling and AbortController
+  const fetchBlogs = useCallback(async () => {
+    setLoading(true);
+    setError(null);
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      const data = await getPublishedPosts();
-      setBlogs(data);
-    };
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-    fetchBlogs();
+    try {
+      const res = await fetch(
+        "https://lionfish-app-98urn.ondigitalocean.app/api/blogs?populate=comments&populate=FeaturedImage",
+        { signal }
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch blogs");
+
+      const data = await res.json();
+
+      if (data?.data) {
+        setBlogs(data.data);
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        setError("Failed to load blogs. Please try again.");
+        console.error("Error fetching blogs:", err);
+      }
+    } finally {
+      setLoading(false);
+    }
+
+    return () => controller.abort(); // Cleanup function
   }, []);
 
-  return (
-    <>
-      <section className="w-full h-auto bg-[#F5F5F5] items-center justify-center py-4 pb-12 flex transition-all animate-fade-in  duration-300 flex-col md:flex-row gap-[20px]">
-        <div className="claracontainer w-full flex-col justify-start gap-4 items-center script inline-flex">
-          <div className="flex justify-between px-4  items-center w-full">
-            <h1 className="clarabodyTwo text-[#0A1932] w-full justify-start items-center text-start">
-              Playful Learning Essentials
-            </h1>
-            <Link
-              href="/p/community"
-              className="clarabodyTwo text-red min-w-[max-content] justify-start items-center text-start"
-            >
-              View All
-            </Link>
-          </div>
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
-          <div className="lg:grid claracontainer w-full flex pl-4 flex-row overflow-x-scroll scrollbar-hidden hover:px-2 gap-4 lg:grid-cols-2 xl:grid-cols-2">
-            {blogs.map((blog) => (
-              <div key={blog.id}>
-                <Link
-                  target="_blank"
-                  href={`/p/community/${blog.id}`}
-                  onClick={() => console.log("Clicked Blog:", blog.blogTitle)}
-                >
-                  <article className="bg-white rounded-lg">
-                    <LocalBlogCard
-                      title={blog.blogTitle}
-                      metsDesc={blog.metaDescription}
-                      image={blog.thumbnail.url || BlogThumb}
-                    />
-                  </article>
-                </Link>
-              </div>
-            ))}
-          </div>
+  return (
+    <section className="w-full h-auto bg-[#F5F5F5] py-4 pb-12 flex flex-col items-center gap-5 transition-all animate-fade-in duration-300">
+      <div className="claracontainer w-full flex flex-col gap-4 items-center">
+        {/* Header */}
+        <div className="flex justify-between px-4 items-center w-full">
+          <h1 className="clarabodyTwo text-[#0A1932]">
+            Playful Learning Essentials
+          </h1>
+          <Link
+            href="/p/community"
+            className="clarabodyTwo text-red min-w-[max-content]"
+          >
+            View All
+          </Link>
         </div>
-      </section>
-    </>
+
+        {/* Content Section */}
+        <div className="w-full">
+          {loading ? (
+            <div className="text-center text-gray-500">Loading blogs...</div>
+          ) : error ? (
+            <div className="text-center text-red-500">{error}</div>
+          ) : blogs.length === 0 ? (
+            <div className="text-center text-gray-500">No blogs available.</div>
+          ) : (
+            <div className="lg:grid claracontainer w-full flex pl-4 flex-row overflow-x-scroll scrollbar-hidden px-2 gap-4">
+              {blogs.map((item) => (
+                <article
+                  key={item.id}
+                  className="min-w-[340px] w-[360px] rounded-lg"
+                >
+                  <BlogCard
+                    documentId={item.documentId}
+                    addUrl={`/p/community/${item.documentId}`}
+                    metsDesc={
+                      item?.MetaDescription ||
+                      "Discover daily educational play activities."
+                    }
+                    title={item?.Text || "Untitled Post"}
+                    image={
+                      item?.FeaturedImage?.url
+                        ? `https://lionfish-app-98urn.ondigitalocean.app${item?.FeaturedImage.url}`
+                        : "/Images/BlogThumb.png"
+                    }
+                    initialLikes={item.likes || 0}
+                    initialDislikes={item.dislikes || 0}
+                  />
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
+
+

@@ -24,7 +24,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Accordian } from "@/app/Widgets";
 import { getIconForSkill } from "@/app/Sections/Activity/ActivityCard";
-import PrintDocument from "../Prinables/MyDocument";
 
 export async function fetchActivityByDocumentId(documentId) {
   const res = await fetch(

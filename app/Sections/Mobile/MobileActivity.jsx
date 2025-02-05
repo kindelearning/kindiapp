@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  DiscoveringOurWorldActivity,
-  ExperimentsMathActivity,
-  ReadingWritingActivity,
-  SpeechLanguageActivity,
-  ThemeDummy,
-} from "@/public/Images";
+import { ThemeDummy } from "@/public/Images";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +12,7 @@ import {
 
 import Image from "next/image";
 import Link from "next/link";
-import { act, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getIconForSkill } from "../Activity/ActivityCard";
 const API_URL =
   "https://lionfish-app-98urn.ondigitalocean.app/api/activities?populate=*";

@@ -55,10 +55,10 @@ export const ActivityAttribute = ({
   );
 };
 
-async function openPrintablePage(documentId) {
-  const url = `https://kindilearning.vercel.app/p/activities/${documentId}`;
-  await Browser.open({ url });
-}
+// async function openPrintablePage(documentId) {
+//   const url = `https://kindilearning.vercel.app/p/activities/${documentId}`;
+//   await Browser.open({ url });
+// }
 
 export default function ActivityDetailClient({ params }) {
   const { id } = params;
@@ -67,7 +67,10 @@ export default function ActivityDetailClient({ params }) {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [matchedActivityId, setMatchedActivityId] = useState(null);
-
+  const openPrintablePage = async (documentId) => {
+    const url = `https://kindilearning.vercel.app/p/activities/${documentId}`;
+    await Browser.open({ url }); // Open the URL using Capacitor's Browser plugin
+  };
   useEffect(() => {
     if (!id) return; // Avoid fetching if id is undefined/null
 

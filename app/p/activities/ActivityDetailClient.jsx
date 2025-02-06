@@ -9,6 +9,7 @@ import {
   Themes,
   TimerBlack,
   ActivityImage,
+  Print,
 } from "@/public/Images";
 import {
   Dialog,
@@ -28,6 +29,7 @@ import ResourceCard from "./ActivityResource";
 // import PrintDocument from "./Prinables/MyDocument";
 import MarkActivityCompleteForm from "./ActivityCompleteButton";
 import { fetchUserDetails } from "@/app/profile/api";
+import { Browser } from "@capacitor/browser";
 
 export const ActivityAttribute = ({
   title = " Event Timeline",
@@ -52,6 +54,11 @@ export const ActivityAttribute = ({
     </div>
   );
 };
+
+async function openPrintablePage(documentId) {
+  const url = `https://kindilearning.vercel.app/p/activities/${documentId}`;
+  await Browser.open({ url });
+}
 
 export default function ActivityDetailClient({ params }) {
   const { id } = params;
@@ -504,6 +511,13 @@ export default function ActivityDetailClient({ params }) {
                 <div className="text-[#3f3a64] text-base font-semibold font-montserrat uppercase leading-[19px]">
                   Print Activity{" "}
                 </div>
+                <Button
+                  onclick={() => openPrintablePage(activity.documentId)}
+                  className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
+                >
+                  <Image alt="Kindi" src={Print} />
+                  Print
+                </Button>
                 {/* <PrintDocument activityid={activity.documentId} />{" "} */}
               </div>
 
@@ -519,6 +533,13 @@ export default function ActivityDetailClient({ params }) {
           {/* Mobile Specific Row */}
           <div className="flex md:hidden max-w-full overflow-hidden z-50 shadow-upper pt-2 pb-4 px-2 mb-[72px] rounded-t-[8px] justify-between items-center gap-1 bg-[white] shadow-sm fixed bottom-0 left-0 w-full">
             {/* <PrintDocument activityid={activity.documentId} /> */}
+            <Button
+                  onclick={() => openPrintablePage(activity.documentId)}
+                  className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
+                >
+                  <Image alt="Kindi" src={Print} />
+                  Print
+                </Button>
             <MarkActivityCompleteForm passactivityId={matchedActivityId} />
           </div>
         </div>{" "}

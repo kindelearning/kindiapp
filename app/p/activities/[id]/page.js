@@ -1,6 +1,10 @@
+import { Browser } from "@capacitor/browser";
 import BlogDetailPage from "../../community/[id]/BlogDetailClient";
 import ActivityDetailClient from "../ActivityDetailClient";
 import ActivityDetailPage from "./ActivityDetailPage";
+
+
+
 
 export async function generateStaticParams() {
   try {

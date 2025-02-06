@@ -396,30 +396,19 @@ export const TrigSnakeCurve = ({
 // SnakeWave Component
 
 const ParametricWave = ({
-  width = 1200,
-  step = 5, // Controls smoothness of the wave
-  amplitude = 50, // Amplitude scale factor
-  frequency = 2, // Affects wave frequency
+  width = 300,
+  step = 5,
+  amplitude = 50,
+  frequency = 2,
   strokeColor = "red",
   strokeWidth = 3,
   strokeDasharray = "6,6",
-  items = [
-    { id: 1, title: "Introduction to JavaScript" },
-    { id: 2, title: "Advanced React Concepts" },
-    { id: 3, title: "Node.js Backend Development" },
-    { id: 4, title: "Database Design with SQL" },
-    { id: 5, title: "UI/UX Design Principles" },
-    { id: 6, title: "Python for Data Science" },
-    { id: 7, title: "Cloud Computing Basics" },
-    { id: 8, title: "Mobile App Development" },
-    { id: 9, title: "DevOps and CI/CD Pipelines" },
-    { id: 10, title: "Cybersecurity Fundamentals" },
-  ],
+  items = [],
 }) => {
-  // Dynamically set height based on the number of items and amplitude
-  const dynamicHeight = Math.max(1000, items.length * 100); // Adjust height based on both items and amplitude
+  const [dialogContent, setDialogContent] = useState(null); // State to store dialog content
 
-  // Generate wave path and identify turning points
+  const dynamicHeight = Math.max(200, items.length * 100 + 50);
+
   const { pathD, turningPoints } = generateWavePath(
     width,
     dynamicHeight,
@@ -428,12 +417,20 @@ const ParametricWave = ({
     frequency
   );
 
+  const handleDialogOpen = (item) => {
+    setDialogContent(item); // Set dialog content to the clicked item
+  };
+
+  const handleDialogClose = () => {
+    setDialogContent(null); // Close dialog
+  };
+
   return (
     <div
       style={{
         position: "relative",
         width: `${width}px`,
-        height: `${dynamicHeight}px`, // Use dynamic height based on both items and amplitude
+        height: `${dynamicHeight}px`,
       }}
     >
       <svg
@@ -453,58 +450,21 @@ const ParametricWave = ({
         />
       </svg>
 
-      {/* Render Dialog Trigger at each turning point */}
+      {/* Render Item Titles at each turning point */}
       {turningPoints.map((point, index) => (
         <div
           key={index}
           style={{
             position: "absolute",
-            left: `${point.x - 15}px`, // Adjust position to center the button
-            top: `${point.y - 15}px`, // Adjust position to center the button
-            zIndex: 10, // Ensure the dialog trigger is clickable and on top
+            left: `${point.x - 15}px`,
+            top: `${point.y - 15}px`,
+            zIndex: 10,
+            cursor: "pointer", // Add cursor style to indicate clickable
           }}
+          onClick={() => handleDialogOpen(items[index])} // Open dialog on click
         >
-          {/* Dialog Button */}
-          <Dialog>
-            <DialogTrigger>
-              <button
-                type="button"
-                aria-haspopup="dialog"
-                aria-expanded="false"
-                aria-controls={`dialog-${index}`}
-                style={{
-                  borderRadius: "50%",
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: "red",
-                  border: "none",
-                  color: "white",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                }}
-              >
-                {/* Button content */}
-              </button>
-            </DialogTrigger>
-
-            <DialogContent id={`dialog-${index}`}>
-              <DialogHeader>
-                <DialogTitle>
-                  {items[index] ? items[index].Title : "Default Title"}
-                </DialogTitle>
-                <DialogDescription>
-                  Are you sure you want to perform this action? This cannot be
-                  undone.
-                </DialogDescription>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
-
-          {/* Display the item text */}
           <text
-            x={point.x + 20} // Position text to the right of the button
+            x={point.x + 20}
             y={point.y}
             fill="black"
             fontSize="12"
@@ -512,34 +472,70 @@ const ParametricWave = ({
             textAnchor="start"
             dominantBaseline="middle"
           >
-            {items[index] ? items[index].title : ""}
+            {items[index] ? items[index].Title : "More Comming Soon..."}
           </text>
         </div>
       ))}
+
+      {/* Dialog Box using Radix UI Dialog */}
+      {dialogContent && (
+        <Dialog open={!!dialogContent} onOpenChange={handleDialogClose}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{dialogContent?.Title || "No Title"}</DialogTitle>
+              <DialogDescription>
+                <p>
+                  <strong>Category:</strong> {dialogContent?.Category || "N/A"}
+                </p>
+                <p>
+                  <strong>Subcategory:</strong>{" "}
+                  {dialogContent?.SubCategory || "N/A"}
+                </p>
+                <p>
+                  <strong>Document ID:</strong>{" "}
+                  {dialogContent?.documentId || "N/A"}
+                </p>
+              </DialogDescription>
+            </DialogHeader>
+
+            <DialogClose
+              asChild
+              style={{
+                backgroundColor: "#FF5733",
+                color: "white",
+                padding: "5px 10px",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                marginTop: "10px",
+              }}
+            >
+              <button>Close</button>
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
 
 function generateWavePath(width, height, step, amplitude, frequency) {
-  let d = `M ${width / 2},0 `; // Start from the center top
-  const turningPoints = []; // To store turning points
-
-  let previousSlope = 0; // Initial slope
+  let d = `M ${width / 2},0 `;
+  const turningPoints = [];
+  let previousSlope = 0;
 
   for (let y = 0; y <= height; y += step) {
     const x =
-      width / 2 + amplitude * Math.sin((frequency * (y * Math.PI)) / 180); // x = 3sin(2y) behavior
+      width / 2 + amplitude * Math.sin((frequency * (y * Math.PI)) / 180);
     d += `L ${x},${y} `;
 
-    // Calculate the slope at this point
     const slope = amplitude * Math.cos((frequency * (y * Math.PI)) / 180);
 
-    // Check for a turning point (where slope changes direction)
     if ((previousSlope > 0 && slope < 0) || (previousSlope < 0 && slope > 0)) {
-      turningPoints.push({ x, y }); // Record the turning point
+      turningPoints.push({ x, y });
     }
 
-    previousSlope = slope; // Update previous slope for next iteration
+    previousSlope = slope;
   }
 
   return { pathD: d, turningPoints };

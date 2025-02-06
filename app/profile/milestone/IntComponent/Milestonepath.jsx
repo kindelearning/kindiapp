@@ -396,10 +396,9 @@ export const TrigSnakeCurve = ({
 // SnakeWave Component
 
 const ParametricWave = ({
-  width = 300,
-  height = 600,
-  step = 5, // Controls smoothness
-  amplitude = 50, // Scale factor for x-axis
+  width = 1200,
+  step = 5, // Controls smoothness of the wave
+  amplitude = 50, // Amplitude scale factor
   frequency = 2, // Affects wave frequency
   strokeColor = "red",
   strokeWidth = 3,
@@ -417,10 +416,13 @@ const ParametricWave = ({
     { id: 10, title: "Cybersecurity Fundamentals" },
   ],
 }) => {
+  // Dynamically set height based on the number of items and amplitude
+  const dynamicHeight = Math.max(1000, items.length * 100); // Adjust height based on both items and amplitude
+
   // Generate wave path and identify turning points
   const { pathD, turningPoints } = generateWavePath(
     width,
-    height,
+    dynamicHeight,
     step,
     amplitude,
     frequency
@@ -431,15 +433,15 @@ const ParametricWave = ({
       style={{
         position: "relative",
         width: `${width}px`,
-        height: `${height}px`,
+        height: `${dynamicHeight}px`, // Use dynamic height based on both items and amplitude
       }}
     >
       <svg
         width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
+        height={dynamicHeight}
+        viewBox={`0 0 ${width} ${dynamicHeight}`}
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute" }} // Ensure the SVG sits in the container
+        style={{ position: "absolute" }}
       >
         <path
           d={pathD}
@@ -465,7 +467,6 @@ const ParametricWave = ({
           {/* Dialog Button */}
           <Dialog>
             <DialogTrigger>
-              {/* Circular Button */}
               <button
                 type="button"
                 aria-haspopup="dialog"
@@ -484,14 +485,14 @@ const ParametricWave = ({
                   cursor: "pointer",
                 }}
               >
-                {/* Button content, you could add an icon or text if needed */}
+                {/* Button content */}
               </button>
             </DialogTrigger>
 
             <DialogContent id={`dialog-${index}`}>
               <DialogHeader>
                 <DialogTitle>
-                  {items[index] ? items[index].title : "Default Title"}
+                  {items[index] ? items[index].Title : "Default Title"}
                 </DialogTitle>
                 <DialogDescription>
                   Are you sure you want to perform this action? This cannot be
@@ -747,6 +748,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   const [filteredData, setFilteredData] = useState([]); // Stores filtered milestones
   const [realMilestoneData, setRealMilestoneData] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [amplitude, setAmplitude] = useState(100); // State to control amplitude
 
   // Fetch milestones from the API
   useEffect(() => {
@@ -761,7 +763,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         const evenIndexedMilestones = myData.allMilestones.filter(
           (_, index) => index % 2 === 0
         );
-        console.log("even Indexed Milestones", evenIndexedMilestones);
+        // console.log("even Indexed Milestones", evenIndexedMilestones);
         // setRealMilestoneData(data.allMilestones);
         setRealMilestoneData(evenIndexedMilestones);
 
@@ -858,6 +860,8 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
     ? Object.keys(groupedMilestones[selectedCategory] || {})
     : [];
 
+  console.log("Filtered  Milestones", filteredData);
+
   return (
     <div className="w-full flex flex-col items-center justify-center gap-4">
       {/* Categories */}
@@ -892,12 +896,24 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
           ))}
         </div>
       )}
+
+      {/* Slider to control amplitude */}
+      <input
+        type="range"
+        min="10"
+        max="500"
+        value={amplitude}
+        onChange={(e) => setAmplitude(Number(e.target.value))}
+      />
+      <label>Amplitude: {amplitude}</label>
       <ParametricWave
-        width={1250}
-        height={1200}
-        step={2}
-        amplitude={160}
+        width={1200}
+        amplitude={amplitude}
+        items={filteredData}
         frequency={2}
+        strokeColor="red"
+        strokeWidth={2}
+        strokeDasharray="6,3"
       />
 
       {/* <div className="flex flex-col lg:py-12 w-full">

@@ -516,7 +516,7 @@ export default function ActivityDetailClient({ params }) {
                 </div>
                 <Button
                   onclick={() => openPrintablePage(activity.documentId)}
-                  className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
+                  className="w-full hidden bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
                 >
                   <Image alt="Kindi" src={Print} />
                   Print
@@ -538,7 +538,7 @@ export default function ActivityDetailClient({ params }) {
             {/* <PrintDocument activityid={activity.documentId} /> */}
             <Button
                   onclick={() => openPrintablePage(activity.documentId)}
-                  className="w-full bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
+                  className="w-full hidden bg-[#3f3a64] gap-[4px] text-white text-sm font-normal font-fredoka uppercase leading-[18px] tracking-wide rounded-2xl shadow border-2 border-white"
                 >
                   <Image alt="Kindi" src={Print} />
                   Print

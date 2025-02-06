@@ -137,7 +137,7 @@ export const KidsDP = ({ kidId }) => {
   }, [kidId]);
 
   return (
-    <div className="w-16 h-16 overflow-clip flex justify-center items-center">
+    <div className="w-16 h-16 overflow-clip flex justify-center items-start">
       {loading ? (
         <SkeletonLoader />
       ) : error ? (
@@ -218,6 +218,7 @@ export default function IndividualTabs({ userData }) {
                         </div>
 
                         <div className="flex w-fit items-center justify-between  gap-2">
+                          {/* edit */}
                           <Dialog>
                             <DialogTrigger>
                               <Pencil className="w-[24px] h-[24px] text-red" />

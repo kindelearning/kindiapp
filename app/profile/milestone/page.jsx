@@ -1,16 +1,11 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProfilePlaceholder01 } from "@/public/Images";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { getUserDataByEmail } from "@/lib/hygraph";
-import { useAuth } from "@/app/lib/useAuth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import CurrentUser from "./IntComponent/CurrentUser";
 import DisplayAllMileStone from "./IntComponent/Milestonepath";
-import { fetchKidDetails, fetchUserDetails } from "../api";
+import { fetchUserDetails } from "../api";
 import { StockImages } from "@/app/constant/profile";
 import { KidsDP } from "../Sections/IndividualTabs";
 
@@ -20,8 +15,7 @@ export const getRandomImage = () => {
 };
 
 export default function MileStone() {
-  const [milestoneData, setMilestoneData] = useState([]);
-  const [userData, setUserData] = useState(null);
+   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

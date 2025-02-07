@@ -1,5 +1,6 @@
 "use client";
 
+import * as d3 from "d3";
 import { useAuth } from "@/app/lib/useAuth";
 import { Button } from "@/components/ui/button";
 import {
@@ -673,6 +674,33 @@ function generateWavePath(width, height, step, amplitude, frequency) {
 //   );
 // }
 
+
+const data = [
+  [14.3439, 20.2948], [14.0271, 18.6241], [12.2172, 17.1499], [8.9140, 17.1007],
+  [5.7014, 17.7887], [3.1222, 16.8550], [2.5339, 14.5455], [3.2127, 12.7273],
+  [4.8869, 11.6462], [7.1946, 11.5479], [9.8643, 11.8428], [12.0814, 11.7936],
+  [14.0271, 10.2703], [13.8914, 7.9115], [11.9910, 6.2408], [9.6833, 6.1916],
+  [6.8326, 6.6339], [4.6154, 6.4373], [3.4389, 4.3735], [4.7964, 2.2113],
+  [7.6018, 1.8182], [10.0000, 2.1130], [11.8100, 2.1622], [13.5294, 1.1794]
+];
+
+const width = 400;
+const height = 400;
+const scaleX = d3.scaleLinear().domain([0, 15]).range([50, width - 50]);
+const scaleY = d3.scaleLinear().domain([0, 22]).range([height - 50, 50]);
+
+const path = d3.line()
+    .x(d => scaleX(d[0]))
+    .y(d => scaleY(d[1]))
+    .curve(d3.curveBasis)(data);
+
+const SCurve = () => {
+    return (
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+            <path d={path} fill="none" stroke="black" strokeWidth={2} />
+        </svg>
+    );
+};
 export function CategorySlider({ categories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -894,14 +922,14 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
       )}
 
       {/* Slider to control amplitude */}
-      <input
+      {/* <input
         type="range"
         min="10"
         max="500"
         value={amplitude}
         onChange={(e) => setAmplitude(Number(e.target.value))}
       />
-      <label>Amplitude: {amplitude}</label>
+      <label>Amplitude: {amplitude}</label> */}
       <ParametricWave
         width={1200}
         amplitude={amplitude}
@@ -911,7 +939,7 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         strokeWidth={2}
         strokeDasharray="6,3"
       />
-
+<SCurve />
       {/* <div className="flex flex-col lg:py-12 w-full">
         {Array.isArray(filteredData) ? (
           <CurvePath

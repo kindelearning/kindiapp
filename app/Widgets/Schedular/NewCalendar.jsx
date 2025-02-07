@@ -429,8 +429,6 @@ export default function NewCalendar({ activities }) {
                 handleDragOver={handleDragOver}
                 handleTouchStart={handleTouchStart}
                 handleTouchMove={handleTouchMove}
-                // Note: We removed onTouchEnd here; it is handled on the draggable element.
-                // handleTouchEnd={handleTouchEnd}
                 handleTouchEnd={handleDraggableTouchEnd}  // <-- Add this line
               />
 

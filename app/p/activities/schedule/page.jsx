@@ -83,7 +83,7 @@ export default function Schedule() {
           <title>Schedule | The Kindi</title>
         </head>
         <div className="claracontainer p-4 md:px-0 md:py-4 lg:p-4 w-full flex flex-col overflow-hidden gap-8">
-          <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
+          {/* <div className="claracontainer w-full flex flex-col overflow-hidden gap-2">
             <div className="w-full text-center">
               <span className="text-[#3f3a64] claraheading uppercase">
                 THE KINDI{" "}
@@ -99,7 +99,7 @@ export default function Schedule() {
               Additionally, sync your schedule with your child&apos;s nursery
               for a smooth and integrated learning experience.
             </div>
-          </div>
+          </div> */}
 
           {userData ? (
             <div className="flex w-full py-6 flex-col justify-center items-center">

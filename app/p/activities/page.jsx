@@ -299,7 +299,7 @@ export default function ActivitiesData() {
       <section className="w-full font-fredoka h-auto pb-32 bg-[#EAEAF5] flex flex-col items-center justify-center py-4">
         <div className="claracontainer p-4 w-full flex flex-col gap-8">
           {/* Header Section */}
-          <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-2">
+          {/* <div className="claracontainer p-4 md:p-8 xl:p-12 w-full flex flex-col overflow-hidden gap-2">
             <div className="w-full text-center">
               <span className="text-[#3f3a64] claraheading uppercase">
                 SELECT YOUR{" "}
@@ -315,7 +315,7 @@ export default function ActivitiesData() {
               for the upcoming month. Which one will you select to elevate your
               child&apos;s early-years development?
             </div>
-          </div>
+          </div> */}
 
           {/* Mobile Filters */}
           <div className="claracontainer p-0 w-full flex flex-col lg:hidden overflow-hidden gap-2">
@@ -346,7 +346,7 @@ export default function ActivitiesData() {
               </FilterDrawer>
 
               {/* Filter Drawer */}
-              <FilterDrawer
+              {/* <FilterDrawer
                 title="Filter"
                 onSubmit={() => console.log("Filter submitted")}
                 onCancel={() => console.log("Filter canceled")}
@@ -386,7 +386,48 @@ export default function ActivitiesData() {
                   options={setupTimes}
                   label="Select an Setup Times"
                 />
-              </FilterDrawer>
+              </FilterDrawer> */}
+              <FilterDrawer
+              title="Filter"
+              onSubmit={() => console.log("Filter submitted")}
+              onCancel={() => console.log("Filter canceled")}
+            >
+              <SelectFilter
+                id="learningArea-filter"
+                value={selectedLearningArea}
+                onChange={setSelectedLearningArea}
+                options={learningAreas}
+                label="Select based on Learning Areas"
+              />
+              <SelectFilter
+                id="skillCategory-filter"
+                value={selectedSkillCategory}
+                onChange={setSelectedSkillCategory}
+                options={skillCategories}
+                label="Select a Skill"
+              />
+              <SelectFilter
+                id="theme-filter"
+                value={selectedTheme}
+                onChange={setSelectedTheme}
+                options={themes}
+                label="Select a theme"
+              />
+              <SelectFilter
+                id="focusAge-filter"
+                value={selectedFocusAge}
+                onChange={setSelectedFocusAge}
+                options={focusAges}
+                label="Select an age group"
+              />
+              <SelectFilter
+                id="setupTime-filter"
+                value={selectedSetUpTime}
+                onChange={setSelectedSetUpTime}
+                options={setupTimes}
+                label="Select an Setup Times"
+              />
+            </FilterDrawer>
             </div>
           </div>
           {/* Main Activities Content */}

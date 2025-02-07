@@ -215,7 +215,7 @@ export default function Page() {
       <section className="w-full h-auto bg-[#EAEAF5] items-center pb-32 justify-center flex flex-col gap-[20px]">
         <div className="claracontainer w-full flex flex-col overflow-hidden gap-8">
           <div className="claracontainer p-4 w-full flex flex-col items-center justify-center overflow-hidden gap-4 lg:gap-12">
-            <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
+            {/* <div className="claracontainer w-full flex flex-col overflow-hidden gap-2 md:gap-4">
               <div className="w-full text-center">
                 <span className="text-[#3f3a64] text-[32px] tracking-tight font-semibold font-fredoka uppercase leading-10">
                   The Kindi{" "}
@@ -231,7 +231,7 @@ export default function Page() {
                 Additionally, sync your schedule with your child&apos;s nursery
                 for a smooth and integrated learning experience.
               </div>
-            </div>
+            </div> */}
 
             <div className="claracontainer ">
               {blogs.length === 0 ? (

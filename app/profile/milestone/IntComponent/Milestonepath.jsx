@@ -405,10 +405,23 @@ const ParametricWave = ({
   strokeWidth = 3,
   strokeDasharray = "6,6",
   items = [],
+  currentUserId,
+  custommilestoneidfromuser,
 }) => {
   const [dialogContent, setDialogContent] = useState(null); // State to store dialog content
-
+  const [currentDate, setCurrentDate] = useState("");
   const dynamicHeight = Math.max(200, items.length * 100 + 50);
+
+  useEffect(() => {
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    setCurrentDate(formattedDate);
+  }, []);
 
   const { pathD, turningPoints } = generateWavePath(
     width,
@@ -451,10 +464,11 @@ const ParametricWave = ({
         />
       </svg>
 
-      {/* Render Item Titles at each turning point */}
+      {/* Render Item Titles at each turning point Custom Dialog trigger */}
       {turningPoints.map((point, index) => (
         <div
           key={index}
+          className="text-[16px]  min-w-[100px] max-w-[160px] w-full font-fredoka rounded-full px-2 pl-4 bg-red text-white"
           style={{
             position: "absolute",
             left: `${point.x - 15}px`,
@@ -481,38 +495,68 @@ const ParametricWave = ({
       {/* Dialog Box using Radix UI Dialog */}
       {dialogContent && (
         <Dialog open={!!dialogContent} onOpenChange={handleDialogClose}>
-          <DialogContent>
+          <DialogContent className="w-full bg-[#eaeaf5] p-2 lg:p-4 lg:min-w-[800px]">
             <DialogHeader>
-              <DialogTitle>{dialogContent?.Title || "No Title"}</DialogTitle>
-              <DialogDescription>
-                <p>
-                  <strong>Category:</strong> {dialogContent?.Category || "N/A"}
-                </p>
-                <p>
-                  <strong>Subcategory:</strong>{" "}
-                  {dialogContent?.SubCategory || "N/A"}
-                </p>
-                <p>
+              <DialogTitle>
+                <div className="text-center">
+                  <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                    Update {dialogContent?.Title || "No Title"}
+                  </span>{" "}
+                  {/* <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                      for your Kid
+                    </span> */}
+                </div>
+              </DialogTitle>
+              <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
+                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
+                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {dialogContent?.Category}
+                  </Badge>
+                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                    {/* {mileStoneCustomData[index]?.SubCategory.split(" ")[0]} */}
+                    {dialogContent?.SubCategory}
+                  </Badge>
+                </div>
+                <div className="text-[#0a1932] w-full text-start font-fredoka text-[20px] font-[600]">
+                  {dialogContent?.Title}
+                </div>
+                <div
+                  className="w-full text-start text-[#4a4a4a] clarabodyTwo justify-center items-center prose"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      dialogContent?.Description || "Description not found",
+                  }}
+                />
+                <div className="w-full p-2 flex flex-col gap-2 bg-white rounded-lg shadow">
+                  <div className="text-[#757575] clarabodyTwo">
+                    Date of Completion
+                  </div>
+                  <div className="text-[#0a1932] text-[20px] font-normal font-fredoka leading-[20px]">
+                    {currentDate}
+                  </div>
+                </div>
+                {/* <p>
                   <strong>Document ID:</strong>{" "}
                   {dialogContent?.documentId || "N/A"}
-                </p>
+                </p> */}
               </DialogDescription>
             </DialogHeader>
-
-            <DialogClose
-              asChild
-              style={{
-                backgroundColor: "#FF5733",
-                color: "white",
-                padding: "5px 10px",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                marginTop: "10px",
-              }}
-            >
-              <button>Close</button>
-            </DialogClose>
+            <DialogFooter>
+              <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-[16px] items-center justify-between py-4 flex flex-row">
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
+                    <ChevronLeft className="w-[24px] h-[24px]" />
+                    Back
+                  </Button>
+                </div>
+                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                  <MarkMilestoneCompleteForm
+                    passmilestoneId={custommilestoneidfromuser?.id}
+                    userId={currentUserId}
+                  />
+                </div>
+              </section>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       )}
@@ -674,33 +718,58 @@ function generateWavePath(width, height, step, amplitude, frequency) {
 //   );
 // }
 
-
 const data = [
-  [14.3439, 20.2948], [14.0271, 18.6241], [12.2172, 17.1499], [8.9140, 17.1007],
-  [5.7014, 17.7887], [3.1222, 16.8550], [2.5339, 14.5455], [3.2127, 12.7273],
-  [4.8869, 11.6462], [7.1946, 11.5479], [9.8643, 11.8428], [12.0814, 11.7936],
-  [14.0271, 10.2703], [13.8914, 7.9115], [11.9910, 6.2408], [9.6833, 6.1916],
-  [6.8326, 6.6339], [4.6154, 6.4373], [3.4389, 4.3735], [4.7964, 2.2113],
-  [7.6018, 1.8182], [10.0000, 2.1130], [11.8100, 2.1622], [13.5294, 1.1794]
+  [14.3439, 20.2948],
+  [14.0271, 18.6241],
+  [12.2172, 17.1499],
+  [8.914, 17.1007],
+  [5.7014, 17.7887],
+  [3.1222, 16.855],
+  [2.5339, 14.5455],
+  [3.2127, 12.7273],
+  [4.8869, 11.6462],
+  [7.1946, 11.5479],
+  [9.8643, 11.8428],
+  [12.0814, 11.7936],
+  [14.0271, 10.2703],
+  [13.8914, 7.9115],
+  [11.991, 6.2408],
+  [9.6833, 6.1916],
+  [6.8326, 6.6339],
+  [4.6154, 6.4373],
+  [3.4389, 4.3735],
+  [4.7964, 2.2113],
+  [7.6018, 1.8182],
+  [10.0, 2.113],
+  [11.81, 2.1622],
+  [13.5294, 1.1794],
 ];
 
 const width = 400;
 const height = 400;
-const scaleX = d3.scaleLinear().domain([0, 15]).range([50, width - 50]);
-const scaleY = d3.scaleLinear().domain([0, 22]).range([height - 50, 50]);
+const scaleX = d3
+  .scaleLinear()
+  .domain([0, 15])
+  .range([50, width - 50]);
+const scaleY = d3
+  .scaleLinear()
+  .domain([0, 22])
+  .range([height - 50, 50]);
 
-const path = d3.line()
-    .x(d => scaleX(d[0]))
-    .y(d => scaleY(d[1]))
-    .curve(d3.curveBasis)(data);
+const path = d3
+  .line()
+  .x((d) => scaleX(d[0]))
+  .y((d) => scaleY(d[1]))
+  .curve(d3.curveBasis)(data);
 
 const SCurve = () => {
-    return (
-        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-            <path d={path} fill="none" stroke="black" strokeWidth={2} />
-        </svg>
-    );
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+      <path d={path} fill="none" stroke="black" strokeWidth={2} />
+    </svg>
+  );
 };
+
 export function CategorySlider({ categories }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -877,7 +946,6 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
   if (loading) {
     return <div className="text-center text-lg font-medium">Loading...</div>;
   }
-
   const groupedMilestones = groupMilestones();
   const categories = Object.keys(groupedMilestones);
   const subCategories = selectedCategory
@@ -934,12 +1002,14 @@ export default function DisplayAllMileStone({ passThecurrentUserId }) {
         width={1200}
         amplitude={amplitude}
         items={filteredData}
+        currentUserId={passThecurrentUserId}
+        custommilestoneidfromuser={realMilestoneData}
         frequency={2}
         strokeColor="red"
         strokeWidth={2}
         strokeDasharray="6,3"
       />
-<SCurve />
+      {/* <SCurve /> */}
       {/* <div className="flex flex-col lg:py-12 w-full">
         {Array.isArray(filteredData) ? (
           <CurvePath

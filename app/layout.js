@@ -11,9 +11,9 @@ import {
 } from "./Sections";
 import { useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import SplashScreen from "./Sections/Global/SplashScreen";
 
 export default function RootLayout({ children }) {
-  const [isVideoVisible, setIsVideoVisible] = useState(true);
 
   return (
     <html lang="en">
@@ -34,16 +34,13 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className={cn("min-h-screen  bg-background font-sans antialiased")}>
-        {/* {isVideoVisible && (
-          <VideoOpeningScreen onFinished={() => setIsVideoVisible(false)} />
-        )} */}
-        <StatusBarManager />
-        {/* <SplashScreenHandler /> */}
+       
+        {/* <StatusBarManager /> */}
         <GoogleOAuthProvider clientId="1055268493431-9l6ee7s7d7o14dfg5vhh9pr0jgq7rlh7.apps.googleusercontent.com">
           <UserProvider>
             <CartProvider>
               {children}
-              {/* {!isVideoVisible && children} Render the rest of your app */}
+              <SplashScreen />
             </CartProvider>
           </UserProvider>
         </GoogleOAuthProvider>

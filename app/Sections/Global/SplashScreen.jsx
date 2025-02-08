@@ -23,7 +23,6 @@ export default function SplashScreen() {
       <video
         className="w-full h-full object-cover"
         autoPlay
-        muted
         playsInline
         onEnded={() => setShowSplash(false)}
       >

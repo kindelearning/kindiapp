@@ -35,7 +35,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className={cn("min-h-screen  bg-background font-sans antialiased")}>
        
-        {/* <StatusBarManager /> */}
         <GoogleOAuthProvider clientId="1055268493431-9l6ee7s7d7o14dfg5vhh9pr0jgq7rlh7.apps.googleusercontent.com">
           <UserProvider>
             <CartProvider>

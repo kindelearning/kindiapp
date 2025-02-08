@@ -28,7 +28,12 @@ export default function MobileCommunity() {
       const data = await res.json();
 
       if (data?.data) {
-        setBlogs(data.data);
+        // setBlogs(data.data);
+        const filteredBlogs = data.data.filter(
+          (item) => item.additionalField === "shop"
+        );
+
+        setBlogs(filteredBlogs);
       }
     } catch (err) {
       if (err.name !== "AbortError") {
@@ -102,5 +107,3 @@ export default function MobileCommunity() {
     </section>
   );
 }
-
-

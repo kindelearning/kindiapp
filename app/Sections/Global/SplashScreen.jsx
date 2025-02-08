@@ -11,7 +11,7 @@ export default function SplashScreen() {
     const timer = setTimeout(() => {
       setShowSplash(false);
       router.push("/"); // Redirect to home page
-    }, 5000); // Adjust based on video length
+    }, 8000); // Adjust based on video length
 
     return () => clearTimeout(timer);
   }, [router]);
@@ -26,7 +26,7 @@ export default function SplashScreen() {
         playsInline
         onEnded={() => setShowSplash(false)}
       >
-        <source src="/opening.mp4" type="video/mp4" />
+        <source src="opening.mp4" type="video/mp4" />
       </video>
     </div>
   );

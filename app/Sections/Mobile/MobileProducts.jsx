@@ -139,8 +139,12 @@ export default function MobileProducts() {
       const data = await fetchShopProducts(signal);
 
       if (!Array.isArray(data)) throw new Error("Invalid product data");
+      const filteredProducts  = data.filter(
+        (item) => item.additionalField === "shop"
+      );
 
-      setProducts(data);
+      setProducts(filteredProducts);
+      // setProducts(data);
     } catch (err) {
       if (err.name !== "AbortError") {
         setError("Failed to load products. Please try again.");

@@ -17,7 +17,13 @@ export default function MobileThemes({}) {
       const data = await res.json();
 
       if (data && data.data) {
-        setThemes(data.data); // Save all themes
+        // setThemes(data.data); // Save all themes
+        const filteredthemes  = data.data.filter(
+          (item) => item.additionalField === "shop"
+        );
+
+        setThemes(filteredthemes);
+
       }
     } catch (error) {
       console.error("Error fetching blogs:", error);

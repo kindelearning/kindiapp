@@ -217,13 +217,13 @@ const MilestoneCOmpletedButton = ({ kidDocumentId, milestoneId }) => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-between">
+    <div className="flex flex-col items-start justify-start">
       <button
         onClick={handleUpdate}
         disabled={loading}
         className="p-2 bg-red text-white rounded-lg disabled:bg-gray-400"
       >
-        {loading ? "Updating..." : "Update Kid's Milestone"}
+        {loading ? "Updating..." : "Update Child's Milestone"}
       </button>
       {error && <p className="text-red-500 mt-2">{error}</p>}
       {success && (

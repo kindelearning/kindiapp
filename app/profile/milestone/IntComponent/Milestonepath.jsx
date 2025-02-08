@@ -468,7 +468,8 @@ const ParametricWave = ({
       {turningPoints.map((point, index) => (
         <div
           key={index}
-          className="text-[16px]  min-w-[100px] max-w-[160px] w-full font-fredoka rounded-full px-2 pl-4 bg-red text-white"
+          // className="text-[16px]  min-w-[100px] max-w-[160px] w-full font-fredoka rounded-full px-2 pl-4 bg-red text-white"
+          className="transition duration-300 ease-in-out hover:scale-[1.03] font-fredoka tracking-wider font-bold text-[10px] md:text-[16px] hover:bg-purple hover:border-2 hover:border-[#ffffff] border-transparent md:px-6 border-2 rounded-[12px] bg-red px-4 py-2 hover:shadow text-white"
           style={{
             position: "absolute",
             left: `${point.x - 15}px`,
@@ -500,19 +501,19 @@ const ParametricWave = ({
               <DialogTitle>
                 <div className="text-center">
                   <span className="text-[#3f3a64] text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                    Update {dialogContent?.Title || "No Title"}
+                    Update{" "}
                   </span>{" "}
-                  {/* <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
-                      for your Kid
-                    </span> */}
+                  <span className="text-red text-[24px] md:text-[36px] font-semibold font-fredoka capitalize">
+                  {" "}   {dialogContent?.Title || "No Title"}
+                  </span>
                 </div>
               </DialogTitle>
-              <DialogDescription className="w-full p-4 flex overflow-x-scroll scrollbar-hidden flex-col gap-4 justify-start items-start">
-                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-between items-center">
-                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+              <DialogDescription className="w-full p-4 flex flex-col gap-4 justify-start items-start">
+                <div className="flex w-full overflow-x-scroll scrollbar-hidden font-fredoka gap-2 justify-start items-center">
+                  <Badge className="bg-[#eaeaf5] cursor-pointer rounded-full hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
                     {dialogContent?.Category}
                   </Badge>
-                  <Badge className="bg-[#eaeaf5] cursor-pointer hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
+                  <Badge className="bg-[#eaeaf5] cursor-pointer rounded-full hover:bg-red text-red hover:text-white font-medium text-[12px] border-red">
                     {/* {mileStoneCustomData[index]?.SubCategory.split(" ")[0]} */}
                     {dialogContent?.SubCategory}
                   </Badge>
@@ -543,12 +544,12 @@ const ParametricWave = ({
             </DialogHeader>
             <DialogFooter>
               <section className="w-full h-auto shadow-upper bg-[#ffffff] -top-2 sticky bottom-0 z-10 rounded-[16px] items-center justify-between py-4 flex flex-row">
-                <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
+                <DialogClose className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                   <Button className="px-4 py-2 bg-white hover:bg-white text-[#3f3a64] text-[20px] md:text-[24px] font-medium font-fredoka leading-none rounded-2xl border-2 border-[#3f3a64] justify-center items-center gap-1 inline-flex">
                     <ChevronLeft className="w-[24px] h-[24px]" />
                     Back
                   </Button>
-                </div>
+                </DialogClose>
                 <div className="w-fit flex flex-row justify-between items-center gap-4 px-4">
                   <MarkMilestoneCompleteForm
                     passmilestoneId={custommilestoneidfromuser?.id}

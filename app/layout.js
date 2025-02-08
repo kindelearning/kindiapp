@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
           <UserProvider>
             <CartProvider>
               {children}
-              <SplashScreen />
+              {/* <SplashScreen /> */}
             </CartProvider>
           </UserProvider>
         </GoogleOAuthProvider>
